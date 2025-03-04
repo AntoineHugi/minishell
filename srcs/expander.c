@@ -2,7 +2,7 @@
 
 char	*replace_env(char *cmd, char *alias, char *env, int *i)
 {
-	ssize_t len;
+	ssize_t	len;
 	char	*replacement;
 
 	if (!env)
@@ -34,12 +34,11 @@ char	*get_name(char *cmd)
 	return (alias);
 }
 
-
 char	*find_env(char *alias, char **envp)
 {
 	int		i;
 	ssize_t	len;
-	
+
 	len = ft_strlen(alias);
 	i = 0;
 	while (envp[i])
@@ -47,7 +46,7 @@ char	*find_env(char *alias, char **envp)
 		if (!ft_strncmp(envp[i], alias, len) && envp[i][len] == '=')
 		{
 			return (envp[i] + len + 1);
-		}	
+		}
 		i++;
 	}
 	return (NULL);
@@ -72,7 +71,7 @@ char	*check_env(char *cmd, char **envp)
 			alias = get_name(cmd + i + 1);
 			if (alias)
 				return (replace_env(cmd, alias, find_env(alias, envp), &i));
-		}	
+		}
 		i++;
 	}
 	return (NULL);
@@ -80,11 +79,11 @@ char	*check_env(char *cmd, char **envp)
 
 int	expander(t_command *cmd, char **envp)
 {
-	int	i;
+	int		i;
 	char	*change;
-	
+
 	change = NULL;
-	while(cmd)
+	while (cmd)
 	{
 		i = 0;
 		while (cmd->full_cmd_args[i])

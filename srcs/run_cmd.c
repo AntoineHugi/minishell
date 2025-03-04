@@ -51,7 +51,7 @@ void	run_cmd(char **full_cmd, char **envp)
 		print_error(full_cmd[0], 127);
 	path = fetch_path(envp);
 	if (!path)
-		print_error("path not found in envp", EXIT_FAILURE);		
+		print_error("path not found in envp", EXIT_FAILURE);
 	cmd_path = find_command(path, full_cmd[0]);
 	if (!cmd_path)
 	{

@@ -48,8 +48,10 @@ int	executer(t_command *cmd, char **envp)
 
 	is_first = 1;
 	tmp_fd = -1;
-	if (cmd->next == NULL){}
+	if (cmd->next == NULL)
+	{
 		//single_cmd(cmd, envp);
+	}
 	else
 	{
 		while (cmd->next != NULL)

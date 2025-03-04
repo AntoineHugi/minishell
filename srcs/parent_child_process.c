@@ -34,7 +34,7 @@ void	next_child_process(int *pipe_fd, int tmp_fd, t_command *cmd, char **envp)
 
 void	parent_process(int tmp_fd, t_command *cmd, char **envp)
 {
-	int	fd_out;
+	int		fd_out;
 	pid_t	pid;
 
 	if (cmd->redirection_out_type == 0)
@@ -57,5 +57,5 @@ void	parent_process(int tmp_fd, t_command *cmd, char **envp)
 		print_error(strerror(errno), errno);
 	else if (pid == 0)
 		run_cmd(cmd->full_cmd_args, envp);
-	waitpid(pid, NULL, 0);	
+	waitpid(pid, NULL, 0);
 }
