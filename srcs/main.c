@@ -30,7 +30,7 @@ int	main(int ac, char **av, char **envp)
 	test.redirection_out_type = 2;
 	test.limiter = "EOF";
 
-	input2 = "echo bye";
+	input2 = "wc -l";
 	test2.infile = NULL;
 	test2.outfile = "output";
 	test2.full_cmd_args = ft_split(input2, ' ');

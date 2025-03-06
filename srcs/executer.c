@@ -65,7 +65,7 @@ int	executer(t_command *cmd, char **envp)
 	tmp_fd = -1;
 	if (cmd->next == NULL)
 	{
-		//single_cmd(cmd, envp);
+		single_cmd(cmd, envp);
 	}
 	else
 	{
