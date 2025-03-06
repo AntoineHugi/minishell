@@ -21,19 +21,22 @@ typedef struct s_command {
 	char		*infile;
 	char		*outfile;
 	char		*errorfile;
+	char		*limiter;
 	int			redirection_in_type;
 	int			redirection_out_type;
-	void		*next;
+	void			*next;
 }				t_command;
 
-//int		buff_check(char *limiter, char *buffer);
 int		expander(t_command *cmd, char **envp);
-int	executer(t_command *cmd, char **envp);
+int		executer(t_command *cmd, char **envp);
+int		here_doc_fd(char *limiter);
 void	print_error(char *msg, int err_num);
 void	free_array(char **array);
 void	run_cmd(char **full_cmd, char **envp);
 void	next_child_process(int *pipe_fd, int tmp_fd, t_command *cmd, char **envp);
 void	first_child_process(int *pipe_fd, t_command *cmd, char **envp);
 void	parent_process(int tmp_fd, t_command *cmd, char **envp);
+void	handle_infile(t_command *cmd);
+void	handle_outfile(t_command *cmd);
 
 #endif

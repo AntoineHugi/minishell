@@ -15,6 +15,8 @@ void	print_error(char *msg, int err_num)
 	exit (err_num);
 }
 
+
+
 void	free_array(char **array)
 {
 	int	i;

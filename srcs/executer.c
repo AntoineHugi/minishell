@@ -5,6 +5,21 @@
 
 }*/
 
+static void	single_cmd(t_command *cmd, char **envp)
+{
+	pid_t	pid;
+	
+	handle_infile(cmd);
+	handle_outfile(cmd);
+	pid = fork();
+	if (pid == -1)
+		print_error(strerror(errno), errno);
+	else if (pid == 0)
+		run_cmd(cmd->full_cmd_args, envp);
+	waitpid(pid, NULL, 0);
+}
+
+
 static int	middle_pipe(int tmp_fd, t_command *cmd, char **envp)
 {
 	int		pipe_fd[2];

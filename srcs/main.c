@@ -7,7 +7,7 @@ int	main(int ac, char **av, char **envp)
 	//char	*input3;
 	t_command	test;
 	t_command	test2;
-//	t_command	test3;
+	//t_command	test3;
 	//int i = 0;
 
 	/*input = readline("Minishell$ ");
@@ -17,31 +17,35 @@ int	main(int ac, char **av, char **envp)
 		free(input);
 		input = readline("Minishell$ ");
 	}*/
-	input = av[ac - 1];
-	input = "$TEST hello beans";
-	test.infile = "infile";
-	test.outfile = NULL;
+	
+	input = av[ac - 1]; //just to use ac/av
+
+
+	input = "echo hello";
+	test.infile = NULL;
+	test.outfile = "output";
 	test.full_cmd_args = ft_split(input, ' ');
 	test.next = &test2;
 	test.redirection_in_type = 0;
-	test.redirection_out_type = 0;
+	test.redirection_out_type = 2;
+	test.limiter = "EOF";
 
-	input2 = "wc -w";
-	test2.infile = "infile";
+	input2 = "echo bye";
+	test2.infile = NULL;
 	test2.outfile = "output";
 	test2.full_cmd_args = ft_split(input2, ' ');
 	test2.next = NULL;
 	test2.redirection_in_type = 0;
-	test2.redirection_out_type = 1;
-/*
-	input3 = "echo hello";
+	test2.redirection_out_type = 2;
+
+	/*input3 = "echo $TEST";
 	test3.infile = NULL;
-	test3.outfile = NULL;
+	test3.outfile = "output";
 	test3.full_cmd_args = ft_split(input3, ' ');
 	test3.next = NULL;
 	test3.redirection_in_type = 0;
-	test3.redirection_out_type = 0;
-*/
+	test3.redirection_out_type = 1;*/
+
 	expander(&test, envp);
 	executer(&test, envp);
 

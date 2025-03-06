@@ -49,7 +49,7 @@ char	*find_env(char *alias, char **envp)
 		}
 		i++;
 	}
-	return (NULL);
+	return ("");
 }
 
 char	*check_env(char *cmd, char **envp)
