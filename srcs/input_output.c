@@ -40,20 +40,19 @@ int	here_doc_fd(char *limiter)
 	return (fd_here_doc[0]);
 }
 
-/* need to deal with extra input files (appending), also input file + here_doc */
 void	handle_infile(t_command *cmd)
 {
 	int	fd_infile;
 
-	if (cmd->redirection_in_type == 1)
+	if (cmd->input->redirection_type == 1)
 	{
-		fd_infile = open(cmd->infile, O_RDONLY);
+		fd_infile = open(cmd->input->name, O_RDONLY);
 		if (fd_infile == -1)
 			print_error(strerror(errno), errno);
 		dup2(fd_infile, STDIN_FILENO);
 		close(fd_infile);
 	}
-	else if (cmd->redirection_in_type == 2)
+	else if (cmd->input->redirection_type == 2)
 	{
 		fd_infile = here_doc_fd(cmd->limiter);
 		dup2(fd_infile, STDIN_FILENO);
@@ -61,21 +60,20 @@ void	handle_infile(t_command *cmd)
 	}
 }
 
-/* need to deal with extra input files (appending), also input file + here_doc */
 void	handle_outfile(t_command *cmd)
 {
-	int	fd_outfile;
+	int	fd_out;
 
-	if (cmd->redirection_out_type == 1)
+	if (cmd->output->redirection_type == 1)
 	{
-		fd_outfile = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-		dup2(fd_outfile, STDOUT_FILENO);
-		close(fd_outfile);
+		fd_out = open(cmd->output->name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
 	}
-	if (cmd->redirection_out_type == 2)
+	if (cmd->output->redirection_type == 2)
 	{
-		fd_outfile = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0666);
-		dup2(fd_outfile, STDOUT_FILENO);
-		close(fd_outfile);
+		fd_out = open(cmd->output->name, O_WRONLY | O_CREAT | O_APPEND, 0666);
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
 	}
 }

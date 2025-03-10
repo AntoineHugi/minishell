@@ -15,15 +15,19 @@
 # include <termios.h>
 # include <termcap.h>
 
-typedef struct s_command {
-	int			number_arguments;
-	char		**full_cmd_args;
-	char		*infile;
-	char		*outfile;
-	char		*errorfile;
-	char		*limiter;
-	int			redirection_in_type;
-	int			redirection_out_type;
+typedef struct	s_redirection {
+	char	*name;
+	int		redirection_type;
+	int		fd;
+}				t_redirection;
+typedef struct 	s_command {
+	int				number_arguments;
+	char			**full_cmd_args;
+	char			*cmd_path;
+	t_redirection	*input;
+	t_redirection	*output;
+	char			*errorfile;
+	char			*limiter;
 	void			*next;
 }				t_command;
 
@@ -32,7 +36,7 @@ int		executer(t_command *cmd, char **envp);
 int		here_doc_fd(char *limiter);
 void	print_error(char *msg, int err_num);
 void	free_array(char **array);
-void	run_cmd(char **full_cmd, char **envp);
+void	run_cmd(t_command *cmd, char **envp);
 void	next_child_process(int *pipe_fd, int tmp_fd, t_command *cmd, char **envp);
 void	first_child_process(int *pipe_fd, t_command *cmd, char **envp);
 void	parent_process(int tmp_fd, t_command *cmd, char **envp);

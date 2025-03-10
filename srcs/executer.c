@@ -15,7 +15,7 @@ static void	single_cmd(t_command *cmd, char **envp)
 	if (pid == -1)
 		print_error(strerror(errno), errno);
 	else if (pid == 0)
-		run_cmd(cmd->full_cmd_args, envp);
+		run_cmd(cmd, envp);
 	waitpid(pid, NULL, 0);
 }
 

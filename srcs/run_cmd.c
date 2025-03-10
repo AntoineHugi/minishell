@@ -40,27 +40,26 @@ static char	*fetch_path(char **envp)
 	return (NULL);
 }
 
-void	run_cmd(char **full_cmd, char **envp)
+void	run_cmd(t_command *cmd, char **envp)
 {
 	char	*path;
-	char	*cmd_path;
 
-	if (!full_cmd)
+	if (!cmd->full_cmd_args)
 		print_error("command empty", EXIT_FAILURE);
-	if (full_cmd[0][0] == '\0')
-		print_error(full_cmd[0], 127);
+	if (cmd->full_cmd_args[0][0] == '\0')
+		print_error(cmd->full_cmd_args[0], 127);
 	path = fetch_path(envp);
 	if (!path)
 		print_error("path not found in envp", EXIT_FAILURE);
-	cmd_path = find_command(path, full_cmd[0]);
-	if (!cmd_path)
+	cmd->cmd_path = find_command(path, cmd->full_cmd_args[0]);
+	if (!cmd->cmd_path)
 	{
-		free_array((full_cmd));
-		free(cmd_path);
-		print_error(full_cmd[0], 127);
+		free_array((cmd->full_cmd_args));
+		free(cmd->cmd_path);
+		print_error(cmd->full_cmd_args[0], 127);
 	}
-	execve(cmd_path, full_cmd, envp);
-	free_array((full_cmd));
-	free(cmd_path);
+	execve(cmd->cmd_path, cmd->full_cmd_args, envp);
+	free_array((cmd->full_cmd_args));
+	free(cmd->cmd_path);
 	print_error(strerror(errno), errno);
 }
