@@ -3,7 +3,7 @@
 static void	single_cmd(int tmp_fd, t_command *cmd, char **envp)
 {
 	pid_t	pid;
-	
+
 	if (cmd->input)
 		handle_infile(cmd);
 	else if (tmp_fd != -1)
@@ -17,7 +17,6 @@ static void	single_cmd(int tmp_fd, t_command *cmd, char **envp)
 		run_cmd(cmd, envp);
 	waitpid(pid, NULL, 0);
 }
-
 
 static int	create_pipe(int tmp_fd, t_command *cmd, char **envp)
 {
@@ -49,7 +48,7 @@ static void	restore_fd(int *tmp_fd, int save_stdin)
 int	executer(t_command *cmd, char **envp)
 {
 	int	tmp_fd;
-	int save_stdin;
+	int	save_stdin;
 
 	save_stdin = dup(STDIN_FILENO);
 	tmp_fd = -1;

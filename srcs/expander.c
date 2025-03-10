@@ -23,7 +23,7 @@ void	expand_cmd(t_command *cmd, char **envp)
 	int		i;
 	char	*change;
 
-	i = 0;	
+	i = 0;
 	while (cmd->full_cmd_args[i])
 	{
 		change = check_env(cmd->full_cmd_args[i], envp);

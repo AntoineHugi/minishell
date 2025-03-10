@@ -15,12 +15,12 @@
 # include <termios.h>
 # include <termcap.h>
 
-typedef struct	s_redirection {
+typedef struct s_redirection {
 	char	*name;
 	int		redirection_type;
 }				t_redirection;
 
-typedef struct 	s_command {
+typedef struct s_command {
 	int				number_arguments;
 	int				pipe_next;
 	char			**full_cmd_args;
