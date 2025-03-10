@@ -48,6 +48,9 @@ int	main(int ac, char **av, char **envp)
 
 	expander(&test, envp);
 	executer(&test, envp);
+	free_array(test.full_cmd_args);
+	free_array(test2.full_cmd_args);
+	//free_array(test3.full_cmd_args);
 
 	/* this part exits, when pressing ctrl-D*/
 	/*if (feof(stdin)) {

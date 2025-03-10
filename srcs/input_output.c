@@ -40,7 +40,7 @@ int	here_doc_fd(char *limiter)
 	return (fd_here_doc[0]);
 }
 
-/* need to deal with extra input files (appending) */
+/* need to deal with extra input files (appending), also input file + here_doc */
 void	handle_infile(t_command *cmd)
 {
 	int	fd_infile;
@@ -61,6 +61,7 @@ void	handle_infile(t_command *cmd)
 	}
 }
 
+/* need to deal with extra input files (appending), also input file + here_doc */
 void	handle_outfile(t_command *cmd)
 {
 	int	fd_outfile;

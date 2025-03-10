@@ -8,6 +8,8 @@ RM = rm -f
 
 CFLAGS += -Wall -Wextra -Werror
 
+VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --trace-children=yes
+
 LIBFT_DIR = $(CUR_DIR)/libft
 
 SRCS = $(addprefix $(CUR_DIR)/srcs/, main.c executer.c expander.c helper_functions.c input_output.c parent_child_process.c run_cmd.c)
@@ -36,5 +38,8 @@ fclean: clean
 	$(RM) $(NAME)
 
 re:	fclean all
+
+valgrind: $(LIBFT_DIR)/libft.a $(NAME)
+	valgrind $(VALGRIND_FLAGS) ./$(NAME)
 
 .PHONY: all clean fclean re
