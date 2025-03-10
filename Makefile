@@ -8,11 +8,11 @@ RM = rm -f
 
 CFLAGS += -Wall -Wextra -Werror
 
-VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --trace-children=yes
+VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=yes
 
 LIBFT_DIR = $(CUR_DIR)/libft
 
-SRCS = $(addprefix $(CUR_DIR)/srcs/, main.c executer.c expander.c helper_functions.c input_output.c parent_child_process.c run_cmd.c)
+SRCS = $(addprefix $(CUR_DIR)/srcs/, main.c executer.c expander.c expander_utils.c helper_functions.c input_output.c parent_child_process.c run_cmd.c)
 
 MY_HEADERS = $(CUR_DIR)/includes/minishell.h
 

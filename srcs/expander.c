@@ -1,101 +1,47 @@
 #include "../includes/minishell.h"
 
-char	*replace_env(char *cmd, char *alias, char *env, int *i)
+void	expand_files(t_command *cmd, char **envp)
 {
-	ssize_t	len;
-	char	*replacement;
+	char	*change;
 
-	if (!env)
+	if (cmd->input)
 	{
-		free(alias);
-		return (NULL);
+		change = check_env(cmd->input->name, envp);
+		if (change)
+			cmd->input->name = change;
 	}
-	len = ft_strlen(cmd) - ft_strlen(alias) + ft_strlen(env);
-	replacement = (char *)ft_calloc(len, sizeof(char));
-	ft_strlcpy(replacement, cmd, *i + 1);
-	ft_strlcpy(replacement + *i, env, ft_strlen(env) + 1);
-	*i = *i + ft_strlen(env);
-	free(alias);
-	return (replacement);
-}
-
-char	*get_name(char *cmd)
-{
-	int		i;
-	char	*alias;
-
-	i = 0;
-	while (ft_isalnum(cmd[i]))
-		i++;
-	alias = (char *)ft_calloc(i + 1, sizeof(char));
-	if (!alias)
-		return (NULL);
-	ft_strlcpy(alias, cmd, i + 1);
-	return (alias);
-}
-
-char	*find_env(char *alias, char **envp)
-{
-	int		i;
-	ssize_t	len;
-
-	len = ft_strlen(alias);
-	i = 0;
-	while (envp[i])
+	if (cmd->output)
 	{
-		if (!ft_strncmp(envp[i], alias, len) && envp[i][len] == '=')
-		{
-			return (envp[i] + len + 1);
-		}
-		i++;
+		change = check_env(cmd->output->name, envp);
+		if (change)
+			cmd->output->name = change;
 	}
-	return ("");
 }
 
-char	*check_env(char *cmd, char **envp)
-{
-	int		squote;
-	int		i;
-	char	*alias;
-
-	squote = 0;
-	i = 0;
-	while (cmd[i])
-	{
-		if (cmd[i] == '\'' && squote == 0)
-			squote = 1;
-		else if (cmd[i] == '\'' && squote == 1)
-			squote = 0;
-		if (cmd[i] == '$' && squote == 0)
-		{
-			alias = get_name(cmd + i + 1);
-			if (alias)
-				return (replace_env(cmd, alias, find_env(alias, envp), &i));
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-int	expander(t_command *cmd, char **envp)
+void	expand_cmd(t_command *cmd, char **envp)
 {
 	int		i;
 	char	*change;
 
-	change = NULL;
+	i = 0;	
+	while (cmd->full_cmd_args[i])
+	{
+		change = check_env(cmd->full_cmd_args[i], envp);
+		if (change)
+		{
+			free(cmd->full_cmd_args[i]);
+			cmd->full_cmd_args[i] = change;
+		}
+		i++;
+	}
+}
+
+int	expander(t_command *cmd, char **envp)
+{
 	while (cmd)
 	{
-		i = 0;
-		while (cmd->full_cmd_args[i])
-		{
-			change = check_env(cmd->full_cmd_args[i], envp);
-			if (change)
-			{
-				free(cmd->full_cmd_args[i]);
-				cmd->full_cmd_args[i] = change;
-			}
-			i++;
-		}
+		expand_cmd(cmd, envp);
+		expand_files(cmd, envp);
 		cmd = cmd->next;
 	}
 	return (0);
