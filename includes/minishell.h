@@ -23,6 +23,8 @@ typedef struct s_redirection {
 typedef struct s_command {
 	int				number_arguments;
 	int				pipe_next;
+	int				og_stdin;
+	int				og_stdout;
 	char			**full_cmd_args;
 	char			*cmd_path;
 	t_redirection	*input;
@@ -42,6 +44,7 @@ void	child_process(int *pipe_fd, int tmp_fd, t_command *cmd, char **envp);
 void	parent_process(int tmp_fd, t_command *cmd, char **envp);
 void	handle_infile(t_command *cmd);
 void	handle_outfile(t_command *cmd);
+void	export_var(t_command *cmd, char **envp);
 char	*check_env(char *cmd, char **envp);
 
 #endif

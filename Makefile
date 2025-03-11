@@ -12,7 +12,7 @@ VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --trace-children=yes --
 
 LIBFT_DIR = $(CUR_DIR)/libft
 
-SRCS = $(addprefix $(CUR_DIR)/srcs/, main.c executer.c expander.c expander_utils.c helper_functions.c input_output.c parent_child_process.c run_cmd.c)
+SRCS = $(addprefix $(CUR_DIR)/srcs/, main.c built_in_export.c executer.c expander.c expander_utils.c helper_functions.c input_output.c parent_child_process.c run_cmd.c)
 
 MY_HEADERS = $(CUR_DIR)/includes/minishell.h
 
