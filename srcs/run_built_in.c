@@ -8,7 +8,7 @@ void	run_built_in(t_command *cmd, char **envp)
 	if (!ft_strncmp(str, "echo", ft_strlen(str)))
 		echo(cmd);
 	if (!ft_strncmp(str, "cd", ft_strlen(str)))
-		return ;
+		change_directory(cmd, envp);
 	if (!ft_strncmp(str, "pwd", ft_strlen(str)))
 		print_wd(cmd);
 	if (!ft_strncmp(str, "export", ft_strlen(str)))

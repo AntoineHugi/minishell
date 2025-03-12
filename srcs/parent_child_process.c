@@ -23,15 +23,21 @@ void	parent_process(int tmp_fd, t_command *cmd, char **envp)
 	if (cmd->input)
 		handle_infile(cmd);
 	else if (tmp_fd != -1)
+	{
 		dup2(tmp_fd, STDIN_FILENO);
+		close(tmp_fd);
+	}
 	if (cmd->output)
 		handle_outfile(cmd);
-	if (tmp_fd != -1)
-		close(tmp_fd);
-	pid = fork();
-	if (pid == -1)
-		print_error(strerror(errno), errno);
-	else if (pid == 0)
-		run_cmd(cmd, envp);
-	waitpid(pid, NULL, 0);
+	if (cmd->cd && !cmd->pipe_prev)
+		change_directory(cmd, envp);
+	else
+	{
+		pid = fork();
+		if (pid == -1)
+			print_error(strerror(errno), errno);
+		else if (pid == 0)
+			run_cmd(cmd, envp);
+		waitpid(pid, NULL, 0);
+	}
 }

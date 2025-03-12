@@ -48,15 +48,20 @@ static void	cmd_no_pipe(int *tmp_fd, int *og_std, t_command *cmd, char **envp)
 	}
 	if (cmd->output)
 		handle_outfile(cmd);
-	pid = fork();
-	if (pid == -1)
-		print_error(strerror(errno), errno);
-	else if (pid == 0)
-		run_cmd(cmd, envp);
-	waitpid(pid, NULL, 0);
-	dup2(og_std[0], STDIN_FILENO);
-	dup2(og_std[1], STDOUT_FILENO);
-	*tmp_fd = -1;
+	if (cmd->cd && !cmd->pipe_prev)
+		change_directory(cmd, envp);
+	else
+	{
+		pid = fork();
+		if (pid == -1)
+			print_error(strerror(errno), errno);
+		else if (pid == 0)
+			run_cmd(cmd, envp);
+		waitpid(pid, NULL, 0);
+		dup2(og_std[0], STDIN_FILENO);
+		dup2(og_std[1], STDOUT_FILENO);
+		*tmp_fd = -1;
+	}
 }
 
 int	executer(t_command *cmd, char **envp)
@@ -71,7 +76,7 @@ int	executer(t_command *cmd, char **envp)
 		single_cmd(cmd, envp);
 	else
 	{
-		while (cmd->next != NULL)
+		while (cmd->next)
 		{
 			if (cmd->pipe_next)
 				cmd_with_pipe(&tmp_fd, cmd, envp);
