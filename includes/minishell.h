@@ -24,6 +24,7 @@ typedef struct s_redirection {
 typedef struct s_command {
 	int				number_arguments;
 	int				pipe_next;
+	int				pipe_prev;
 	int				og_stdin;
 	int				og_stdout;
 	int				built_in;
@@ -42,6 +43,7 @@ int		here_doc_fd(char *limiter);
 void	print_error(char *msg, int err_num);
 void	free_array(char **array);
 void	run_cmd(t_command *cmd, char **envp);
+void	run_built_in(t_command *cmd, char **envp);
 void	child_process(int *pipe_fd, int tmp_fd, t_command *cmd, char **envp);
 void	parent_process(int tmp_fd, t_command *cmd, char **envp);
 void	handle_infile(t_command *cmd);
