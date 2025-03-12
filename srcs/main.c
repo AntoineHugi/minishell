@@ -33,24 +33,27 @@ int	main(int ac, char **av, char **envp)
 	//outfile2.name = "output2";
 	//outfile2.redirection_type = 1;
 
-	input = "echo hello";
+	input = "echo hello -n";
 	cmd1.input = NULL;
 	cmd1.output = NULL;
 	cmd1.full_cmd_args = ft_split(input, ' ');
 	cmd1.pipe_next = 0;
 	cmd1.next = &cmd2;
+	cmd1.built_in = 1;
 	cmd1.limiter = "EOF";
 
 	input2 = "pwd";
 	cmd2.input = NULL;
 	cmd2.output = &outfile1;
 	cmd2.pipe_next = 0;
+	cmd2.built_in = 1;
 	cmd2.full_cmd_args = ft_split(input2, ' ');
 	cmd2.next = &cmd3;
 
-	input3 = "echo hi";
+	input3 = "echo -np hi";
 	cmd3.input = NULL;
 	cmd3.output = NULL;
+	cmd3.built_in = 1;
 	cmd3.full_cmd_args = ft_split(input3, ' ');
 	cmd3.next = NULL;
 

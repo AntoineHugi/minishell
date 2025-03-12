@@ -70,6 +70,7 @@ char	*generate_env(char *input, char *key)
 	return (env);
 }
 
+/* add case for "export $my_var" */
 static char	*get_key(char *input)
 {
 	int		i;
@@ -91,7 +92,6 @@ static char	*get_key(char *input)
 
 void	export_var(t_command *cmd, char **envp)
 {
-	int		i;
 	char	*env;
 	char	*key;
 

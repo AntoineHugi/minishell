@@ -45,21 +45,26 @@ void	run_cmd(t_command *cmd, char **envp)
 	char	*path;
 
 	if (!cmd->full_cmd_args)
-		print_error("command empty", EXIT_FAILURE);
+		print_error("syntax error", EXIT_FAILURE);
 	if (cmd->full_cmd_args[0][0] == '\0')
 		print_error(cmd->full_cmd_args[0], 127);
-	path = fetch_path(envp);
-	if (!path)
-		print_error("path not found in envp", EXIT_FAILURE);
-	cmd->cmd_path = find_command(path, cmd->full_cmd_args[0]);
-	if (!cmd->cmd_path)
+	if (cmd->built_in)
+		run_built_in(cmd, envp);
+	else
 	{
+		path = fetch_path(envp);
+		if (!path)
+			print_error("path not found in envp", EXIT_FAILURE);
+		cmd->cmd_path = find_command(path, cmd->full_cmd_args[0]);
+		if (!cmd->cmd_path)
+		{
+			free_array((cmd->full_cmd_args));
+			free(cmd->cmd_path);
+			print_error(cmd->full_cmd_args[0], 127);
+		}
+		execve(cmd->cmd_path, cmd->full_cmd_args, envp);
 		free_array((cmd->full_cmd_args));
 		free(cmd->cmd_path);
-		print_error(cmd->full_cmd_args[0], 127);
+		print_error(strerror(errno), errno);
 	}
-	execve(cmd->cmd_path, cmd->full_cmd_args, envp);
-	free_array((cmd->full_cmd_args));
-	free(cmd->cmd_path);
-	print_error(strerror(errno), errno);
 }

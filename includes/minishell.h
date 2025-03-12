@@ -14,6 +14,7 @@
 # include <readline/history.h>
 # include <termios.h>
 # include <termcap.h>
+# include <limits.h>
 
 typedef struct s_redirection {
 	char	*name;
@@ -25,6 +26,7 @@ typedef struct s_command {
 	int				pipe_next;
 	int				og_stdin;
 	int				og_stdout;
+	int				built_in;
 	char			**full_cmd_args;
 	char			*cmd_path;
 	t_redirection	*input;
@@ -45,6 +47,9 @@ void	parent_process(int tmp_fd, t_command *cmd, char **envp);
 void	handle_infile(t_command *cmd);
 void	handle_outfile(t_command *cmd);
 void	export_var(t_command *cmd, char **envp);
+void	print_env(t_command *cmd, char **envp);
+void	print_wd(t_command *cmd);
+void	echo(t_command *cmd);
 char	*check_env(char *cmd, char **envp);
 
 #endif
