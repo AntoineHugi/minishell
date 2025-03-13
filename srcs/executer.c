@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static void	single_cmd(t_command *cmd, char **envp)
+static void	single_cmd(t_command *cmd, char **envp, int *og_std)
 {
 	pid_t	pid;
 
@@ -13,7 +13,9 @@ static void	single_cmd(t_command *cmd, char **envp)
 		print_error(strerror(errno), errno);
 	else if (pid == 0)
 		run_cmd(cmd, envp);
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &(cmd->exit_status), 0);
+	dup2(og_std[0], STDIN_FILENO);
+	dup2(og_std[1], STDOUT_FILENO);
 }
 
 static void	cmd_with_pipe(int *tmp_fd, t_command *cmd, char **envp)
@@ -28,7 +30,7 @@ static void	cmd_with_pipe(int *tmp_fd, t_command *cmd, char **envp)
 		print_error(strerror(errno), errno);
 	if (pid == 0)
 		child_process(pipe_fd, *tmp_fd, cmd, envp);
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &(cmd->exit_status), 0);
 	if (*tmp_fd != -1)
 		close(*tmp_fd);
 	close(pipe_fd[1]);
@@ -57,14 +59,14 @@ static void	cmd_no_pipe(int *tmp_fd, int *og_std, t_command *cmd, char **envp)
 			print_error(strerror(errno), errno);
 		else if (pid == 0)
 			run_cmd(cmd, envp);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &(cmd->exit_status), 0);
 		dup2(og_std[0], STDIN_FILENO);
 		dup2(og_std[1], STDOUT_FILENO);
 		*tmp_fd = -1;
 	}
 }
 
-int	executer(t_command *cmd, char **envp)
+int	executer(t_command *cmd, char **envp, int exit_status)
 {
 	int	tmp_fd;
 	int	og_std[2]; 
@@ -72,8 +74,9 @@ int	executer(t_command *cmd, char **envp)
 	og_std[0] = dup(STDIN_FILENO);
 	og_std[1] = dup(STDOUT_FILENO);
 	tmp_fd = -1;
+	expand_exit_status(cmd, exit_status);
 	if (cmd->next == NULL)
-		single_cmd(cmd, envp);
+		single_cmd(cmd, envp, og_std);
 	else
 	{
 		while (cmd->next)
@@ -82,9 +85,11 @@ int	executer(t_command *cmd, char **envp)
 				cmd_with_pipe(&tmp_fd, cmd, envp);
 			else
 				cmd_no_pipe (&tmp_fd, og_std, cmd, envp);
+			exit_status = cmd->exit_status;
 			cmd = cmd->next;
+			expand_exit_status(cmd, exit_status);
 		}
 		parent_process(tmp_fd, cmd, envp);
 	}
-	return (0);
+	return (exit_status);
 }

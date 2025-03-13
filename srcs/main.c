@@ -2,6 +2,7 @@
 
 int	main(int ac, char **av, char **envp)
 {
+	int	last_exit_status;
 	char	*input;
 	char	*input2;
 	//char	*input3;
@@ -33,7 +34,7 @@ int	main(int ac, char **av, char **envp)
 	//outfile2.name = "output2";
 	//outfile2.redirection_type = 1;
 
-	input = "cd ..";
+	input = "ls -a";
 	cmd1.input = NULL;
 	cmd1.output = NULL;
 	cmd1.full_cmd_args = ft_split(input, ' ');
@@ -41,10 +42,10 @@ int	main(int ac, char **av, char **envp)
 	cmd1.pipe_prev = 0;
 	cmd1.next = &cmd2;
 	cmd1.built_in = 1;
-	cmd1.cd = 1;
+	cmd1.cd = 0;
 	cmd1.limiter = "EOF";
 
-	input2 = "ls -a";
+	input2 = "echo BLA$?BLA$?$?$?$?$?$?BLA";
 	cmd2.input = NULL;
 	cmd2.output = NULL;
 	cmd2.pipe_next = 0;
@@ -71,9 +72,9 @@ int	main(int ac, char **av, char **envp)
 
 	
 
-
+	last_exit_status = 0;
 	expander(&cmd1, envp);
-	executer(&cmd1, envp);
+	last_exit_status = executer(&cmd1, envp, last_exit_status);
 	free_array(cmd1.full_cmd_args);
 	free_array(cmd2.full_cmd_args);
 	//free_array(cmd3.full_cmd_args);
@@ -81,10 +82,6 @@ int	main(int ac, char **av, char **envp)
 	char	cwd[1024];
 	if (getcwd(cwd, sizeof(cwd)))
 		printf("%s\n", cwd);
-
-	printf("%s\n",getenv("PWD"));
-
-
 	/* this part exits, when pressing ctrl-D*/
 	/*if (feof(stdin)) {
 		free(input);

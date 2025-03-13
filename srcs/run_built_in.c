@@ -20,4 +20,5 @@ void	run_built_in(t_command *cmd, char **envp)
 	if (!ft_strncmp(str, "exit", ft_strlen(str)))
 		own_exit(cmd);
 	free_array((cmd->full_cmd_args));
+	exit(0);
 }

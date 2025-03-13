@@ -43,6 +43,8 @@ static char	*get_name(char *cmd)
 	i = 0;
 	while (ft_isalnum(cmd[i]))
 		i++;
+	if (i == 0)
+		return (NULL);
 	alias = (char *)ft_calloc(i + 1, sizeof(char));
 	if (!alias)
 		return (NULL);

@@ -29,6 +29,7 @@ typedef struct s_command {
 	int				og_stdout;
 	int				built_in;
 	int				cd;
+	int				exit_status;
 	char			**full_cmd_args;
 	char			*cmd_path;
 	t_redirection	*input;
@@ -39,7 +40,7 @@ typedef struct s_command {
 }				t_command;
 
 int		expander(t_command *cmd, char **envp);
-int		executer(t_command *cmd, char **envp);
+int		executer(t_command *cmd, char **envp, int exit_status);
 int		here_doc_fd(char *limiter);
 void	print_error(char *msg, int err_num);
 void	free_array(char **array);
@@ -57,5 +58,6 @@ char	*check_envp(char *cmd, char **envp);
 void	change_directory(t_command *cmd, char **envp);
 void	unset_var(t_command *cmd, char **envp);
 void	own_exit(t_command *cmd);
+void	expand_exit_status(t_command *cmd, int exit_status);
 
 #endif

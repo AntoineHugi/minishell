@@ -38,6 +38,6 @@ void	parent_process(int tmp_fd, t_command *cmd, char **envp)
 			print_error(strerror(errno), errno);
 		else if (pid == 0)
 			run_cmd(cmd, envp);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &(cmd->exit_status), 0);
 	}
 }
