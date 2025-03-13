@@ -53,7 +53,9 @@ void	export_var(t_command *cmd, char **envp);
 void	print_env(t_command *cmd, char **envp);
 void	print_wd(t_command *cmd);
 void	echo(t_command *cmd);
-char	*check_env(char *cmd, char **envp);
+char	*check_envp(char *cmd, char **envp);
 void	change_directory(t_command *cmd, char **envp);
+void	unset_var(t_command *cmd, char **envp);
+void	own_exit(t_command *cmd);
 
 #endif

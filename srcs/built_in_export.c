@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	set_env(char *key, char *env, char **envp)
+static void	set_env(char *key, char *env, char **envp)
 {
 	int	i;
 	
@@ -9,7 +9,7 @@ void	set_env(char *key, char *env, char **envp)
 	{
 		if (!ft_strncmp(envp[i], key, ft_strlen(key)))
 		{
-			free(envp[i]);
+			//free(envp[i]); do this when copy of envp is created.
 			envp[i] = env;
 			free(key);
 			return ;
@@ -40,7 +40,7 @@ static void	parse_value(char *src, char *dest)
 			i++;
 			if (src[i])
 				dest[j++] = src[i];
-        }
+		}
 		else if (src[i] == '\'' && !dquote) 
 			squote = !squote;
 		else if (src[i] == '"' && !squote)
@@ -51,7 +51,7 @@ static void	parse_value(char *src, char *dest)
 	dest[j] = '\0';
 }
 
-char	*generate_env(char *input, char *key)
+static char	*generate_env(char *input, char *key)
 {
 	size_t	i;
 	char	*value;
@@ -104,7 +104,7 @@ void	export_var(t_command *cmd, char **envp)
 		if (!env)
 		{
 			free(key);
-			print_error(cmd->full_cmd_args[1], 1);
+			print_error(strerror(errno), errno);
 		}
 		set_env(key, env, envp);
 	}

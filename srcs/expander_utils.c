@@ -50,7 +50,7 @@ static char	*get_name(char *cmd)
 	return (alias);
 }
 
-char	*check_env(char *cmd, char **envp)
+char	*check_envp(char *cmd, char **envp)
 {
 	int		squote;
 	int		i;

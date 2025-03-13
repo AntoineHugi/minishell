@@ -14,11 +14,10 @@ void	run_built_in(t_command *cmd, char **envp)
 	if (!ft_strncmp(str, "export", ft_strlen(str)))
 		export_var(cmd, envp);
 	if (!ft_strncmp(str, "unset", ft_strlen(str)))
-		return ;
+		unset_var(cmd, envp);
 	if (!ft_strncmp(str, "env", ft_strlen(str)))
 		print_env(cmd, envp);
 	if (!ft_strncmp(str, "exit", ft_strlen(str)))
-		return ;
+		own_exit(cmd);
 	free_array((cmd->full_cmd_args));
-	exit(0);
 }
