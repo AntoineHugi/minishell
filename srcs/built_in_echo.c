@@ -2,8 +2,8 @@
 
 void	echo(t_command *cmd)
 {
-	int	nl;
-	int	i;
+	int		nl;
+	int		i;
 	char	*str;
 
 	nl = 0;

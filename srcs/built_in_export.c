@@ -3,7 +3,7 @@
 static void	set_env(char *key, char *env, char **envp)
 {
 	int	i;
-	
+
 	i = 0;
 	while (envp[i])
 	{

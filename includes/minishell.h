@@ -22,7 +22,6 @@ typedef struct s_redirection {
 }				t_redirection;
 
 typedef struct s_command {
-	int				number_arguments;
 	int				pipe_next;
 	int				pipe_prev;
 	int				og_stdin;
@@ -30,6 +29,7 @@ typedef struct s_command {
 	int				built_in;
 	int				cd;
 	int				exit_status;
+	int				executable;
 	char			**full_cmd_args;
 	char			*cmd_path;
 	t_redirection	*input;

@@ -2,11 +2,10 @@
 
 void	update_pwd(char **envp)
 {
-	int	i;
+	int		i;
 	char	pwd[1024];
 	char	*new_pwd;
 
-	
 	if (getcwd(pwd, sizeof(pwd)))
 	{
 		new_pwd = ft_strjoin("PWD=", pwd);
@@ -30,7 +29,7 @@ void	update_pwd(char **envp)
 void	change_directory(t_command *cmd, char **envp)
 {
 	char	*home;
-	
+
 	if (!cmd->full_cmd_args[1])
 	{
 		home = getenv("HOME");

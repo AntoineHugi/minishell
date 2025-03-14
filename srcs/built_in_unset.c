@@ -7,7 +7,6 @@ void	replace_env(char **envp, int i)
 	temp = envp[i];*/
 	while (envp[i])
 	{
-		
 		envp[i] = envp[i + 1];
 		i++;
 	}
@@ -17,7 +16,7 @@ void	replace_env(char **envp, int i)
 static void	check_env(char *str, char **envp)
 {
 	size_t	len;
-	int	i;
+	int		i;
 
 	i = 0;
 	len = ft_strlen(str);
@@ -34,7 +33,7 @@ static void	check_env(char *str, char **envp)
 
 void	unset_var(t_command *cmd, char **envp)
 {
-	int	i;
+	int		i;
 	char	*temp;
 
 	if (cmd->pipe_next || cmd->pipe_prev)

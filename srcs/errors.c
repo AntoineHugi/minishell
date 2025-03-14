@@ -14,16 +14,3 @@ void	print_error(char *msg, int err_num)
 	write(2, "\n", 1);
 	exit (err_num);
 }
-
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}

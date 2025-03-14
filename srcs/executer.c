@@ -70,7 +70,7 @@ int	executer(t_command *cmd, char **envp, int exit_status)
 {
 	int	tmp_fd;
 	int	og_std[2]; 
-	
+
 	og_std[0] = dup(STDIN_FILENO);
 	og_std[1] = dup(STDOUT_FILENO);
 	tmp_fd = -1;
