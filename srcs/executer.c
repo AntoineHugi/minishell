@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static void	single_cmd(t_command *cmd, char **envp, int *og_std)
+static void	single_cmd(t_command *cmd, char **envp)
 {
 	pid_t	pid;
 
@@ -10,12 +10,11 @@ static void	single_cmd(t_command *cmd, char **envp, int *og_std)
 		handle_outfile(cmd);
 	pid = fork();
 	if (pid == -1)
-		print_error(strerror(errno), errno);
+		cmd_error(cmd, strerror(errno), errno);
 	else if (pid == 0)
 		run_cmd(cmd, envp);
 	waitpid(pid, &(cmd->exit_status), 0);
-	dup2(og_std[0], STDIN_FILENO);
-	dup2(og_std[1], STDOUT_FILENO);
+	restore_stdin(cmd);
 }
 
 static void	cmd_with_pipe(int *tmp_fd, t_command *cmd, char **envp)
@@ -24,10 +23,10 @@ static void	cmd_with_pipe(int *tmp_fd, t_command *cmd, char **envp)
 	pid_t	pid;
 
 	if (pipe(pipe_fd) == -1)
-		print_error(strerror(errno), errno);
+		cmd_error(cmd, strerror(errno), errno);
 	pid = fork();
 	if (pid == -1)
-		print_error(strerror(errno), errno);
+		cmd_error(cmd, strerror(errno), errno);
 	if (pid == 0)
 		child_process(pipe_fd, *tmp_fd, cmd, envp);
 	waitpid(pid, &(cmd->exit_status), 0);
@@ -37,7 +36,7 @@ static void	cmd_with_pipe(int *tmp_fd, t_command *cmd, char **envp)
 	*tmp_fd = pipe_fd[0];
 }
 
-static void	cmd_no_pipe(int *tmp_fd, int *og_std, t_command *cmd, char **envp)
+static void	cmd_no_pipe(int *tmp_fd, t_command *cmd, char **envp)
 {
 	pid_t	pid;
 
@@ -56,27 +55,25 @@ static void	cmd_no_pipe(int *tmp_fd, int *og_std, t_command *cmd, char **envp)
 	{
 		pid = fork();
 		if (pid == -1)
-			print_error(strerror(errno), errno);
+			cmd_error(cmd, strerror(errno), errno);
 		else if (pid == 0)
 			run_cmd(cmd, envp);
 		waitpid(pid, &(cmd->exit_status), 0);
-		dup2(og_std[0], STDIN_FILENO);
-		dup2(og_std[1], STDOUT_FILENO);
+		restore_stdin(cmd);
 		*tmp_fd = -1;
 	}
 }
 
 int	executer(t_command *cmd, char **envp, int exit_status)
 {
-	int	tmp_fd;
-	int	og_std[2]; 
+	int	tmp_fd; 
 
-	og_std[0] = dup(STDIN_FILENO);
-	og_std[1] = dup(STDOUT_FILENO);
+	if (!save_stdin(cmd))
+		cmd_error(cmd, strerror(errno), errno);
 	tmp_fd = -1;
 	expand_exit_status(cmd, exit_status);
 	if (cmd->next == NULL)
-		single_cmd(cmd, envp, og_std);
+		single_cmd(cmd, envp);
 	else
 	{
 		while (cmd->next)
@@ -84,7 +81,7 @@ int	executer(t_command *cmd, char **envp, int exit_status)
 			if (cmd->pipe_next)
 				cmd_with_pipe(&tmp_fd, cmd, envp);
 			else
-				cmd_no_pipe (&tmp_fd, og_std, cmd, envp);
+				cmd_no_pipe (&tmp_fd, cmd, envp);
 			exit_status = cmd->exit_status;
 			cmd = cmd->next;
 			expand_exit_status(cmd, exit_status);

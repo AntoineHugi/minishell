@@ -35,7 +35,7 @@ void	parent_process(int tmp_fd, t_command *cmd, char **envp)
 	{
 		pid = fork();
 		if (pid == -1)
-			print_error(strerror(errno), errno);
+			cmd_error(cmd, strerror(errno), errno);
 		else if (pid == 0)
 			run_cmd(cmd, envp);
 		waitpid(pid, &(cmd->exit_status), 0);

@@ -42,7 +42,7 @@ void	free_all_cmds(t_command *cmd)
 	while (cmd)
 	{
 		next = cmd->next;
-		free(cmd);
+		free_cmd(cmd);
 		cmd = next;
 	}
 }
