@@ -13,6 +13,8 @@ static char	*replace_exit(char *cmd, char *exit_str, int *i)
 	q_len = ft_strlen("$?");
 	total_len = c_len - q_len + ex_l;
 	rpl = (char *)ft_calloc(total_len, sizeof(char));
+	if (!rpl)
+		return (NULL);
 	ft_strlcpy(rpl, cmd, *i + 1);
 	ft_strlcpy(rpl + *i, exit_str, ex_l + 1);
 	ft_strlcpy(rpl + *i + ex_l, cmd + *i + q_len, c_len - *i - q_len + 1);
@@ -21,16 +23,13 @@ static char	*replace_exit(char *cmd, char *exit_str, int *i)
 	return (rpl);
 }
 
-static char	*check_exit(char *cmd, int exit_status)
+static int	*check_exit(char *cmd, char *ex_str, char *change)
 {
 	int		squote;
 	int		i;
-	char	*change;
-	char	*ex_str;
 
 	squote = 0;
 	i = 0;
-	change = NULL;
 	while (cmd[i])
 	{
 		if (cmd[i] == '\'' && squote == 0)
@@ -41,24 +40,31 @@ static char	*check_exit(char *cmd, int exit_status)
 		{
 			if (cmd[i + 1] == '?')
 			{
-				ex_str = ft_itoa(exit_status);
 				change = replace_exit(cmd, ex_str, &i);
+				if (!change)
+					return (NULL);
 			}
 		}
 		i++;
 	}
-	return (change);
+	return (1);
 }
 
 void	expand_exit_status(t_command *cmd, int exit_status)
 {
 	int		i;
 	char	*change;
+	char	*ex_str;
 
 	i = 0;
+	ex_str = ft_itoa(exit_status);
+	if (!ex_str)
+		return (NULL);
 	while (cmd->full_cmd_args[i])
 	{
-		change = check_exit(cmd->full_cmd_args[i], exit_status);
+		change = NULL;
+		if (!check_exit(cmd->full_cmd_args[i], ex_str, change))
+			cmd_error(cmd, strerror(errno), errno);
 		if (change)
 		{
 			free(cmd->full_cmd_args[i]);

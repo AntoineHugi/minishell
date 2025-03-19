@@ -1,22 +1,5 @@
 #include "../includes/minishell.h"
 
-static void	single_cmd(t_command *cmd, char **envp)
-{
-	pid_t	pid;
-
-	if (cmd->input)
-		handle_infile(cmd);
-	if (cmd->output)
-		handle_outfile(cmd);
-	pid = fork();
-	if (pid == -1)
-		cmd_error(cmd, strerror(errno), errno);
-	else if (pid == 0)
-		run_cmd(cmd, envp);
-	waitpid(pid, &(cmd->exit_status), 0);
-	restore_stdin(cmd);
-}
-
 static void	cmd_with_pipe(int *tmp_fd, t_command *cmd, char **envp)
 {
 	int		pipe_fd[2];
@@ -64,29 +47,55 @@ static void	cmd_no_pipe(int *tmp_fd, t_command *cmd, char **envp)
 	}
 }
 
+static int	multiple_cmd(t_command *cmd, char **envp)
+{
+	int			tmp_fd;
+	int			exit_status;
+	t_command	*temp;
+
+	tmp_fd = -1;
+	while (cmd->next)
+	{
+		if (cmd->pipe_next)
+			cmd_with_pipe(&tmp_fd, cmd, envp);
+		else
+			cmd_no_pipe (&tmp_fd, cmd, envp);
+		exit_status = cmd->exit_status;
+		temp = cmd->next;
+		free_cmd(cmd);
+		cmd = temp;
+		expand_exit_status(cmd, exit_status);
+	}
+	parent_process(tmp_fd, cmd, envp);
+	return (cmd->exit_status);
+}
+
+static int	single_cmd(t_command *cmd, char **envp)
+{
+	pid_t	pid;
+
+	if (cmd->input)
+		handle_infile(cmd);
+	if (cmd->output)
+		handle_outfile(cmd);
+	pid = fork();
+	if (pid == -1)
+		cmd_error(cmd, strerror(errno), errno);
+	else if (pid == 0)
+		run_cmd(cmd, envp);
+	waitpid(pid, &(cmd->exit_status), 0);
+	restore_stdin(cmd);
+	return (cmd->exit_status);
+}
+
 int	executer(t_command *cmd, char **envp, int exit_status)
 {
-	int	tmp_fd; 
-
 	if (!save_stdin(cmd))
 		cmd_error(cmd, strerror(errno), errno);
-	tmp_fd = -1;
 	expand_exit_status(cmd, exit_status);
 	if (cmd->next == NULL)
-		single_cmd(cmd, envp);
+		exit_status = single_cmd(cmd, envp);
 	else
-	{
-		while (cmd->next)
-		{
-			if (cmd->pipe_next)
-				cmd_with_pipe(&tmp_fd, cmd, envp);
-			else
-				cmd_no_pipe (&tmp_fd, cmd, envp);
-			exit_status = cmd->exit_status;
-			cmd = cmd->next;
-			expand_exit_status(cmd, exit_status);
-		}
-		parent_process(tmp_fd, cmd, envp);
-	}
+		exit_status = multiple_cmd(cmd, envp);
 	return (exit_status);
 }
