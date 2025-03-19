@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahugi <ahugi@student.42berlin.de>          +#+  +:+       +#+        */
+/*   By: amargolo <amargolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 12:03:11 by ahugi             #+#    #+#             */
-/*   Updated: 2024/11/06 12:03:23 by ahugi            ###   ########.fr       */
+/*   Updated: 2025/03/10 13:38:38 by amargolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #ifndef LIBFT_H
 # define LIBFT_H
 # include <unistd.h>
@@ -58,7 +59,9 @@ char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strchr_mod(char *s);
 char	*ft_strdup(const char *s);
+char	*ft_strndup(const char *s, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin_all(char **s, char c);
 char	*ft_gnl_strjoin(char *s1, char *s2);
 char	*ft_strnstr(const char *big, const char *little, size_t len);
 char	*ft_strrchr(const char *s, int c);
