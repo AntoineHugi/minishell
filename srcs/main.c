@@ -14,24 +14,58 @@ void	read_tokens(t_token **token_list)
 	}
 }
 
-int	main(int arc, char **arv)
+char	**copy_envp(char **envp)
 {
-	t_token *token_list;
-	char	*string;
-	
-	(void)arc;
-	printf("Entering program... \n");
-	printf("Building singular string... \n");
-	if (arc > 2)
-		string = ft_strjoin_all(arv, ' ');
-	else
-		string = arv[1];
-	printf("Full joined cmd: %s \n", string);
-	printf("Turning singular string into tokens... \n");
-	token_list = lexer(string);
-	printf("Reading tokens... \n");
-	read_tokens(&token_list);
-	return (0);
+	char	**new_envp;
+	int		i;
+	int		len;
+
+	len = 0;
+	while (envp[len])
+		len++;
+	new_envp = (char **)malloc(sizeof(char *) * (len + 1));
+	if (!new_envp)
+		return (NULL);
+	new_envp[len] = NULL;
+	i = 0;
+	while (i < len)
+	{
+		new_envp[i] = ft_strdup(envp[i]);
+		if (!new_envp[i])
+		{
+			free_array(new_envp);
+			return (NULL);
+		}
+		i++;
+	}
+	return (new_envp);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	char		*input;
+	char		**new_envp;
+	int			exit_status;
+	t_token		*token_list;
+	t_command	*cmd_list;
+
+    new_envp = copy_envp(envp);
+	if (!new_envp)
+		print_error(strerror(errno), errno);
+	exit_status = 0;
+	input = readline("Minishell$ ");
+	while (input)
+ 	{
+		token_list = lexer(input);
+		//add_history(input);
+ 		free(input);
+ 		cmd_list = parser(token_list);
+		expander(cmd_list, new_envp);
+		exit_status = executer(cmd_list, new_envp, exit_status);
+		input = readline("Minishell$ ");
+ 	}
+	printf("\n%s%i\n",av[0],ac);
+    return (0);
 }
 
 

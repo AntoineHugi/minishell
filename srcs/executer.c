@@ -104,5 +104,6 @@ int	executer(t_command *cmd, char **envp, int exit_status)
 		exit_status = single_cmd(cmd, envp);
 	else
 		exit_status = multiple_cmd(cmd, envp);
+	free_cmd(cmd);
 	return (exit_status);
 }
