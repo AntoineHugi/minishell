@@ -1,5 +1,4 @@
 #include "../includes/minishell.h"
-#include "lexer.h"
 #include "../libft/libft.h"
 #include <stdio.h>
 

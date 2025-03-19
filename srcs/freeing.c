@@ -25,8 +25,6 @@ void	free_cmd(t_command *cmd)
 		free_array((cmd->full_cmd_args));
 	if (cmd->cmd_path)
 		free(cmd->cmd_path);
-	if (cmd->limiter)
-		free(cmd->limiter);
 	if (cmd->input)
 		free_redirect(cmd->input);
 	if (cmd->output)

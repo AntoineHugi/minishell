@@ -54,7 +54,7 @@ void	handle_infile(t_command *cmd)
 	}
 	else if (cmd->input->redirection_type == 2)
 	{
-		fd_infile = here_doc_fd(cmd->limiter);
+		fd_infile = here_doc_fd(cmd->input->name);
 		dup2(fd_infile, STDIN_FILENO);
 		close(fd_infile);
 	}

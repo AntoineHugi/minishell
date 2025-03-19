@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	replace_env(char **envp, int i)
+static void	replace_env(char **envp, int i)
 {
 	/*char	*temp;
 
