@@ -23,7 +23,7 @@ static char	*replace_exit(char *cmd, char *exit_str, int *i)
 	return (rpl);
 }
 
-static int	*check_exit(char *cmd, char *ex_str, char *change)
+static int	check_exit(char *cmd, char *ex_str, char *change)
 {
 	int		squote;
 	int		i;
@@ -42,7 +42,7 @@ static int	*check_exit(char *cmd, char *ex_str, char *change)
 			{
 				change = replace_exit(cmd, ex_str, &i);
 				if (!change)
-					return (NULL);
+					return (0);
 			}
 		}
 		i++;
@@ -59,7 +59,7 @@ void	expand_exit_status(t_command *cmd, int exit_status)
 	i = 0;
 	ex_str = ft_itoa(exit_status);
 	if (!ex_str)
-		return (NULL);
+		cmd_error(cmd, strerror(errno), errno);
 	while (cmd->full_cmd_args[i])
 	{
 		change = NULL;

@@ -40,9 +40,9 @@ int	build_cmd(t_token **current_token, t_command **cmd_list, t_command **new_cmd
 	}
 	if (!((*new_cmd) = create_new_cmd(cmd_list, i)))
 		return (0);
-	verify_built_in(new_cmd);
-	verify_executable(new_cmd);
-	verify_pipe_prev(cmd_list, new_cmd);
+	verify_built_in(*new_cmd);
+	verify_executable(*new_cmd);
+	verify_pipe_prev(cmd_list, *new_cmd);
 	return (1);
 }
 

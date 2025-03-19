@@ -57,6 +57,10 @@ void		delete_cmd_list(t_command **cmd_list);
 t_command	*create_new_cmd(t_command **cmd_list, int number_arguments);
 int			build_cmd(t_token **current_token, t_command **cmd_list, t_command **new_cmd);
 t_command	*parser(t_token *token_list);
+void		verify_built_in(t_command *new_cmd);
+void		verify_executable(t_command *new_cmd);
+void		verify_pipe_prev(t_command **cmd_list, t_command *new_cmd);
+void		add_cmd_to_list(t_command **list, t_command *new);
 
 /* Expander */
 int			expander(t_command *cmd, char **envp);

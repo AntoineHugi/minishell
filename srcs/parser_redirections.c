@@ -31,7 +31,7 @@ static int	fill_out_redir_in_cmd(t_token **current_token, t_command *cmd)
 	redir = (t_redirection *)malloc(sizeof(t_redirection));
 	if (!redir)
 		return (0);
-		if (cmd->input)
+	if (cmd->input)
 	{
 		if (cmd->input->name)
 			free(cmd->input->name);
@@ -54,11 +54,15 @@ int	handle_redirections(t_token **current_token, t_command *new_cmd)
 		&& !((*current_token)->content[0] == '|' || (*current_token)->content[0] == ';'))
 	{
 		if ((*current_token)->content[0] == '<')
+		{
 			if (!fill_in_redir_in_cmd(current_token, new_cmd))
 				return (0);
+		}
 		else if ((*current_token)->content[0] == '>')
+		{
 			if (!fill_out_redir_in_cmd(current_token, new_cmd))
 				return (0);
+		}
 		(*current_token) = (*current_token)->next;
 	}
 	return (1);

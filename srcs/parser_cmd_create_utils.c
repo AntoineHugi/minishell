@@ -11,7 +11,7 @@ static t_command	*cmd_last(t_command *cmd)
 	return (cmd);
 }
 
-static void	add_cmd_to_list(t_command **list, t_command *new)
+void	add_cmd_to_list(t_command **list, t_command *new)
 {
 	t_command	*last;
 
