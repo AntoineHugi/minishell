@@ -8,15 +8,9 @@ RM = rm -f
 
 CFLAGS += -Wall -Wextra -Werror
 
-VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=yes
-
 LIBFT_DIR = $(CUR_DIR)/libft
 
-SRCS = $(addprefix $(CUR_DIR)/srcs/, main.c built_in_cd.c built_in_echo.c built_in_env.c \
-					built_in_exit.c built_in_export.c built_in_pwd.c built_in_unset.c \
-					errors.c executer.c executer_utils.c expander_exit_status.c \
-					expander.c expander_utils.c freeing.c input_output.c parent_child_process.c \
-					run_built_in.c run_cmd.c)
+SRCS = $(addprefix $(CUR_DIR)/srcs/, main.c expander.c lexer.c)
 
 MY_HEADERS = $(CUR_DIR)/includes/minishell.h
 
@@ -42,8 +36,5 @@ fclean: clean
 	$(RM) $(NAME)
 
 re:	fclean all
-
-valgrind: $(LIBFT_DIR)/libft.a $(NAME)
-	valgrind $(VALGRIND_FLAGS) ./$(NAME)
 
 .PHONY: all clean fclean re
