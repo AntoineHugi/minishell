@@ -14,7 +14,7 @@ static char	*find_command(char *path, char *cmd)
 		buffer = ft_strjoin(directories[i], "/");
 		cmd_path = ft_strjoin(buffer, cmd);
 		free(buffer);
-		if (!access(cmd_path, F_OK))
+		if (access(cmd_path, F_OK) == 0)
 		{
 			free_array(directories);
 			return (cmd_path);
@@ -54,7 +54,7 @@ void	run_cmd(t_command *cmd, char **envp)
 	{
 		path = fetch_path(envp);
 		if (!path)
-		cmd_error(cmd, "path not found in envp", EXIT_FAILURE);
+			cmd_error(cmd, "path not found in envp", EXIT_FAILURE);
 		cmd->cmd_path = find_command(path, cmd->full_cmd_args[0]);
 		if (!cmd->cmd_path)
 			cmd_error(cmd, cmd->full_cmd_args[0], 127);
