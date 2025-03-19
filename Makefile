@@ -10,7 +10,12 @@ CFLAGS += -Wall -Wextra -Werror
 
 LIBFT_DIR = $(CUR_DIR)/libft
 
-SRCS = $(addprefix $(CUR_DIR)/srcs/, main.c expander.c lexer.c)
+SRCS = $(addprefix $(CUR_DIR)/srcs/, built_in_cd.c built_in_echo.c built_in_env.c \
+					built_in_exit.c built_in_export.c built_in_pwd.c built_in_unset.c \
+					errors.c executer.c executer_utils.c expander_exit_status.c expander_utils.c \
+					expander.c freeing.c input_output.c lexer_utils.c lexer.c main.c parent_child_process.c \
+					parser_cmd_create_utils.c parser_cmd_utils.c parser_delete_utils parser_redirections.c \
+					parser.c run_built_in.c run_cmd.c)
 
 MY_HEADERS = $(CUR_DIR)/includes/minishell.h
 
