@@ -82,12 +82,17 @@ static int	single_cmd(t_command *cmd, char **envp)
 		handle_infile(cmd);
 	if (cmd->output)
 		handle_outfile(cmd);
-	pid = fork();
-	if (pid == -1)
-		cmd_error(cmd, strerror(errno), errno);
-	else if (pid == 0)
-		run_cmd(cmd, envp);
-	waitpid(pid, &(cmd->exit_status), 0);
+	if (cmd->cd && !cmd->pipe_prev)
+		change_directory(cmd, envp);
+	else
+	{
+		pid = fork();
+		if (pid == -1)
+			cmd_error(cmd, strerror(errno), errno);
+		else if (pid == 0)
+			run_cmd(cmd, envp);
+		waitpid(pid, &(cmd->exit_status), 0);
+	}
 	restore_stdin(cmd);
 	return (cmd->exit_status);
 }
