@@ -56,6 +56,8 @@ static int	multiple_cmd(t_command *cmd, char **envp)
 	tmp_fd = -1;
 	while (cmd->next)
 	{
+		if (!save_stdin(cmd))
+			cmd_error(cmd, strerror(errno), errno);
 		if (cmd->pipe_next)
 			cmd_with_pipe(&tmp_fd, cmd, envp);
 		else
@@ -74,28 +76,34 @@ static int	single_cmd(t_command *cmd, char **envp)
 {
 	pid_t	pid;
 
+	if (!save_stdin(cmd))
+		cmd_error(cmd, strerror(errno), errno);
 	if (cmd->input)
 		handle_infile(cmd);
 	if (cmd->output)
 		handle_outfile(cmd);
-	pid = fork();
-	if (pid == -1)
-		cmd_error(cmd, strerror(errno), errno);
-	else if (pid == 0)
-		run_cmd(cmd, envp);
-	waitpid(pid, &(cmd->exit_status), 0);
+	if (cmd->cd && !cmd->pipe_prev)
+		change_directory(cmd, envp);
+	else
+	{
+		pid = fork();
+		if (pid == -1)
+			cmd_error(cmd, strerror(errno), errno);
+		else if (pid == 0)
+			run_cmd(cmd, envp);
+		waitpid(pid, &(cmd->exit_status), 0);
+	}
 	restore_stdin(cmd);
 	return (cmd->exit_status);
 }
 
 int	executer(t_command *cmd, char **envp, int exit_status)
 {
-	if (!save_stdin(cmd))
-		cmd_error(cmd, strerror(errno), errno);
 	expand_exit_status(cmd, exit_status);
 	if (cmd->next == NULL)
 		exit_status = single_cmd(cmd, envp);
 	else
 		exit_status = multiple_cmd(cmd, envp);
+	free_cmd(cmd);
 	return (exit_status);
 }
