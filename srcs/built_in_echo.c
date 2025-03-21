@@ -18,6 +18,8 @@ void	echo(t_command *cmd)
 	{
 		printf("%s", cmd->full_cmd_args[i]);
 		i++;
+		if (cmd->full_cmd_args[i])
+			printf(" ");
 	}
 	if (!nl)
 		printf("\n");

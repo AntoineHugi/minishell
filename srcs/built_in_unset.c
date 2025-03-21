@@ -2,15 +2,15 @@
 
 static void	replace_env(char **envp, int i)
 {
-	/*char	*temp;
+	char	*temp;
 
-	temp = envp[i];*/
+	temp = envp[i];
 	while (envp[i])
 	{
 		envp[i] = envp[i + 1];
 		i++;
 	}
-	//free(temp); do this once envp copy is created
+	free(temp);
 }
 
 static void	check_env(char *str, char **envp)
