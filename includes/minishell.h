@@ -28,34 +28,35 @@ typedef struct s_redirection {
 }				t_redirection;
 
 typedef struct s_command {
-	int				pipe_next;
-	int				pipe_prev;
-	int				og_stdin;
-	int				og_stdout;
-	int				built_in;
-	int				cd;
-	int				exit_status;
-	int				executable;
-	int				number_arguments;
-	char			**full_cmd_args;
-	char			*cmd_path;
-	t_redirection	*input;
-	t_redirection	*output;
-	char			*errorfile;
-	void			*next;
-}				t_command;
+	int					pipe_next;
+	int					pipe_prev;
+	int					og_stdin;
+	int					og_stdout;
+	int					built_in;
+	int					cd;
+	int					exit_status;
+	int					executable;
+	int					number_arguments;
+	char				**full_cmd_args;
+	char				*cmd_path;
+	t_redirection		*input;
+	t_redirection		*output;
+	char				*errorfile;
+	struct s_command	*next;
+}						t_command;
 
 /* Lexer */
 t_token		*create_new_token(char *content);
 t_token		*token_last(t_token *token);
 t_token		*lexer(char *str);
+void 		delete_unused_contents(t_token **token_list);
 void		delete_token_list(t_token **token_list);
 
 /* Parser */
 int			handle_redirections(t_token **current_token, t_command *new_cmd);
 void		delete_cmd_list(t_command **cmd_list);
-t_command	*create_new_cmd(t_command **cmd_list, int number_arguments);
-int			build_cmd(t_token **current_token, t_command **cmd_list, t_command **new_cmd);
+t_command	*create_new_cmd(int number_arguments);
+int			build_cmd(t_token **current_token, t_command **new_cmd);
 t_command	*parser(t_token *token_list);
 void		verify_built_in(t_command *new_cmd);
 void		verify_executable(t_command *new_cmd);

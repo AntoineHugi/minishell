@@ -26,7 +26,7 @@ void	add_cmd_to_list(t_command **list, t_command *new)
 	}
 }
 
-t_command	*create_new_cmd(t_command **cmd_list, int number_arguments)
+t_command	*create_new_cmd(int number_arguments)
 {
 	t_command	*new_cmd;
 
@@ -39,6 +39,5 @@ t_command	*create_new_cmd(t_command **cmd_list, int number_arguments)
 		return(free(new_cmd), NULL);
 	new_cmd->full_cmd_args[number_arguments] = NULL;
 	new_cmd->next = NULL;
-	add_cmd_to_list(cmd_list, new_cmd);
 	return (new_cmd);
 }

@@ -1,12 +1,14 @@
 CUR_DIR = $(shell pwd)
 
+$(info CUR_DIR is $(CUR_DIR))
+
 NAME = minishell
 
 CC = cc
 
 RM = rm -f
 
-CFLAGS += -Wall -Wextra -Werror
+CFLAGS += -Wall -Wextra -fPIE
 
 LIBFT_DIR = $(CUR_DIR)/libft
 
@@ -24,7 +26,7 @@ OBJS = $(SRCS:.c=.o)
 all: $(LIBFT_DIR)/libft.a $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -ltinfo -o $(NAME)
+	$(CC) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -ltinfo -o $(NAME) -pie
 
 $(LIBFT_DIR)/libft.a:
 	$(MAKE) -C $(LIBFT_DIR)

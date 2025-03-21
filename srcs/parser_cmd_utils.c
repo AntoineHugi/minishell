@@ -33,11 +33,23 @@ void	verify_executable(t_command *new_cmd)
 void	verify_pipe_prev(t_command **cmd_list, t_command *new_cmd)
 {
 	t_command	*current_cmd;
+
+	printf("	verify_pipe_prev entered. \n");
 	current_cmd = *cmd_list;
-	while (current_cmd->next != NULL)
+	if (current_cmd->next == NULL)
+		printf("	current_cmd->next is NULL. \n");
+	else
+	{
+		printf("	current_cmd->next is NOT NULL. \n");
+		printf("	Arg 0 from next cmd: %s \n", current_cmd->next->full_cmd_args[0]);
+	}
+	printf("	Current command address: %p\n", (void *)current_cmd);
+	printf("	Next command address: %p\n", (void *)current_cmd->next);
+	while (current_cmd && current_cmd->next != NULL)
 		current_cmd = current_cmd->next;
+	printf("	We're now at the end of the current cmd list. \n");
 	if (current_cmd->pipe_next)
 		new_cmd->pipe_prev = 1;
 	else
-	new_cmd->pipe_prev = 0;
+		new_cmd->pipe_prev = 0;
 }

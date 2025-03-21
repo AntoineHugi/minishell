@@ -6,7 +6,7 @@ CC = cc
 
 RM = rm -f
 
-CFLAGS += -Wall -Wextra -Werror
+CFLAGS += -Wall -Wextra -Werror -fPIE
 
 MY_SOURCES = $(addprefix $(CUR_DIR)/, ft_atoi.c ft_bzero.c ft_calloc.c \
 					ft_isalnum.c ft_isalpha.c ft_isascii.c \
@@ -32,7 +32,7 @@ MY_OBJECTS = $(MY_SOURCES:.c=.o)
 all:	$(NAME)
 
 $(NAME): $(MY_OBJECTS)
-	ar rcs $(NAME) $(MY_OBJECTS) 
+	ar rcs $(NAME) $(MY_OBJECTS)
 
 %.o: %.c $(MY_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
