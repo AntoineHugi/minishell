@@ -109,19 +109,15 @@ int	remove_full_quotes(t_command **cmd_list)
 
 	cmd = *cmd_list;
 	while (cmd != NULL)
-
 	{
 		i = -1;
 		while (cmd->full_cmd_args[++i])
 		{
-			if (cmd->full_cmd_args[i][0] == 34)
-				if (!remove_quotes_util(cmd, i))
-					return (0);
-
-			if (cmd->full_cmd_args[i] && ft_strchr(cmd->full_cmd_args[i], 39))
+			y = -1;
+			while (cmd->full_cmd_args[i][++y])
 			{
-				if (!remove_quotes_util(cmd, i))
-					return (0);
+				if (quote_type = find_quote_type(cmd, i, &y))
+					
 			}
 		}
 		cmd = cmd->next;
