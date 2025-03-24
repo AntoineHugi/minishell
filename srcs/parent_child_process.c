@@ -13,7 +13,12 @@ void	child_process(int *pipe_fd, int tmp_fd, t_command *cmd, char **envp)
 	if (tmp_fd != -1)
 		close(tmp_fd);
 	close(pipe_fd[1]);
-	run_cmd(cmd, envp);
+	if (!cmd->built_in)
+		run_built_in(cmd, envp);
+	else
+		run_cmd(cmd, envp);
+	free_all_cmds(cmd);
+	exit(0);
 }
 
 void	parent_process(int tmp_fd, t_command *cmd, char **envp)
@@ -29,8 +34,8 @@ void	parent_process(int tmp_fd, t_command *cmd, char **envp)
 	}
 	if (cmd->output)
 		handle_outfile(cmd);
-	if (cmd->cd && !cmd->pipe_prev)
-		change_directory(cmd, envp);
+	if (cmd->built_in)
+		run_built_in(cmd, envp);
 	else
 	{
 		pid = fork();

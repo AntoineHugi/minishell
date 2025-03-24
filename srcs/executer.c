@@ -32,8 +32,8 @@ static void	cmd_no_pipe(int *tmp_fd, t_command *cmd, char **envp)
 	}
 	if (cmd->output)
 		handle_outfile(cmd);
-	if (cmd->cd && !cmd->pipe_prev)
-		change_directory(cmd, envp);
+	if (cmd->built_in)
+		run_built_in(cmd, envp);
 	else
 	{
 		pid = fork();
@@ -55,8 +55,6 @@ static void	multiple_cmd(t_command *cmd, char **envp, int *exit_status)
 	tmp_fd = -1;
 	while (cmd->next)
 	{
-		if (!save_stdin(cmd))
-			cmd_error(cmd, strerror(errno), errno);
 		if (cmd->pipe_next)
 			cmd_with_pipe(&tmp_fd, cmd, envp);
 		else
@@ -66,6 +64,9 @@ static void	multiple_cmd(t_command *cmd, char **envp, int *exit_status)
 		free_cmd(cmd);
 		cmd = temp;
 		expand_exit_status(cmd, *exit_status);
+		cmd->exit_status = *exit_status;
+		if (!save_stdin(cmd))
+			cmd_error(cmd, strerror(errno), errno);
 	}
 	parent_process(tmp_fd, cmd, envp);
 	restore_stdin(cmd);
@@ -77,14 +78,12 @@ static void	single_cmd(t_command *cmd, char **envp, int *exit_status)
 {
 	pid_t	pid;
 
-	if (!save_stdin(cmd))
-		cmd_error(cmd, strerror(errno), errno);
 	if (cmd->input)
 		handle_infile(cmd);
 	if (cmd->output)
 		handle_outfile(cmd);
-	if (cmd->cd && !cmd->pipe_prev)
-		change_directory(cmd, envp);
+	if (cmd->built_in)
+		run_built_in(cmd, envp);
 	else
 	{
 		pid = fork();
@@ -101,7 +100,9 @@ static void	single_cmd(t_command *cmd, char **envp, int *exit_status)
 
 void	executer(t_command *cmd, char **envp, int *exit_status)
 {
-	expand_exit_status(cmd, *exit_status);
+	cmd->exit_status = *exit_status;
+	if (!save_stdin(cmd))
+		cmd_error(cmd, strerror(errno), errno);
 	if (cmd->next == NULL)
 		single_cmd(cmd, envp, exit_status);
 	else
