@@ -35,7 +35,7 @@ void delete_unused_contents(t_token **token_list)
 		if (current_token->content[0] == ';' || current_token->content[0] == '|'
 			|| current_token->content[0] == '<' || current_token->content[0] == '>')
 		{
-			//printf("	Token content to be removed: %s \n", current_token->content);
+			// printf("	Token content to be removed: %s \n", current_token->content);
 			free(current_token->content);
 			current_token->content = NULL;
 		}

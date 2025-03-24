@@ -22,11 +22,11 @@ static int	quote_token(char *str, int *i, char quote_type, t_token **token_list)
 	char	*quote;
 	t_token	*quote_token;
 
-	(*i)++;
 	start = *i;
+	(*i)++;
 	while (str[*i] && str[*i] != quote_type)
 		(*i)++;
-	len = *i - start;
+	len = *i - start + 1;
 	quote = ft_strndup(&str[start], len);
 	if (!quote)
 		return (0);
