@@ -25,7 +25,7 @@ char	*malloc_len_minus_quotes(t_command *cmd, int i)
 	return (string);
 }
 
-int	remove_quotes_util(t_command *cmd, int i)
+int	remove_quotes_util(t_command *cmd, int i, int *y, int quote_type)
 {
 	int			j;
 	int			k;
@@ -117,7 +117,7 @@ int	remove_full_quotes(t_command **cmd_list)
 			while (cmd->full_cmd_args[i][++y])
 			{
 				if (quote_type = find_quote_type(cmd, i, &y))
-					
+
 			}
 		}
 		cmd = cmd->next;
