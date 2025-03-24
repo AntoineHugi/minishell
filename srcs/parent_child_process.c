@@ -13,7 +13,7 @@ void	child_process(int *pipe_fd, int tmp_fd, t_command *cmd, char **envp)
 	if (tmp_fd != -1)
 		close(tmp_fd);
 	close(pipe_fd[1]);
-	if (!cmd->built_in)
+	if (cmd->built_in)
 		run_built_in(cmd, envp);
 	else
 		run_cmd(cmd, envp);

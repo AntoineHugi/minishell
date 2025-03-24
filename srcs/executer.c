@@ -65,8 +65,6 @@ static void	multiple_cmd(t_command *cmd, char **envp, int *exit_status)
 		cmd = temp;
 		expand_exit_status(cmd, *exit_status);
 		cmd->exit_status = *exit_status;
-		if (!save_stdin(cmd))
-			cmd_error(cmd, strerror(errno), errno);
 	}
 	parent_process(tmp_fd, cmd, envp);
 	restore_stdin(cmd);
