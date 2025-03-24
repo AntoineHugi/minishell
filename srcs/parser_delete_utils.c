@@ -4,14 +4,26 @@ static void	delete_cmd_redir(t_command *cmd)
 {
 	t_redirection	*current_redir;
 
-	current_redir = cmd->input;
-	free(current_redir->name);
-	free(current_redir);
-	cmd->input = NULL;
-	current_redir = cmd->output;
-	free(current_redir->name);
-	free(current_redir);
-	cmd->output = NULL;
+	if (cmd->input)
+	{
+		if (cmd->input->name)
+		{
+			free(cmd->input->name);
+			cmd->input->name = NULL;
+		}
+		free(cmd->input);
+		cmd->input = NULL;
+	}
+	if (cmd->output)
+	{
+		if (cmd->output->name)
+		{
+			free(cmd->output->name);
+			cmd->output->name = NULL;
+		}
+		free(cmd->output);
+		cmd->output = NULL;
+	}
 }
 
 static void	delete_cmd_args(t_command *cmd)

@@ -15,22 +15,18 @@ static void	add_token_to_list(t_token **token, t_token *new)
 	}
 }
 
-static int	quote_token(char *str, int *i, t_token **token_list)
+static int	quote_token(char *str, int *i, char quote_type, t_token **token_list)
 {
-	char	quote_type;
 	int		start;
 	int		len;
 	char	*quote;
 	t_token	*quote_token;
 
-	quote_type = 34;
-	if (str[*i] == 39)
-		quote_type = 39;
-	start = *i;
 	(*i)++;
+	start = *i;
 	while (str[*i] && str[*i] != quote_type)
 		(*i)++;
-	len = *i - start + 1;
+	len = *i - start;
 	quote = ft_strndup(&str[start], len);
 	if (!quote)
 		return (0);
@@ -103,7 +99,7 @@ t_token	*lexer(char *str)
 	{
 		if (str[i] == 34 || str[i] == 39)
 		{
-			quote_token(str, &i, &token_list);
+			quote_token(str, &i, str[i], &token_list);
 			i++;
 		}
 		else if (str[i] == ' ')
