@@ -48,8 +48,6 @@ void	run_cmd(t_command *cmd, char **envp)
 		cmd_error(cmd, "syntax error", EXIT_FAILURE);
 	if (cmd->full_cmd_args[0][0] == '\0')
 		cmd_error(cmd, cmd->full_cmd_args[0], 127);
-	if (cmd->built_in)
-		run_built_in(cmd, envp);
 	else
 	{
 		path = fetch_path(envp);

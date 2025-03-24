@@ -91,8 +91,13 @@ int	main(int ac, char **av, char **envp)
 		//add_history(input);
  		free(input);
  		cmd_list = parser(token_list);
-		expander(cmd_list, new_envp);
-		executer(cmd_list, new_envp, &exit_status);
+		if (cmd_list)
+		{
+			expander(cmd_list, new_envp);
+			expand_exit_status(cmd_list, exit_status);
+			//remove_quotes(cmd_list);
+			executer(cmd_list, new_envp, &exit_status);
+		}
 		input = readline("Minishell$ ");
  	}
 	if (ac > 1)

@@ -34,17 +34,19 @@ void	change_directory(t_command *cmd, char **envp)
 	{
 		home = getenv("HOME");
 		if (!home)
-			print_error("HOME path not set in env. variables", 1);
-		if (chdir(home))
-			print_error(strerror(errno), errno);
+			cmd_error(cmd, "HOME path not set in env. variables", 1);
+		if (chdir(home) == -1)
+			cmd_error(cmd, strerror(errno), errno);
+		else
+			update_pwd(envp);
+	}
+	else if (cmd->full_cmd_args[1] && !cmd->full_cmd_args[2])
+	{
+		if (chdir(cmd->full_cmd_args[1]) == -1)
+			cmd_error(cmd, " No such file or directory", 1);
 		else
 			update_pwd(envp);
 	}
 	else
-	{
-		if (chdir(cmd->full_cmd_args[1]))
-			print_error(strerror(errno), errno);
-		else
-			update_pwd(envp);
-	}
+		cmd_error(cmd, " too many arguments", EXIT_FAILURE);
 }

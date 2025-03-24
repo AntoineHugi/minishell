@@ -2,8 +2,6 @@
 
 static void	delete_cmd_redir(t_command *cmd)
 {
-	t_redirection	*current_redir;
-
 	if (cmd->input)
 	{
 		if (cmd->input->name)

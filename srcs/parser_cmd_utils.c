@@ -4,8 +4,7 @@ void	verify_built_in(t_command *new_cmd)
 {
 	char		*string;
 	const char	*built_in[] = {"echo", "cd", "pwd", "export",
-		"unset", "env", "exit", "cat", "grep", "mkdir", "touch",
-		"rm", "find", "diff", "export", "sort", "uniq", "head", "tee", "less", "env", NULL};
+		"unset", "env", "exit", NULL};
 	int	i;
 
 	string = new_cmd->full_cmd_args[0];
