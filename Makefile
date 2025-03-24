@@ -8,9 +8,9 @@ CC = cc
 
 RM = rm -f
 
-CFLAGS += -Wall -Wextra -fPIE
+CFLAGS += -Wall -Wextra -Werror -fPIE
 
-VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --trace-children=yes
+VALGRIND_FLAGS = --leak-check=full --trace-children=yes
 
 LIBFT_DIR = $(CUR_DIR)/libft
 

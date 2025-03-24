@@ -10,10 +10,14 @@ static char	*replace_env(char *cmd, char *alias, char *env, int *i)
 		free(alias);
 		return (NULL);
 	}
-	len = ft_strlen(cmd) - ft_strlen(alias) + ft_strlen(env);
-	replacement = (char *)ft_calloc(len, sizeof(char));
-	ft_strlcpy(replacement, cmd, *i + 1);
-	ft_strlcpy(replacement + *i, env, ft_strlen(env) + 1);
+	len = ft_strlen(cmd) - ft_strlen(alias) + 1 + ft_strlen(env);
+	replacement = (char *)ft_calloc(len + 1, sizeof(char));
+	ft_memcpy(replacement, cmd, *i);
+	ft_memcpy(replacement + *i, env, ft_strlen(env));
+	ft_memcpy(replacement + *i + ft_strlen(env), 
+		cmd + *i + ft_strlen(alias)  + 1, 
+		ft_strlen(cmd) - *i - ft_strlen(alias) - 1);
+	replacement[len] = '\0';
 	*i = *i + ft_strlen(env);
 	free(alias);
 	return (replacement);

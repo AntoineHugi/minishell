@@ -31,6 +31,7 @@ void	expand_cmd(t_command *cmd, char **envp)
 		{
 			free(cmd->full_cmd_args[i]);
 			cmd->full_cmd_args[i] = change;
+			i--;
 		}
 		i++;
 	}

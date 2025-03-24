@@ -9,7 +9,7 @@ static void	set_env(char *key, char *env, char **envp)
 	{
 		if (!ft_strncmp(envp[i], key, ft_strlen(key)))
 		{
-			//free(envp[i]); do this when copy of envp is created.
+			free(envp[i]);
 			envp[i] = env;
 			free(key);
 			return ;
@@ -51,13 +51,15 @@ static void	parse_value(char *src, char *dest)
 	dest[j] = '\0';
 }
 
-static char	*generate_env(char *input, char *key)
+static char	*generate_env(t_command *cmd, int j, char *key)
 {
 	size_t	i;
 	char	*value;
+	char	*input;
 	char	*env;
 
 	i = 0;
+	input = cmd->full_cmd_args[j];
 	while (input[i] != '=')
 		i++;
 	i++;
@@ -65,28 +67,39 @@ static char	*generate_env(char *input, char *key)
 	if (!value)
 		return (NULL);
 	parse_value(input + i, value);
+	if (!value)
+		return (NULL);
 	env = ft_strjoin(key, value);
+	if (!env)
+	{
+		free(value);
+		return (NULL);
+	}
 	free(value);
 	return (env);
 }
 
 /* add case for "export $my_var" */
-static char	*get_key(char *input)
+static char	*get_key(t_command *cmd, int i)
 {
-	int		i;
+	int		j;
 	char	*key;
+	char	*input;
 
-	i = 0;
-	while (input[i] && isalnum(input[i]))
-		i++;
-	if (input[i] == '=' && i != 0)
-		i++;
+	j = 0;
+	input = cmd->full_cmd_args[i];
+	while (input[j] && isalnum(input[j]))
+		j++;
+	if (input[j] == '=' && j != 0)
+		j++;
+	else if (!input[j])
+		j++;
 	else
-		return (NULL);
-	key = (char *)malloc((i + 1) * sizeof(char));
+		export_error(cmd, " : not a valid identifier", 1);
+	key = (char *)malloc((j + 1) * sizeof(char));
 	if (!key)
-		return (NULL);
-	ft_strlcpy(key, input, i);
+		cmd_error(cmd, strerror(errno), errno);
+	ft_strlcpy(key, input, j);
 	return (key);
 }
 
@@ -94,20 +107,24 @@ void	export_var(t_command *cmd, char **envp)
 {
 	char	*env;
 	char	*key;
+	int		i;
 
-	if (!cmd->full_cmd_args[1])
-		return ;
-	key = get_key(cmd->full_cmd_args[1]);
-	if (key)
+	i = 1;	
+	while (cmd->full_cmd_args[i])
 	{
-		env = generate_env(cmd->full_cmd_args[1], key);
-		if (!env)
+		key = get_key(cmd, i);
+		if (key)
 		{
-			free(key);
-			print_error(strerror(errno), errno);
+			env = generate_env(cmd, i, key);
+			if (!env)
+			{
+				free(key);
+				cmd_error(cmd, strerror(errno), errno);
+			}
+			set_env(key, env, envp);
 		}
-		set_env(key, env, envp);
+		i++;
 	}
-	else
-		print_error(cmd->full_cmd_args[1], 1);
+	/*else
+		print_error(cmd->full_cmd_args[1], 1);*/
 }

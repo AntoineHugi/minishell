@@ -73,8 +73,7 @@ void		run_cmd(t_command *cmd, char **envp);
 void		run_built_in(t_command *cmd, char **envp);
 void		child_process(int *pipe_fd, int tmp_fd, t_command *cmd, char **envp);
 void		parent_process(int tmp_fd, t_command *cmd, char **envp);
-int			executer(t_command *cmd, char **envp, int exit_status);
-
+void		executer(t_command *cmd, char **envp, int *exit_status);
 /* Input / Output */
 int			here_doc_fd(char *limiter);
 int			save_stdin(t_command *cmd);
@@ -99,5 +98,6 @@ void		free_all_cmds(t_command *cmd);
 /* Error Handling */
 void		print_error(char *msg, int err_num);
 void		cmd_error(t_command *cmd, char *msg, int err_num);
+void		export_error(t_command *cmd, char *msg, int err_num);
 
 #endif

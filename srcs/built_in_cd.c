@@ -14,7 +14,7 @@ void	update_pwd(char **envp)
 		{
 			if (!ft_strncmp(envp[i], "PWD=", 4))
 			{
-				//free(envp[i]); do this once envp copy is created
+				free(envp[i]);
 				envp[i] = new_pwd;
 				break ;
 			}
