@@ -69,6 +69,7 @@ static void	multiple_cmd(t_command *cmd, char **envp, int *exit_status)
 	parent_process(tmp_fd, cmd, envp);
 	restore_stdin(cmd);
 	*exit_status = cmd->exit_status;
+	convert_exit_status(exit_status);
 	free_cmd(cmd);
 }
 
@@ -93,6 +94,7 @@ static void	single_cmd(t_command *cmd, char **envp, int *exit_status)
 	}
 	restore_stdin(cmd);
 	*exit_status = cmd->exit_status;
+	convert_exit_status(exit_status);
 	free_cmd(cmd);
 }
 
@@ -105,4 +107,5 @@ void	executer(t_command *cmd, char **envp, int *exit_status)
 		single_cmd(cmd, envp, exit_status);
 	else
 		multiple_cmd(cmd, envp, exit_status);
+
 }

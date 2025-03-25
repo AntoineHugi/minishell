@@ -96,6 +96,7 @@ int	main(int ac, char **av, char **envp)
 			expander(cmd_list, new_envp);
 			expand_exit_status(cmd_list, exit_status);
 			remove_full_quotes(&cmd_list);
+			//have a cleanup function in case arg[0] is null due to env, but the cmd comes next (example: $EMPTY echo hi)
 			executer(cmd_list, new_envp, &exit_status);
 		}
 		input = readline("Minishell$ ");

@@ -10,7 +10,7 @@ void	run_built_in(t_command *cmd, char **envp)
 	if (!ft_strncmp(str, "echo", ft_strlen(str)))
 		echo(cmd);
 	if (!ft_strncmp(str, "env", ft_strlen(str)))
-		print_env(envp);
+		print_env(cmd, envp);
 	if (!ft_strncmp(str, "exit", ft_strlen(str)) && !cmd->pipe_prev)
 		own_exit(cmd);
 	if (!ft_strncmp(str, "export", ft_strlen(str)) && !cmd->pipe_prev)

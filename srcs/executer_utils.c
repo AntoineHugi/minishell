@@ -20,3 +20,9 @@ int	save_stdin(t_command *cmd)
 	}
 	return (1);
 }
+
+void	convert_exit_status(int *exit_status)
+{
+	if (*exit_status > 255)
+		*exit_status = *exit_status>>8;
+}

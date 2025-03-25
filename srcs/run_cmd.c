@@ -1,5 +1,19 @@
 #include "../includes/minishell.h"
 
+static	int	has_slash(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '/')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 static char	*find_command(char *path, char *cmd)
 {
 	int		i;
@@ -14,7 +28,7 @@ static char	*find_command(char *path, char *cmd)
 		buffer = ft_strjoin(directories[i], "/");
 		cmd_path = ft_strjoin(buffer, cmd);
 		free(buffer);
-		if (access(cmd_path, F_OK) == 0)
+		if (access(cmd_path, X_OK) == 0)
 		{
 			free_array(directories);
 			return (cmd_path);
@@ -47,7 +61,7 @@ void	run_cmd(t_command *cmd, char **envp)
 	if (!cmd->full_cmd_args)
 		cmd_error(cmd, "syntax error", EXIT_FAILURE);
 	if (cmd->full_cmd_args[0][0] == '\0')
-		cmd_error(cmd, cmd->full_cmd_args[0], 127);
+		cmd_error(cmd, "", 127);
 	else
 	{
 		path = fetch_path(envp);
@@ -55,7 +69,12 @@ void	run_cmd(t_command *cmd, char **envp)
 			cmd_error(cmd, "path not found in envp", EXIT_FAILURE);
 		cmd->cmd_path = find_command(path, cmd->full_cmd_args[0]);
 		if (!cmd->cmd_path)
-			cmd_error(cmd, cmd->full_cmd_args[0], 127);
+		{
+			if (has_slash(cmd->full_cmd_args[0]))
+				cmd_error(cmd, strerror(errno), errno);
+			else
+				cmd_error(cmd, cmd->full_cmd_args[0], 127);
+		}
 		execve(cmd->cmd_path, cmd->full_cmd_args, envp);
 		cmd_error(cmd, strerror(errno), errno);
 	}

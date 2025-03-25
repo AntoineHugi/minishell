@@ -39,6 +39,7 @@ typedef struct s_command {
 	int					number_arguments;
 	char				**full_cmd_args;
 	char				*cmd_path;
+	char				**envp;
 	t_redirection		*input;
 	t_redirection		*output;
 	char				*errorfile;
@@ -75,6 +76,8 @@ void		run_built_in(t_command *cmd, char **envp);
 void		child_process(int *pipe_fd, int tmp_fd, t_command *cmd, char **envp);
 void		parent_process(int tmp_fd, t_command *cmd, char **envp);
 void		executer(t_command *cmd, char **envp, int *exit_status);
+void		convert_exit_status(int *exit_status);
+
 /* Input / Output */
 int			here_doc_fd(t_command *cmd, char *limiter);
 int			save_stdin(t_command *cmd);
@@ -85,10 +88,10 @@ void		handle_outfile(t_command *cmd);
 /* Built-in functions */
 void		change_directory(t_command *cmd, char **envp);
 void		echo(t_command *cmd);
-void		print_env(char **envp);
+void		print_env(t_command *cmd, char **envp);
 void		own_exit(t_command *cmd);
 void		export_var(t_command *cmd, char **envp);
-int		check_valid_key(t_command *cmd, char *str);
+int		check_valid_key(char *str);
 void		print_wd(t_command *cmd);
 void		unset_var(t_command *cmd, char **envp);
 
