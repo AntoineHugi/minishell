@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	update_pwd(char **envp)
+void	update_pwd(t_command *cmd, char **envp)
 {
 	int		i;
 	char	pwd[1024];
@@ -9,6 +9,8 @@ void	update_pwd(char **envp)
 	if (getcwd(pwd, sizeof(pwd)))
 	{
 		new_pwd = ft_strjoin("PWD=", pwd);
+		if (!new_pwd)
+			cmd_error(cmd, strerror(errno), errno);
 		i = 0;
 		while (envp[i])
 		{
@@ -16,14 +18,14 @@ void	update_pwd(char **envp)
 			{
 				free(envp[i]);
 				envp[i] = new_pwd;
-				break ;
+				return ;
 			}
 			else
 				i++;
 		}
 	}
 	else
-		print_error(strerror(errno), errno);
+		cmd_error(cmd, strerror(errno), errno);
 }
 
 void	change_directory(t_command *cmd, char **envp)
@@ -38,14 +40,14 @@ void	change_directory(t_command *cmd, char **envp)
 		if (chdir(home) == -1)
 			cmd_error(cmd, strerror(errno), errno);
 		else
-			update_pwd(envp);
+			update_pwd(cmd, envp);
 	}
 	else if (cmd->full_cmd_args[1] && !cmd->full_cmd_args[2])
 	{
 		if (chdir(cmd->full_cmd_args[1]) == -1)
 			cmd_error(cmd, " No such file or directory", 1);
 		else
-			update_pwd(envp);
+			update_pwd(cmd, envp);
 	}
 	else
 		cmd_error(cmd, " too many arguments", EXIT_FAILURE);

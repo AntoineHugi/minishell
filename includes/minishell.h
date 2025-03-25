@@ -62,6 +62,7 @@ void		verify_built_in(t_command *new_cmd);
 void		verify_executable(t_command *new_cmd);
 void		verify_pipe_prev(t_command **cmd_list, t_command *new_cmd);
 void		add_cmd_to_list(t_command **list, t_command *new);
+int		remove_full_quotes(t_command **cmd_list);
 
 /* Expander */
 int			expander(t_command *cmd, char **envp);
@@ -75,7 +76,7 @@ void		child_process(int *pipe_fd, int tmp_fd, t_command *cmd, char **envp);
 void		parent_process(int tmp_fd, t_command *cmd, char **envp);
 void		executer(t_command *cmd, char **envp, int *exit_status);
 /* Input / Output */
-int			here_doc_fd(char *limiter);
+int			here_doc_fd(t_command *cmd, char *limiter);
 int			save_stdin(t_command *cmd);
 void		restore_stdin(t_command *cmd);
 void		handle_infile(t_command *cmd);
@@ -84,9 +85,10 @@ void		handle_outfile(t_command *cmd);
 /* Built-in functions */
 void		change_directory(t_command *cmd, char **envp);
 void		echo(t_command *cmd);
-void		print_env(t_command *cmd, char **envp);
+void		print_env(char **envp);
 void		own_exit(t_command *cmd);
 void		export_var(t_command *cmd, char **envp);
+int		check_valid_key(t_command *cmd, char *str);
 void		print_wd(t_command *cmd);
 void		unset_var(t_command *cmd, char **envp);
 
@@ -96,7 +98,7 @@ void		free_cmd(t_command *cmd);
 void		free_all_cmds(t_command *cmd);
 
 /* Error Handling */
-void		print_error(char *msg, int err_num);
+void		print_error(char *msg);
 void		cmd_error(t_command *cmd, char *msg, int err_num);
 void		export_error(t_command *cmd, char *msg, int err_num);
 

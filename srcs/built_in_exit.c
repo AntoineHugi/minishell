@@ -4,7 +4,6 @@ void	exit_cmd(t_command *cmd, int exit_num)
 {
 	restore_stdin(cmd);
 	free_all_cmds(cmd);
-	//printf("%i\n", exit_num);
 	exit((unsigned char)exit_num);
 }
 

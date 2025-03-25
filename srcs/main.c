@@ -82,7 +82,7 @@ int	main(int ac, char **av, char **envp)
 
 	new_envp = copy_envp(envp);
 	if (!new_envp)
-		print_error(strerror(errno), errno);
+		print_error(strerror(errno));
 	exit_status = 0;
 	input = readline("Minishell$ ");
 	while (input)
@@ -95,7 +95,7 @@ int	main(int ac, char **av, char **envp)
 		{
 			expander(cmd_list, new_envp);
 			expand_exit_status(cmd_list, exit_status);
-			//remove_full_quotes(&cmd_list);
+			remove_full_quotes(&cmd_list);
 			executer(cmd_list, new_envp, &exit_status);
 		}
 		input = readline("Minishell$ ");

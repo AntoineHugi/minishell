@@ -59,7 +59,7 @@ int	handle_redirections(t_token **current_token, t_command *new_cmd)
 	while ((*current_token) && (*current_token)->content 
 		&& ((*current_token)->content[0] == '<' || (*current_token)->content[0] == '>'))
 	{
-		printf("Current token: %s \n", (*current_token)->content);
+		//printf("Current token: %s \n", (*current_token)->content);
 		if ((*current_token)->content[0] == '<')
 		{
 			if (!fill_in_redir_in_cmd(current_token, new_cmd))

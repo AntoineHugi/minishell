@@ -12,7 +12,7 @@ static void	cmd_with_pipe(int *tmp_fd, t_command *cmd, char **envp)
 		cmd_error(cmd, strerror(errno), errno);
 	if (pid == 0)
 		child_process(pipe_fd, *tmp_fd, cmd, envp);
-	waitpid(pid, &(cmd->exit_status), 0);
+	waitpid(pid, &(cmd->exit_status), WNOHANG);
 	if (*tmp_fd != -1)
 		close(*tmp_fd);
 	close(pipe_fd[1]);
@@ -41,7 +41,7 @@ static void	cmd_no_pipe(int *tmp_fd, t_command *cmd, char **envp)
 			cmd_error(cmd, strerror(errno), errno);
 		else if (pid == 0)
 			run_cmd(cmd, envp);
-		waitpid(pid, &(cmd->exit_status), 0);
+		waitpid(pid, &(cmd->exit_status), WNOHANG);
 		restore_stdin(cmd);
 		*tmp_fd = -1;
 	}

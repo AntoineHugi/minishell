@@ -22,109 +22,84 @@ static void	set_env(char *key, char *env, char **envp)
 	free(key);
 }
 
-static void	parse_value(char *src, char *dest)
+static char	*generate_env(t_command *cmd, char *key, char *value)
 {
-	int		squote;
-	int		dquote;
-	size_t	i;
-	size_t	j;
-
-	i = -1;
-	j = 0;
-	squote = 0;
-	dquote = 0;
-	while (src[++i])
-	{
-		if (src[i] == '\\' && !squote && !dquote)
-		{
-			i++;
-			if (src[i])
-				dest[j++] = src[i];
-		}
-		else if (src[i] == '\'' && !dquote) 
-			squote = !squote;
-		else if (src[i] == '"' && !squote)
-			dquote = !dquote;
-		else
-			dest[j++] = src[i];
-	}
-	dest[j] = '\0';
-}
-
-static char	*generate_env(t_command *cmd, int j, char *key)
-{
-	size_t	i;
-	char	*value;
-	char	*input;
 	char	*env;
 
-	i = 0;
-	input = cmd->full_cmd_args[j];
-	while (input[i] != '=')
-		i++;
-	i++;
-	value = (char *)malloc((ft_strlen(input + i) + 1) * sizeof(char));
-	if (!value)
-		return (NULL);
-	parse_value(input + i, value);
-	if (!value)
-		return (NULL);
 	env = ft_strjoin(key, value);
 	if (!env)
 	{
+		free(key);
 		free(value);
-		return (NULL);
+		cmd_error(cmd, strerror(errno), errno);
 	}
 	free(value);
 	return (env);
 }
 
-/* add case for "export $my_var" */
-static char	*get_key(t_command *cmd, int i)
+static char	*generate_value(t_command *cmd, char *str)
 {
-	int		j;
-	char	*key;
-	char	*input;
+	int		i;
+	char	*value;
 
-	j = 0;
-	input = cmd->full_cmd_args[i];
-	while (input[j] && isalnum(input[j]))
-		j++;
-	if (input[j] == '=' && j != 0)
-		j++;
-	else if (!input[j])
-		j++;
+	i = 0;
+	while (str[i] != '=' && str[i] != '\0')
+		i++;
+	if (str[i] == '=')
+		i++;
 	else
-		export_error(cmd, " : not a valid identifier", 1);
-	key = (char *)malloc((j + 1) * sizeof(char));
+		return (NULL);
+	if (str[i] == '\0')
+		return (NULL);
+	value = (char *)malloc((ft_strlen(str + i) + 1) * sizeof(char));
+	if (!value)
+		cmd_error(cmd, strerror(errno), errno);
+	ft_memcpy(str + i, value, ft_strlen(str + i));
+	value[ft_strlen(str + i)] = '\0';
+	return (value);
+}
+
+static char	*generate_key(t_command *cmd, char *str)
+{
+	int		i;
+	char	*key;
+
+	i = 0;
+	while (str[i] && ft_isalnum(str[i]))
+		i++;
+	if (str[i] == '=')
+		i++;
+	key = (char *)malloc((i + 1) * sizeof(char));
 	if (!key)
 		cmd_error(cmd, strerror(errno), errno);
-	ft_strlcpy(key, input, j);
+	ft_strlcpy(key, str, i);
+	key[i] = '\0';
 	return (key);
 }
 
+
 void	export_var(t_command *cmd, char **envp)
 {
-	char	*env;
+	char	*value;
 	char	*key;
+	char	*env;
 	int		i;
 
-	i = 1;	
+	i = 1;
 	while (cmd->full_cmd_args[i])
 	{
-		key = get_key(cmd, i);
-		if (key)
+		if (!check_valid_key(cmd, cmd->full_cmd_args[i]))
+			print_error(" : not a valid identifier\n");
+		else
 		{
-			env = generate_env(cmd, i, key);
-			if (!env)
+			key = generate_key(cmd, cmd->full_cmd_args[i]);
+			value = generate_value(cmd, cmd->full_cmd_args[i]);
+			if (value)
 			{
-				free(key);
-				cmd_error(cmd, strerror(errno), errno);
+				env = generate_env(cmd, key, value);
+				set_env(key, env, envp);
 			}
-			set_env(key, env, envp);
 		}
 		i++;
 	}
-	/*else
-		print_error(cmd->full_cmd_args[1], 1);*/
 }

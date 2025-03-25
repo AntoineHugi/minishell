@@ -83,9 +83,6 @@ int	remove_quotes_util(t_command *cmd, int i, int quote_type)
 
 int	find_quote_type(t_command *cmd, int i, int *y)
 {
-	int	quote_type;
-
-	quote_type = 0;
 	while (cmd->full_cmd_args[i][*y])
 	{
 		if (cmd->full_cmd_args[i][*y] == 34)
@@ -124,9 +121,12 @@ int	remove_full_quotes(t_command **cmd_list)
 			y = -1;
 			while (cmd->full_cmd_args[i][++y])
 			{
-				if (quote_type = find_quote_type(cmd, i, &y))
+				quote_type = find_quote_type(cmd, i, &y);
+				if (quote_type)
+				{
 					if (check_if_quote_ends(cmd, i, &y, quote_type))
 						remove_quotes_util(cmd, i, quote_type);
+				}
 			}
 		}
 		cmd = cmd->next;
