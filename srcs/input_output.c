@@ -1,35 +1,85 @@
 #include "../includes/minishell.h"
 
-void	restore_stdin(t_command *cmd)
+static int	buff_check(char *limiter, char *buffer)
 {
-	dup2(cmd->og_stdin, STDIN_FILENO);
-	dup2(cmd->og_stdout, STDOUT_FILENO);
-}
-
-int	save_stdin(t_command *cmd)
-{
-	while (cmd)
-	{
-		cmd->og_stdin = dup(STDIN_FILENO);
-		if (cmd->og_stdin == -1)
-			return (0);
-		cmd->og_stdout = dup(STDOUT_FILENO);
-		if (cmd->og_stdout == -1)
-			return (0);
-		cmd = cmd->next;
-	}
+	if (!buffer)
+		return (0);
+	if (!ft_strlen(buffer))
+		return (1);
+	if (!ft_strncmp(buffer, limiter, ft_strlen(limiter)))
+		return (0);
 	return (1);
 }
 
-void	check_input_output(t_command *cmd, int *tmp_fd)
+static void	generate_input(t_command *cmd, char *limiter, int fd)
 {
-	if (cmd->input)
-		handle_infile(cmd);
-	else if (*tmp_fd != -1)
+	char	*buffer;
+
+	while (1)
 	{
-		dup2(*tmp_fd, STDIN_FILENO);
-		close(*tmp_fd);
+		buffer = get_next_line(STDIN_FILENO);
+		if (!buffer)
+			cmd_error(cmd, strerror(errno), errno);
+		if (buff_check(limiter, buffer))
+			write(fd, buffer, ft_strlen(buffer));
+		else
+		{
+			free(buffer);
+			break ;
+		}
+		free (buffer);
 	}
-	if (cmd->output)
-		handle_outfile(cmd);
+}
+
+int	here_doc_fd(t_command *cmd, char *limiter)
+{
+	int	fd_here_doc[2];
+
+	if (pipe(fd_here_doc) == -1)
+		cmd_error(cmd, strerror(errno), errno);
+	generate_input(cmd, limiter, fd_here_doc[1]);
+	close(fd_here_doc[1]);
+	return (fd_here_doc[0]);
+}
+
+void	handle_infile(t_command *cmd)
+{
+	int	fd_infile;
+
+	if (cmd->input->redirection_type == 1)
+	{
+		fd_infile = open(cmd->input->name, O_RDONLY);
+		if (fd_infile == -1)
+			cmd_error(cmd, strerror(errno), errno);
+		dup2(fd_infile, STDIN_FILENO);
+		close(fd_infile);
+	}
+	else if (cmd->input->redirection_type == 2)
+	{
+		fd_infile = here_doc_fd(cmd, cmd->input->name);
+		dup2(fd_infile, STDIN_FILENO);
+		close(fd_infile);
+	}
+}
+
+void	handle_outfile(t_command *cmd)
+{
+	int	fd_out;
+
+	if (cmd->output->redirection_type == 1)
+	{
+		fd_out = open(cmd->output->name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+		if (fd_out == -1)
+			cmd_error(cmd, strerror(errno), errno);
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
+	}
+	if (cmd->output->redirection_type == 2)
+	{
+		fd_out = open(cmd->output->name, O_WRONLY | O_CREAT | O_APPEND, 0666);
+		if (fd_out == -1)
+			cmd_error(cmd, strerror(errno), errno);
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
+	}
 }

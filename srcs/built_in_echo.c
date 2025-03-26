@@ -23,5 +23,4 @@ void	echo(t_command *cmd)
 	}
 	if (!nl)
 		printf("\n");
-	cmd->exit_status = 0;
 }

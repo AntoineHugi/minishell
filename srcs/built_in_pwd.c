@@ -8,5 +8,4 @@ void	print_wd(t_command *cmd)
 		printf("%s\n", cwd);
 	else
 		cmd_error(cmd, strerror(errno), errno);
-	cmd->exit_status = 0;
 }

@@ -67,7 +67,8 @@ void	expand_exit_status(t_command *cmd, int exit_status)
 		j = check_for_exit(cmd->full_cmd_args[i]);
 		if (j)
 		{
-			change = generate_replacement(cmd->full_cmd_args[i], ex_str, j - 1);
+			change = generate_replacement(cmd->full_cmd_args[i], 
+				ex_str, j - 1);
 			if (!change)
 				cmd_error(cmd, strerror(errno), errno);
 			else

@@ -72,29 +72,13 @@ char	**copy_envp(char **envp)
 	return (new_envp);
 }
 
-void	process_input(char *input, char **envp, int *exit_status)
-{
-	t_token		*token_list;
-	t_command	*cmd_list;
-	
-	token_list = lexer(input);
- 	free(input);
- 	cmd_list = parser(token_list);
-	if (cmd_list)
-	{
-		expander(cmd_list, envp);
-		expand_exit_status(cmd_list, *exit_status);
-		remove_full_quotes(&cmd_list);
-		//have a cleanup function in case arg[0] is null due to env, but the cmd comes next (example: $EMPTY echo hi)
-		executer(cmd_list, envp, exit_status);
-	}
-}
-
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
 	char		**new_envp;
 	int			exit_status;
+	t_token		*token_list;
+	t_command	*cmd_list;
 
 	new_envp = copy_envp(envp);
 	if (!new_envp)
@@ -103,8 +87,17 @@ int	main(int ac, char **av, char **envp)
 	input = readline("Minishell$ ");
 	while (input)
  	{
+		token_list = lexer(input);
 		//add_history(input);
-		process_input(input, new_envp, &exit_status);
+ 		free(input);
+ 		cmd_list = parser(token_list);
+		if (cmd_list)
+		{
+			expander(cmd_list, new_envp);
+			expand_exit_status(cmd_list, exit_status);
+			remove_full_quotes(&cmd_list);
+			executer(cmd_list, new_envp, &exit_status);
+		}
 		input = readline("Minishell$ ");
  	}
 	if (ac > 1)

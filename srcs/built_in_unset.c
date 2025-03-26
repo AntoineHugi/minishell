@@ -34,6 +34,7 @@ static void	check_env(char *str, char **envp)
 void	unset_var(t_command *cmd, char **envp)
 {
 	int		i;
+	char	*temp;
 
 	if (cmd->pipe_next || cmd->pipe_prev)
 		return ;
@@ -42,9 +43,9 @@ void	unset_var(t_command *cmd, char **envp)
 		i = 1;
 		while (cmd->full_cmd_args[i])
 		{
-			check_env(cmd->full_cmd_args[i], envp);
+			temp = cmd->full_cmd_args[i];
+			check_env(temp, envp);
 			i++;
 		}
 	}
-	cmd->exit_status = 0;
 }

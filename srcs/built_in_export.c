@@ -22,7 +22,22 @@ static void	set_env(char *key, char *env, char **envp)
 	free(key);
 }
 
-static char	*generate_value(t_command *cmd, char *key, char *str)
+static char	*generate_env(t_command *cmd, char *key, char *value)
+{
+	char	*env;
+
+	env = ft_strjoin(key, value);
+	if (!env)
+	{
+		free(key);
+		free(value);
+		cmd_error(cmd, strerror(errno), errno);
+	}
+	free(value);
+	return (env);
+}
+
+static char	*generate_value(t_command *cmd, char *str)
 {
 	int		i;
 	char	*value;
@@ -34,13 +49,12 @@ static char	*generate_value(t_command *cmd, char *key, char *str)
 		i++;
 	else
 		return (NULL);
+	if (str[i] == '\0')
+		return (NULL);
 	value = (char *)malloc((ft_strlen(str + i) + 1) * sizeof(char));
 	if (!value)
-	{
-		free(key);
 		cmd_error(cmd, strerror(errno), errno);
-	}
-	ft_memcpy(value, str + i, ft_strlen(str + i));
+	ft_memcpy(str + i, value, ft_strlen(str + i));
 	value[ft_strlen(str + i)] = '\0';
 	return (value);
 }
@@ -58,54 +72,34 @@ static char	*generate_key(t_command *cmd, char *str)
 	key = (char *)malloc((i + 1) * sizeof(char));
 	if (!key)
 		cmd_error(cmd, strerror(errno), errno);
-	ft_memcpy(key, str, i);
+	ft_strlcpy(key, str, i);
 	key[i] = '\0';
 	return (key);
 }
 
-static void	generate_env(t_command *cmd, char *arg, char **envp)
-{
-	char	*env;
-	char	*value;
-	char	*key;
-
-	key = generate_key(cmd, arg);
-	value = generate_value(cmd, key, arg);
-	if (value)
-	{
-		env = ft_strjoin(key, value);
-		if (!env)
-		{
-			free(key);
-			free(value);
-			cmd_error(cmd, strerror(errno), errno);
-		}
-		free(value);
-		set_env(key, env, envp);
-	}
-	else
-		free(key);
-}
 
 void	export_var(t_command *cmd, char **envp)
 {
+	char	*value;
+	char	*key;
+	char	*env;
 	int		i;
-	int		failed;
 
 	i = 1;
 	while (cmd->full_cmd_args[i])
 	{
-		if (!check_valid_key(cmd->full_cmd_args[i]))
-		{
-			failed = 1;
-			print_error(" : not a valid identifier");
-		}
+		if (!check_valid_key(cmd, cmd->full_cmd_args[i]))
+			print_error(" : not a valid identifier\n");
 		else
-			generate_env(cmd, cmd->full_cmd_args[i], envp);
+		{
+			key = generate_key(cmd, cmd->full_cmd_args[i]);
+			value = generate_value(cmd, cmd->full_cmd_args[i]);
+			if (value)
+			{
+				env = generate_env(cmd, key, value);
+				set_env(key, env, envp);
+			}
+		}
 		i++;
 	}
-	if (failed == 1)
-		cmd->exit_status = 1;
-	else
-		cmd->exit_status = 0;
 }
