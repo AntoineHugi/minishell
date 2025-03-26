@@ -34,8 +34,6 @@ static char	*generate_value(t_command *cmd, char *key, char *str)
 		i++;
 	else
 		return (NULL);
-	/*if (str[i] == '\0')
-		return (NULL);*/
 	value = (char *)malloc((ft_strlen(str + i) + 1) * sizeof(char));
 	if (!value)
 	{

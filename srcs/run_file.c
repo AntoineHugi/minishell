@@ -7,7 +7,7 @@ void	run_file(t_command *cmd, char **envp, int *exit_status, int *tmp_fd)
 
 	check_input_output(cmd, tmp_fd);
 	if (access(cmd->full_cmd_args[0], X_OK) == 0
-	&& access(cmd->full_cmd_args[0], R_OK == 0))
+		&& access(cmd->full_cmd_args[0], R_OK == 0))
 	{
 		fd = open(cmd->full_cmd_args[0], O_RDONLY);
 		line = get_next_line(fd);

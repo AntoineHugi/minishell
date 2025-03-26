@@ -15,7 +15,7 @@ static char	*replace_env(char *cmd, char *alias, char *env, int *i)
 	ft_memcpy(replacement, cmd, *i);
 	ft_memcpy(replacement + *i, env, ft_strlen(env));
 	ft_memcpy(replacement + *i + ft_strlen(env), 
-		cmd + *i + ft_strlen(alias)  + 1, 
+		cmd + *i + ft_strlen(alias) + 1, 
 		ft_strlen(cmd) - *i - ft_strlen(alias) - 1);
 	replacement[len] = '\0';
 	*i = *i + ft_strlen(env);

@@ -9,7 +9,7 @@ void	print_error(char *msg)
 void	cmd_error(t_command *cmd, char *msg, int err_num)
 {
 	restore_stdin(cmd);
-	convert_exit_status(&errno);
+	err_num = convert_exit_status(err_num);
 	write(2, msg, ft_strlen(msg));
 	if (err_num == 127)
 		write(2, ": command not found", 20);
@@ -21,9 +21,9 @@ void	cmd_error(t_command *cmd, char *msg, int err_num)
 void	file_error(t_command *cmd, char *msg, int err_num)
 {
 	restore_stdin(cmd);
-	convert_exit_status(&errno);
+	err_num = convert_exit_status(err_num);
 	write(2, msg, ft_strlen(msg));
-	if (err_num == 500)
+	if (err_num == 200)
 	{
 		write(2, ": Is a directory", 17);
 		err_num = 126;
