@@ -29,6 +29,8 @@ void	convert_exit_status(int *exit_status)
 
 int	is_path(char *str)
 {
+	if (str[0] == '/')
+		return (1);
 	if (str[0] == '.')
 	{
 		if (str[1] == '/')

@@ -33,69 +33,62 @@ static void	cmd_no_pipe(int *tmp_fd, t_command *cmd, char **envp)
 			cmd_error(cmd, strerror(errno), errno);
 		else if (pid == 0)
 			run_cmd(cmd, envp);
-		waitpid(pid, &(cmd->exit_status), WNOHANG);
+		waitpid(pid, &(cmd->exit_status), 0);
 		restore_stdin(cmd);
 		*tmp_fd = -1;
 	}
 }
 
-static void	execute_cmd(t_command *cmd, char **envp, int *exit_status, int *tmp_fd)
+static void	execute_cmd(t_command *cmd, char **envp, int *tmp_fd)
 {
-	t_command	*temp;
-
-	while (cmd->next)
-	{
-		if (cmd->pipe_next)
-			cmd_with_pipe(tmp_fd, cmd, envp);
-		else
-			cmd_no_pipe (tmp_fd, cmd, envp);
-		*exit_status = cmd->exit_status;
-		temp = cmd->next;
-		free_cmd(cmd);
-		cmd = temp;
-		expand_exit_status(cmd, *exit_status);
-		cmd->exit_status = *exit_status;
-	}
-	parent_process(tmp_fd, cmd, envp);
-	restore_stdin(cmd);
-	*exit_status = cmd->exit_status;
-	convert_exit_status(exit_status);
-	free_cmd(cmd);
+	if (cmd->pipe_next)
+		cmd_with_pipe(tmp_fd, cmd, envp);
+	else
+		cmd_no_pipe (tmp_fd, cmd, envp);
 }
-/*
+
 static void	execute_file(t_command *cmd, char **envp, int *exit_status, int *tmp_fd)
 {
 	pid_t	pid;
+	struct stat	path_stat;
 
 	pid = fork();
 	if (pid == -1)
-		cmd_error(cmd, strerror(errno), errno);
+		file_error(cmd, strerror(errno), errno);
 	else if (pid == 0)
 	{
-		if (access(cmd->full_cmd_args[0], F_OK) == 0)
-		{
-			if (access(cmd->full_cmd_args[0], X_OK) == 0
-				&& access(cmd->full_cmd_args[0], R_OK == 0))
-				run_file(cmd, envp, exit_status, tmp_fd);
-			else
-				cmd_error(cmd, strerror(errno), errno);
-		}
+		if (stat(cmd->full_cmd_args[0], &path_stat) != 0)
+			file_error(cmd, strerror(errno), 127);
+		if (S_ISDIR(path_stat.st_mode))
+			file_error(cmd, cmd->full_cmd_args[0], 500);
+		else if (S_ISREG(path_stat.st_mode))
+			run_file(cmd, envp, exit_status, tmp_fd);
 		else
-			cmd_error(cmd, strerror(errno), 127);
+			file_error(cmd, strerror(errno), 127);
 	}
 	waitpid(pid, &(cmd->exit_status), 0);
-}*/
+}
 
 void	executer(t_command *cmd, char **envp, int *exit_status)
 {
-	int	tmp_fd;
+	int			tmp_fd;
+	t_command	*temp;
 	
 	tmp_fd = -1;
-	cmd->exit_status = *exit_status;
 	if (!save_stdin(cmd))
 		cmd_error(cmd, strerror(errno), errno);
-	/*if (is_path(cmd->full_cmd_args[0]))
-		execute_file(cmd, envp, exit_status, &tmp_fd);
-	else*/
-	execute_cmd(cmd, envp, exit_status, &tmp_fd);
+	while (cmd)
+	{
+		cmd->exit_status = *exit_status;
+		if (is_path(cmd->full_cmd_args[0]))
+			execute_file(cmd, envp, exit_status, &tmp_fd);
+		else
+			execute_cmd(cmd, envp, &tmp_fd);
+		*exit_status = cmd->exit_status;
+		expand_exit_status(cmd, *exit_status);
+		temp = cmd->next;
+		free_cmd(cmd);
+		cmd = temp;
+		convert_exit_status(exit_status);
+	}
 }

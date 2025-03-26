@@ -15,7 +15,7 @@ void	child_process(int *pipe_fd, int *tmp_fd, t_command *cmd, char **envp)
 	free_all_cmds(cmd);
 	exit(0);
 }
-
+/*
 void	parent_process(int *tmp_fd, t_command *cmd, char **envp)
 {
 	pid_t	pid;
@@ -32,4 +32,4 @@ void	parent_process(int *tmp_fd, t_command *cmd, char **envp)
 			run_cmd(cmd, envp);
 		waitpid(pid, &(cmd->exit_status), 0);
 	}
-}
+}*/
