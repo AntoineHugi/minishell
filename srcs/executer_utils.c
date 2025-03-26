@@ -26,3 +26,13 @@ void	convert_exit_status(int *exit_status)
 	if (*exit_status > 255)
 		*exit_status = *exit_status>>8;
 }
+
+int	is_path(char *str)
+{
+	if (str[0] == '.')
+	{
+		if (str[1] == '/')
+			return (1);
+	}
+	return (0);
+}

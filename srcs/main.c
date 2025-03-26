@@ -87,8 +87,8 @@ int	main(int ac, char **av, char **envp)
 	input = readline("Minishell$ ");
 	while (input)
  	{
-		token_list = lexer(input);
 		//add_history(input);
+		token_list = lexer(input);
  		free(input);
  		cmd_list = parser(token_list);
 		if (cmd_list)
