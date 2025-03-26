@@ -5,6 +5,7 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <string.h>
 # include <stdio.h>
 # include <errno.h>
@@ -44,6 +45,9 @@ typedef struct s_command {
 	char				*errorfile;
 	struct s_command	*next;
 }						t_command;
+
+/* Main */
+void		process_input(char *input, char **envp, int *exit_status);
 
 /* Lexer */
 t_token		*create_new_token(char *content);
@@ -106,6 +110,6 @@ void		free_all_cmds(t_command *cmd);
 /* Error Handling */
 void		print_error(char *msg);
 void		cmd_error(t_command *cmd, char *msg, int err_num);
-void		export_error(t_command *cmd, char *msg, int err_num);
+void		file_error(t_command *cmd, char *msg, int err_num);
 
 #endif

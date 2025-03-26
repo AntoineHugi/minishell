@@ -1,6 +1,7 @@
 #include "../includes/minishell.h"
 
 void	run_file(t_command *cmd, char **envp, int *exit_status, int *tmp_fd)
+void	run_file(t_command *cmd, char **envp, int *exit_status, int *tmp_fd)
 {
 	char	*line;
 	int		fd;
