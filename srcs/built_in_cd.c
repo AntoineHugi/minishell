@@ -51,4 +51,5 @@ void	change_directory(t_command *cmd, char **envp)
 	}
 	else
 		cmd_error(cmd, " too many arguments", EXIT_FAILURE);
+	cmd->exit_status = 0;
 }
