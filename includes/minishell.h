@@ -49,7 +49,7 @@ typedef struct s_command {
 t_token		*create_new_token(char *content);
 t_token		*token_last(t_token *token);
 t_token		*lexer(char *str);
-void 		delete_unused_contents(t_token **token_list);
+void		delete_unused_contents(t_token **token_list);
 void		delete_token_list(t_token **token_list);
 
 /* Parser */
@@ -75,6 +75,12 @@ void		run_built_in(t_command *cmd, char **envp);
 void		child_process(int *pipe_fd, int tmp_fd, t_command *cmd, char **envp);
 void		parent_process(int tmp_fd, t_command *cmd, char **envp);
 void		executer(t_command *cmd, char **envp, int *exit_status);
+void		execute_cmd(t_command *cmd, char **envp, int *tmp_fd);
+void		run_built_in(t_command *cmd, char **envp);
+void		run_cmd(t_command *cmd, char **envp);
+void		run_file(t_command *cmd, char **envp, int *exit_status, int *tmp_fd);
+int			convert_exit_status(int exit_status);
+
 /* Input / Output */
 int			here_doc_fd(t_command *cmd, char *limiter);
 int			save_stdin(t_command *cmd);
