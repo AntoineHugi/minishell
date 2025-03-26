@@ -7,6 +7,7 @@
 // 	t_token	*token;
 
 // 	token = *token_list;
+// 	printf("Token list: \n");
 // 	while (token != NULL)
 // 	{
 // 		printf("'%s'\n", token->content);
@@ -27,6 +28,7 @@
 // 	}
 // 	cmd = *cmd_list;
 // 	count = 1;
+// 	printf("Command list: \n");
 // 	while (cmd != NULL)
 // 	{
 // 		printf("-=cmd n°%i=- (%p)\n", count, (void *)cmd);

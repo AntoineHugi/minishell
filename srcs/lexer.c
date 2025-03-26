@@ -48,7 +48,8 @@ static int	word_token(char *str, int *i, t_token **token_list)
 	t_token	*word_token;
 
 	start = *i;
-	while (str[*i] && !(str[*i] == ' ' || str[*i] == ';'))
+	while (str[*i] && !(str[*i] == ' ' || str[*i] == ';'
+		|| str[*i] == '<' || str[*i] == '>'))
 		(*i)++;
 	len = *i - start;
 	word = ft_strndup(&str[start], len);
@@ -87,6 +88,29 @@ static int	semicolon_token(char *str, int *i, t_token **token_list)
 	return (1);
 }
 
+static int	redir_token(char *str, int *i, t_token **token_list)
+{
+	int		start;
+	int		len;
+	char	*word;
+	t_token	*word_token;
+
+	start = *i;
+	while (str[*i] && (str[*i] == '<' || str[*i] == '>'))
+		(*i)++;
+	len = *i - start;
+	word = ft_strndup(&str[start], len);
+	if (!word)
+		return (0);
+	word_token = create_new_token(word);
+	if (!word_token)
+	{
+		free(word);
+		return (0);
+	}
+	add_token_to_list(token_list, word_token);
+	return (1);
+}
 
 t_token	*lexer(char *str)
 {
@@ -106,6 +130,8 @@ t_token	*lexer(char *str)
 			i++;
 		else if (str[i] == ';')
 			semicolon_token(str, &i, &token_list);
+		else if (str[i] == '>' || str[i] == '<')
+			redir_token(str, &i, &token_list);
 		else
 			word_token(str, &i, &token_list);
 	}
