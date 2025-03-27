@@ -16,6 +16,7 @@
 # include <termios.h>
 # include <termcap.h>
 # include <limits.h>
+# include <signal.h>
 
 typedef struct s_token
 {
@@ -49,6 +50,10 @@ typedef struct s_command {
 
 /* Main */
 void		process_input(char *input, char **envp, int *exit_status);
+
+/* Signals */
+void		sigint_handler(int sig);
+void		setup_signals(void);
 
 /* Lexer */
 t_token		*create_new_token(char *content);

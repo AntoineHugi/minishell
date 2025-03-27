@@ -5,6 +5,7 @@
         "span": "c",
         "history.h": "c",
         "readline.h": "c",
-        "libft.h": "c"
+        "libft.h": "c",
+        "termios.h": "c"
     }
 }

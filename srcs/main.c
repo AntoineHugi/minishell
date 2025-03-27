@@ -1,6 +1,5 @@
 #include "../includes/minishell.h"
 #include "../libft/libft.h"
-#include <stdio.h>
 
 // void	read_tokens(t_token **token_list)
 // {
@@ -87,6 +86,7 @@ void	process_input(char *input, char **envp, int *exit_status)
 		expander(cmd_list, envp);
 		expand_exit_status(cmd_list, *exit_status);
 		remove_full_quotes(&cmd_list);
+		// read_cmds(&cmd_list);
 		//have a cleanup function in case arg[0] is null due to env, but the cmd comes next (example: $EMPTY echo hi)
 		executer(cmd_list, envp, exit_status);
 	}
@@ -98,6 +98,7 @@ int	main(int ac, char **av, char **envp)
 	char		**new_envp;
 	int			exit_status;
 
+	setup_signals();
 	new_envp = copy_envp(envp);
 	if (!new_envp)
 		print_error(strerror(errno));
