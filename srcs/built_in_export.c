@@ -93,6 +93,11 @@ void	export_var(t_command *cmd, char **envp)
 	int		failed;
 
 	i = 1;
+	if (!cmd->full_cmd_args[i])
+	{
+		cmd->exit_status = 0;
+		return ;
+	}
 	while (cmd->full_cmd_args[i])
 	{
 		if (!check_valid_key(cmd->full_cmd_args[i]))

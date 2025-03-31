@@ -63,10 +63,13 @@ void	executer(t_command *cmd, char **envp, int *exit_status)
 	while (cmd)
 	{
 		cmd->exit_status = *exit_status;
-		if (is_path(cmd->full_cmd_args[0]))
-			ex_file(cmd, envp, exit_status, &tmp_fd);
-		else
-			execute_cmd(cmd, envp, &tmp_fd);
+		if (cmd->full_cmd_args[0])
+		{
+			if (is_path(cmd->full_cmd_args[0]))
+				ex_file(cmd, envp, exit_status, &tmp_fd);
+			else
+				execute_cmd(cmd, envp, &tmp_fd);
+		}
 		*exit_status = convert_exit_status(cmd->exit_status);
 		expand_exit_status(cmd, *exit_status);
 		temp = cmd->next;

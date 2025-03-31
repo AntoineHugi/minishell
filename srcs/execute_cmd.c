@@ -12,7 +12,6 @@ void	child_process(int *pipe_fd, int *tmp_fd, t_command *cmd, char **envp)
 		run_built_in(cmd, envp);
 	else
 		run_cmd(cmd, envp);
-	free(cmd->envp);
 	free_all_cmds(cmd);
 	rl_clear_history();
 	exit(0);
@@ -34,6 +33,7 @@ static void	cmd_with_pipe(int *tmp_fd, t_command *cmd, char **envp)
 	if (*tmp_fd != -1)
 		close(*tmp_fd);
 	close(pipe_fd[1]);
+	restore_stdin(cmd);
 	*tmp_fd = pipe_fd[0];
 }
 
@@ -53,8 +53,8 @@ static void	cmd_no_pipe(int *tmp_fd, t_command *cmd, char **envp)
 			run_cmd(cmd, envp);
 		waitpid(pid, &(cmd->exit_status), 0);
 	}
-	*tmp_fd = -1;
 	restore_stdin(cmd);
+	*tmp_fd = -1;
 }
 
 void	execute_cmd(t_command *cmd, char **envp, int *tmp_fd)

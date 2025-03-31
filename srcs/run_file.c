@@ -25,4 +25,5 @@ void	run_file(t_command *cmd, char **envp, int *exit_status, int *tmp_fd)
 	restore_stdin(cmd);
 	*exit_status = cmd->exit_status;
 	free_cmd(cmd);
+	rl_clear_history();
 }
