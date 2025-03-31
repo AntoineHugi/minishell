@@ -88,6 +88,7 @@ void	process_input(char *input, char **envp, int *exit_status)
 	t_command	*cmd_list;
 	
 	token_list = lexer(input);
+	//read_tokens(&token_list);
  	free(input);
  	cmd_list = parser(token_list);
 	if (cmd_list)
@@ -95,8 +96,8 @@ void	process_input(char *input, char **envp, int *exit_status)
 		expander(cmd_list, envp);
 		expand_exit_status(cmd_list, *exit_status);
 		remove_full_quotes(&cmd_list);
-		// read_cmds(&cmd_list);
-		//have a cleanup function in case arg[0] is null due to env, but the cmd comes next (example: $EMPTY echo hi)
+		//read_cmds(&cmd_list);
+		clean_empty_argument(cmd_list);
 		executer(cmd_list, envp, exit_status);
 	}
 }

@@ -80,3 +80,25 @@ char	*check_envp(char *cmd, char **envp)
 	}
 	return (NULL);
 }
+
+void	clean_empty_argument(t_command *cmd)
+{
+	char	*temp;
+	int		i;
+	
+	while (cmd)
+	{
+		while (cmd->full_cmd_args[0] && cmd->full_cmd_args[0][0] == '\0')
+		{
+			i = 0;
+			temp = cmd->full_cmd_args[0];
+			while (cmd->full_cmd_args[i])
+			{
+				cmd->full_cmd_args[i] = cmd->full_cmd_args[i + 1];
+				i++;
+			}
+			free(temp);
+		}
+		cmd = cmd->next;
+	}
+}
