@@ -40,6 +40,26 @@ static int	quote_token(char *str, int *i, char quote_type, t_token **token_list)
 	return (1);
 }
 
+static void	word_token_helper(char *str, int *i)
+{
+	while (str[*i] && !(str[*i] == ' ' || str[*i] == ';' || str[*i] == '|'
+		|| str[*i] == '<' || str[*i] == '>'))
+	{
+		if (str[*i] == 34 || str[*i] == 39)
+		{
+			(*i)++;
+			while (str[*i])
+			{
+				if (str[*i] && (str[*i] == 34 || str[*i] == 39))
+					break ;
+				(*i)++;
+			}
+		}
+		else
+			(*i)++;
+	}
+}
+
 static int	word_token(char *str, int *i, t_token **token_list)
 {
 	int		start;
@@ -48,9 +68,7 @@ static int	word_token(char *str, int *i, t_token **token_list)
 	t_token	*word_token;
 
 	start = *i;
-	while (str[*i] && !(str[*i] == ' ' || str[*i] == ';'
-		|| str[*i] == '<' || str[*i] == '>'))
-		(*i)++;
+	word_token_helper(str, i);
 	len = *i - start;
 	word = ft_strndup(&str[start], len);
 	if (!word)
@@ -65,7 +83,7 @@ static int	word_token(char *str, int *i, t_token **token_list)
 	return (1);
 }
 
-static int	semicolon_token(char *str, int *i, t_token **token_list)
+static int	single_char_token(char *str, int *i, t_token **token_list)
 {
 	int		start;
 	int		len;
@@ -128,8 +146,8 @@ t_token	*lexer(char *str)
 		}
 		else if (str[i] == ' ')
 			i++;
-		else if (str[i] == ';')
-			semicolon_token(str, &i, &token_list);
+		else if (str[i] == ';' || str[i] == '|')
+			single_char_token(str, &i, &token_list);
 		else if (str[i] == '>' || str[i] == '<')
 			redir_token(str, &i, &token_list);
 		else
