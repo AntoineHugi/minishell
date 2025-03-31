@@ -79,6 +79,7 @@ int			remove_full_quotes(t_command **cmd_list);
 int			expander(t_command *cmd, char **envp);
 char		*check_envp(char *cmd, char **envp);
 void		expand_exit_status(t_command *cmd, int exit_status);
+void		clean_empty_argument(t_command *cmd);
 
 /* Executer */
 void		executer(t_command *cmd, char **envp, int *exit_status);
