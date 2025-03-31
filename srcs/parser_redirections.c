@@ -2,55 +2,53 @@
 
 static int	fill_in_redir_in_cmd(t_token **current_token, t_command *cmd)
 {
-	t_redirection	*redir;
+	t_redirection	*last_redir;
+	t_redirection	*new_redir;
 
-	redir = (t_redirection *)malloc(sizeof(t_redirection));
-	if (!redir)
+	new_redir = (t_redirection *)malloc(sizeof(t_redirection));
+	if (!new_redir)
 		return (0);
-	if (cmd->input)
-	{
-		if (cmd->input->name)
-		{
-			free(cmd->input->name);
-			cmd->input->name = NULL;
-		}
-		free(cmd->input);
-		cmd->input = NULL;
-	}
-	cmd->input = redir;
-	if ((*current_token)->content[0] == '<' && (*current_token)->content[1] == '<')
-		redir->redirection_type = 2;
+	if (!cmd->input)
+		cmd->input = new_redir;
 	else
-		redir->redirection_type = 1;
+	{
+		last_redir = cmd->input;
+		while (last_redir->next)
+			last_redir = last_redir->next;
+		last_redir->next = new_redir;
+	}
+	if ((*current_token)->content[0] == '<' && (*current_token)->content[1] == '<')
+		new_redir->redirection_type = 2;
+	else
+	new_redir->redirection_type = 1;
 	(*current_token) = (*current_token)->next;
-	redir->name = (*current_token)->content;
+	new_redir->name = (*current_token)->content;
 	return (1);
 }
 
 static int	fill_out_redir_in_cmd(t_token **current_token, t_command *cmd)
 {
-	t_redirection	*redir;
+	t_redirection	*last_redir;
+	t_redirection	*new_redir;
 
-	redir = (t_redirection *)malloc(sizeof(t_redirection));
-	if (!redir)
+	new_redir = (t_redirection *)malloc(sizeof(t_redirection));
+	if (!new_redir)
 		return (0);
-	if (cmd->output)
-	{
-		if (cmd->output->name)
-		{
-			free(cmd->output->name);
-			cmd->output->name = NULL;
-		}
-		free(cmd->output);
-		cmd->output = NULL;
-	}
-	cmd->output = redir;
-	if ((*current_token)->content[0] == '>' && (*current_token)->content[1] == '>')
-		redir->redirection_type = 2;
+	if (!cmd->output)
+		cmd->output = new_redir;
 	else
-		redir->redirection_type = 1;
+	{
+		last_redir = cmd->output;
+		while (last_redir->next)
+			last_redir = last_redir->next;
+		last_redir->next = new_redir;
+	}
+	if ((*current_token)->content[0] == '>' && (*current_token)->content[1] == '>')
+		new_redir->redirection_type = 2;
+	else
+	new_redir->redirection_type = 1;
 	(*current_token) = (*current_token)->next;
-	redir->name = (*current_token)->content;
+	new_redir->name = (*current_token)->content;
 	return (1);
 }
 

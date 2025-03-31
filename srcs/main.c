@@ -16,9 +16,10 @@
 
 // void	read_cmds(t_command **cmd_list)
 // {
-// 	t_command	*cmd;
-// 	int			i;
-// 	int			count;
+// 	t_command		*cmd;
+// 	int				i;
+// 	int				count;
+// 	t_redirection	*redir;
 
 // 	if (!*cmd_list)
 // 	{
@@ -37,10 +38,18 @@
 // 			printf("'%s'\n", cmd->full_cmd_args[i]);
 // 			i++;
 // 		}
-// 		if (cmd->input)
-// 			printf("	Input redir: '%s'\n", cmd->input->name);
-// 		if (cmd->output)
-// 			printf("	Output redir: '%s'\n", cmd->output->name);
+// 		redir = cmd->input;
+// 		while (redir)
+// 		{
+// 			printf("	Input redir: '%s'\n", redir->name);
+// 			redir = redir->next;
+// 		}
+// 		redir = cmd->output;
+// 		while (redir)
+// 		{
+// 			printf("	Output redir: '%s'\n", redir->name);
+// 			redir = redir->next;
+// 		}
 // 		cmd = cmd->next;
 // 		count++;
 // 	}
