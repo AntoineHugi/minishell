@@ -1,5 +1,14 @@
 #include "../includes/minishell.h"
 
+void	assign_envp(t_command *cmd, char **envp)
+{
+	while (cmd)
+	{
+		cmd->envp = envp;
+		cmd = cmd->next;
+	}
+}
+
 int	convert_exit_status(int exit_status)
 {
 	if (exit_status > 255)
@@ -50,6 +59,7 @@ void	executer(t_command *cmd, char **envp, int *exit_status)
 	tmp_fd = -1;
 	if (!save_stdin(cmd))
 		cmd_error(cmd, strerror(errno), errno);
+	assign_envp(cmd, envp);
 	while (cmd)
 	{
 		cmd->exit_status = *exit_status;

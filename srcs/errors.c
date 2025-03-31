@@ -14,7 +14,9 @@ void	cmd_error(t_command *cmd, char *msg, int err_num)
 	if (err_num == 127)
 		write(2, ": command not found", 20);
 	write(2, "\n", 1);
+	free_array(cmd->envp);
 	free_all_cmds(cmd);
+	rl_clear_history();
 	exit (err_num);
 }
 
@@ -29,6 +31,8 @@ void	file_error(t_command *cmd, char *msg, int err_num)
 		err_num = 126;
 	}
 	write(2, "\n", 1);
+	free_array(cmd->envp);
 	free_all_cmds(cmd);
+	rl_clear_history();
 	exit (err_num);
 }

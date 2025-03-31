@@ -3,7 +3,9 @@
 void	exit_cmd(t_command *cmd, int exit_num)
 {
 	restore_stdin(cmd);
+	free_array(cmd->envp);
 	free_all_cmds(cmd);
+	rl_clear_history();
 	exit((unsigned char)exit_num);
 }
 

@@ -23,13 +23,19 @@ int	save_stdin(t_command *cmd)
 
 void	check_input_output(t_command *cmd, int *tmp_fd)
 {
-	if (cmd->input)
-		handle_infile(cmd);
-	else if (*tmp_fd != -1)
+	if (*tmp_fd != -1)
 	{
 		dup2(*tmp_fd, STDIN_FILENO);
 		close(*tmp_fd);
 	}
-	if (cmd->output)
+	while (cmd->input)
+	{
+		handle_infile(cmd);
+		cmd->input = cmd->input->next;
+	}
+	while (cmd->output)
+	{
 		handle_outfile(cmd);
+		cmd->output = cmd->output->next;
+	}
 }
