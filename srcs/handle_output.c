@@ -8,7 +8,7 @@ void	handle_outfile(t_command *cmd)
 	{
 		fd_out = open(cmd->output->name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 		if (fd_out == -1)
-			cmd_error(cmd, strerror(errno), errno);
+			cmd_error(cmd, strerror(errno), 1);
 		dup2(fd_out, STDOUT_FILENO);
 		close(fd_out);
 	}
@@ -16,7 +16,7 @@ void	handle_outfile(t_command *cmd)
 	{
 		fd_out = open(cmd->output->name, O_WRONLY | O_CREAT | O_APPEND, 0666);
 		if (fd_out == -1)
-			cmd_error(cmd, strerror(errno), errno);
+			cmd_error(cmd, strerror(errno), 1);
 		dup2(fd_out, STDOUT_FILENO);
 		close(fd_out);
 	}

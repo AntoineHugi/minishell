@@ -50,7 +50,7 @@ void	handle_infile(t_command *cmd)
 	{
 		fd_infile = open(cmd->input->name, O_RDONLY);
 		if (fd_infile == -1)
-			cmd_error(cmd, strerror(errno), errno);
+			cmd_error(cmd, strerror(errno), 1);
 		dup2(fd_infile, STDIN_FILENO);
 		close(fd_infile);
 	}

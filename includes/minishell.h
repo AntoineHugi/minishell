@@ -25,8 +25,9 @@ typedef struct s_token
 }	t_token;
 
 typedef struct s_redirection {
-	char	*name;
-	int		redirection_type;
+	char			*name;
+	int				redirection_type;
+	t_redirection	*next;
 }				t_redirection;
 
 typedef struct s_command {
