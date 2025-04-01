@@ -1,83 +1,69 @@
 #include "../includes/minishell.h"
-#include "../libft/libft.h"
 
-int	remove_quotes_util(t_command *cmd, int i, int *y, int *quote_type)
+
+static int	remove_full_quotes_redir(t_redirection *redir)
 {
-	int			j;
-	int			k;
-	char		*string;
-	int			count;
+	int		y;
+	char	*new;
 
-	if (!(string = malloc(sizeof(char) *
-		(ft_strlen(cmd->full_cmd_args[i]) - 2 + 1))))
-		return (0);
-	j = -1;
-	k = 0;
-	count = 0;
-	while (cmd->full_cmd_args[i][++j])
+	while (redir)
 	{
-		if (cmd->full_cmd_args[i][j] == *quote_type && count < 2)
-			count++;
-		else
+		y = 0;
+		while (redir->name[y])
 		{
-			string[k] = cmd->full_cmd_args[i][j];
-			k++;
+			new = quotes_inspection(redir->name, &y);
+			if (!new)
+				return (0);
+			if (strncmp(redir->name, new, ft_strlen(redir->name)))
+			{
+				free(redir->name);
+				redir->name = new;
+			}
 		}
+		redir = redir->next;
 	}
-	string[k] = '\0';
-	free(cmd->full_cmd_args[i]);
-	cmd->full_cmd_args[i] = string;
-	return ((*y) -= 2, (*quote_type) = 0, 1);
+	return (1);
 }
 
-int	find_quote_type(t_command *cmd, int i, int *y)
+static int	remove_full_quotes_args(char **cmd_arg)
 {
-	while (cmd->full_cmd_args[i][*y])
-	{
-		if (cmd->full_cmd_args[i][*y] == 34)
-			return ((*y)++, 34);
-		else if (cmd->full_cmd_args[i][*y] == 39)
-			return ((*y)++, 39);
-		(*y)++;
-	}
-	return (0);
-}
+	int		i;
+	int		y;
+	char	*new;
 
-int	check_if_quote_ends(t_command *cmd, int i, int *y, int quote_type)
-{
-	while (cmd->full_cmd_args[i][*y])
+	i = 0;
+	while (cmd_arg[i])
 	{
-		if (cmd->full_cmd_args[i][*y] == quote_type)
-			return (1);
-		(*y)++;
+		y = 0;
+		while (cmd_arg[i][y])
+		{
+			new = quotes_inspection(cmd_arg[i], &y);
+			if (!new)
+				return (0);
+			if (strncmp(cmd_arg[i], new, ft_strlen(cmd_arg[i])))
+			{
+				free(cmd_arg[i]);
+				cmd_arg[i] = new;
+			}
+		}
+		i++;
 	}
-	return (0);
+	return (1);
 }
 
 int	remove_full_quotes(t_command **cmd_list)
 {
 	t_command	*cmd;
-	int			i;
-	int			y;
-	int			quote_type;
 
 	cmd = *cmd_list;
 	while (cmd != NULL)
 	{
-		i = -1;
-		while (cmd->full_cmd_args[++i])
-		{
-			y = 0;
-			while (cmd->full_cmd_args[i][y])
-			{
-				quote_type = find_quote_type(cmd, i, &y);
-				if (quote_type)
-				{
-					if (check_if_quote_ends(cmd, i, &y, quote_type))
-						remove_quotes_util(cmd, i, &y, &quote_type);
-				}
-			}
-		}
+		if (!remove_full_quotes_args(cmd->full_cmd_args))
+			return (0);
+		if (!remove_full_quotes_redir(cmd->input))
+			return (0);
+		if (!remove_full_quotes_redir(cmd->output))
+			return (0);
 		cmd = cmd->next;
 	}
 	return (1);

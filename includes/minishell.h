@@ -73,7 +73,10 @@ void		verify_built_in(t_command *new_cmd);
 void		verify_executable(t_command *new_cmd);
 void		verify_pipe_prev(t_command **cmd_list, t_command *new_cmd);
 void		add_cmd_to_list(t_command **list, t_command *new);
+
+/* Quotes removal */
 int			remove_full_quotes(t_command **cmd_list);
+char		*quotes_inspection(char *str, int *y);
 
 /* Expander */
 int			expander(t_command *cmd, char **envp);

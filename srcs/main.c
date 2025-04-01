@@ -96,7 +96,8 @@ void	process_input(char *input, char **envp, int *exit_status)
 	{
 		expander(cmd_list, envp);
 		expand_exit_status(cmd_list, *exit_status);
-		remove_full_quotes(&cmd_list);
+		if (!remove_full_quotes(&cmd_list))
+			cmd_error(cmd_list, strerror(errno), errno);
 		//read_cmds(&cmd_list);
 		clean_empty_argument(cmd_list);
 		executer(cmd_list, envp, exit_status);
