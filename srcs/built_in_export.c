@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static void	set_env(char *key, char *env, char **envp)
+static void	set_env(t_command *cmd, char *key, char *env, char **envp)
 {
 	int	i;
 
@@ -17,9 +17,11 @@ static void	set_env(char *key, char *env, char **envp)
 		else
 			i++;
 	}
-	envp[i] = env;
-	envp[i + 1] = NULL;
 	free(key);
+	envp = realloc_envp(envp);
+	if (!envp)
+		cmd_error(cmd, strerror(errno), errno);
+	envp[i] = env;
 }
 
 static char	*generate_value(t_command *cmd, char *key, char *str)
@@ -81,7 +83,7 @@ static void	generate_env(t_command *cmd, char *arg, char **envp)
 			cmd_error(cmd, strerror(errno), errno);
 		}
 		free(value);
-		set_env(key, env, envp);
+		set_env(cmd, key, env, envp);
 	}
 	else
 		free(key);
@@ -92,6 +94,7 @@ void	export_var(t_command *cmd, char **envp)
 	int		i;
 	int		failed;
 
+	failed = 0;
 	i = 1;
 	if (!cmd->full_cmd_args[i])
 	{

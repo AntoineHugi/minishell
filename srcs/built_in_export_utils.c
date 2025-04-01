@@ -16,3 +16,29 @@ int	check_valid_key(char *str)
 	else
 		return (0);
 }
+
+char	**realloc_envp(char **envp)
+{
+	char	**new_envp;
+	int		len;
+
+	len = 0;
+	while (envp[len])
+		len++;
+	new_envp = (char **)ft_calloc((len + 2), sizeof(char *));
+	if (!new_envp)
+		return (NULL);
+	while (len > 0)
+	{
+		new_envp[len - 1] = ft_strdup(envp[len - 1]);
+		if (!new_envp[len - 1])
+		{
+			free_array(envp);
+			free_array(new_envp);
+			return (NULL);
+		}
+		len--;
+	}
+	free_array(envp);
+	return (new_envp);
+}

@@ -1,10 +1,12 @@
 #include "../includes/minishell.h"
 
-void	run_built_in(t_command *cmd, char **envp)
+void	run_built_in(t_command *cmd, char **envp, int tmp_fd)
 {
 	char	*str;
 
 	str = cmd->full_cmd_args[0];
+	if (tmp_fd != -1)
+		drain_pipe(tmp_fd);
 	if (!ft_strncmp(str, "cd", ft_strlen(str)) && !cmd->pipe_prev)
 		change_directory(cmd, envp);
 	if (!ft_strncmp(str, "echo", ft_strlen(str)))

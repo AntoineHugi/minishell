@@ -21,21 +21,31 @@ int	save_stdin(t_command *cmd)
 	return (1);
 }
 
-void	check_input_output(t_command *cmd, int *tmp_fd)
+int	check_input_output(t_command *cmd, int *tmp_fd)
 {
+	t_redirection	*start_in;
+	t_redirection	*start_out;
+	
+	start_in = cmd->input;
+	start_out = cmd->output;
 	if (*tmp_fd != -1)
 	{
 		dup2(*tmp_fd, STDIN_FILENO);
 		close(*tmp_fd);
 	}
-	while (cmd->input)
-	{
-		handle_infile(cmd);
-		cmd->input = cmd->input->next;
-	}
 	while (cmd->output)
 	{
-		handle_outfile(cmd);
+		if (!handle_outfile(cmd))
+			return (0);
 		cmd->output = cmd->output->next;
 	}
+	while (cmd->input)
+	{
+		if (!handle_infile(cmd))
+			return (0);
+		cmd->input = cmd->input->next;
+	}
+	cmd->input = start_in;
+	cmd->output = start_out;
+	return (1);
 }

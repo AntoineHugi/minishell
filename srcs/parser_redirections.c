@@ -20,7 +20,7 @@ static int	fill_in_redir_in_cmd(t_token **current_token, t_command *cmd)
 	if ((*current_token)->content[0] == '<' && (*current_token)->content[1] == '<')
 		new_redir->redirection_type = 2;
 	else
-	new_redir->redirection_type = 1;
+		new_redir->redirection_type = 1;
 	(*current_token) = (*current_token)->next;
 	new_redir->name = (*current_token)->content;
 	new_redir->next = NULL;
@@ -47,7 +47,7 @@ static int	fill_out_redir_in_cmd(t_token **current_token, t_command *cmd)
 	if ((*current_token)->content[0] == '>' && (*current_token)->content[1] == '>')
 		new_redir->redirection_type = 2;
 	else
-	new_redir->redirection_type = 1;
+		new_redir->redirection_type = 1;
 	(*current_token) = (*current_token)->next;
 	new_redir->name = (*current_token)->content;
 	new_redir->next = NULL;

@@ -40,7 +40,7 @@ static char	*fetch_path(char **envp)
 	return (NULL);
 }
 
-void	run_cmd(t_command *cmd, char **envp)
+void	run_cmd(t_command *cmd, char **envp, int tmp_fd)
 {
 	char	*path;
 
@@ -50,6 +50,8 @@ void	run_cmd(t_command *cmd, char **envp)
 		return ;
 	else
 	{
+		if (!read_from_stdin(cmd->full_cmd_args[0]) && tmp_fd != -1)
+			drain_pipe(tmp_fd);
 		path = fetch_path(envp);
 		if (!path)
 			cmd_error(cmd, "path not found in envp", EXIT_FAILURE);

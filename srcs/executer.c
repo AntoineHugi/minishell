@@ -73,6 +73,7 @@ void	executer(t_command *cmd, char **envp, int *exit_status)
 		*exit_status = convert_exit_status(cmd->exit_status);
 		expand_exit_status(cmd, *exit_status);
 		temp = cmd->next;
+		restore_stdin(cmd);
 		free_cmd(cmd);
 		cmd = temp;
 	}

@@ -90,7 +90,6 @@ void	process_input(char *input, char **envp, int *exit_status)
 	token_list = lexer(input);
 	//read_tokens(&token_list);
  	free(input);
-	// read_tokens(&token_list);
  	cmd_list = parser(token_list);
 	if (cmd_list)
 	{
