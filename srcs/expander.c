@@ -4,17 +4,12 @@ void	expand_files(t_command *cmd, char **envp)
 {
 	char	*change;
 
-	if (cmd->input)
+	while (cmd->redir)
 	{
-		change = check_envp(cmd->input->name, envp);
+		change = check_envp(cmd->redir->name, envp);
 		if (change)
-			cmd->input->name = change;
-	}
-	if (cmd->output)
-	{
-		change = check_envp(cmd->output->name, envp);
-		if (change)
-			cmd->output->name = change;
+			cmd->redir->name = change;
+		cmd->redir = cmd->redir->next;
 	}
 }
 

@@ -1,6 +1,22 @@
 #include "../includes/minishell.h"
 
-void	child_process(int *pipe_fd, int *tmp_fd, t_command *cmd, char **envp)
+static int	has_output(t_command *cmd)
+{
+	t_redirection	*start;
+	
+	if (cmd->redir)
+		start = cmd->redir;
+	while (cmd->redir)
+	{
+		if (cmd->redir->in_or_out == 1)
+			return (1);
+		cmd->redir = cmd->redir->next;
+	}
+	cmd->redir = start;
+	return (0);
+}
+
+static void	child_process(int *pipe_fd, int *tmp_fd, t_command *cmd, char **envp)
 {
 	if (!check_input_output(cmd, tmp_fd))
 	{
@@ -10,7 +26,7 @@ void	child_process(int *pipe_fd, int *tmp_fd, t_command *cmd, char **envp)
 		rl_clear_history();
 		exit(1);
 	}
-	if (!cmd->output)
+	if (!has_output(cmd))
 		dup2(pipe_fd[1], STDOUT_FILENO);
 	if (*tmp_fd != -1)
 		close(*tmp_fd);
@@ -49,6 +65,7 @@ static void	cmd_no_pipe(int *tmp_fd, t_command *cmd, char **envp)
 
 	if (!check_input_output(cmd, tmp_fd))
 	{
+		printf("check input/ouput\n");
 		cmd->exit_status = 1;
 		return ;
 	}

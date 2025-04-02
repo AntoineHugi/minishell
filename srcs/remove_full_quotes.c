@@ -60,9 +60,7 @@ int	remove_full_quotes(t_command **cmd_list)
 	{
 		if (!remove_full_quotes_args(cmd->full_cmd_args))
 			return (0);
-		if (!remove_full_quotes_redir(cmd->input))
-			return (0);
-		if (!remove_full_quotes_redir(cmd->output))
+		if (!remove_full_quotes_redir(cmd->redir))
 			return (0);
 		cmd = cmd->next;
 	}

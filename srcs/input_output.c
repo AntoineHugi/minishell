@@ -23,29 +23,29 @@ int	save_stdin(t_command *cmd)
 
 int	check_input_output(t_command *cmd, int *tmp_fd)
 {
-	t_redirection	*start_in;
-	t_redirection	*start_out;
+	t_redirection	*start_redir;
 	
-	start_in = cmd->input;
-	start_out = cmd->output;
+	start_redir = NULL;
 	if (*tmp_fd != -1)
 	{
 		dup2(*tmp_fd, STDIN_FILENO);
 		close(*tmp_fd);
 	}
-	while (cmd->output)
+	while (cmd->redir)
 	{
-		if (!handle_outfile(cmd))
+		if (cmd->redir->in_or_out == 0)
+		{
+			if (!handle_infile(cmd))
 			return (0);
-		cmd->output = cmd->output->next;
+		}
+		else
+		{
+			printf("has output\n");
+			if (!handle_outfile(cmd))
+				return (0);
+		}
+		cmd->redir = cmd->redir->next;
 	}
-	while (cmd->input)
-	{
-		if (!handle_infile(cmd))
-			return (0);
-		cmd->input = cmd->input->next;
-	}
-	cmd->input = start_in;
-	cmd->output = start_out;
+	cmd->redir = start_redir;
 	return (1);
 }
