@@ -42,13 +42,13 @@ static int	here_doc_fd(t_command *cmd, char *limiter)
 	return (fd_here_doc[0]);
 }
 
-int	handle_infile(t_command *cmd)
+int	handle_infile(t_command *cmd, t_redirection *redir)
 {
 	int	fd_infile;
 
-	if (cmd->redir->redirection_type == 1)
+	if (redir->redirection_type == 1)
 	{
-		fd_infile = open(cmd->redir->name, O_RDONLY);
+		fd_infile = open(redir->name, O_RDONLY);
 		if (fd_infile == -1)
 		{
 			print_error(strerror(errno));
@@ -57,9 +57,9 @@ int	handle_infile(t_command *cmd)
 		dup2(fd_infile, STDIN_FILENO);
 		close(fd_infile);
 	}
-	else if (cmd->redir->redirection_type == 2)
+	else if (redir->redirection_type == 2)
 	{
-		fd_infile = here_doc_fd(cmd, cmd->redir->name);
+		fd_infile = here_doc_fd(cmd, redir->name);
 		if (fd_infile)
 		{
 			dup2(fd_infile, STDIN_FILENO);

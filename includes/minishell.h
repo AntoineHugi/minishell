@@ -97,8 +97,8 @@ void		drain_pipe(int	fd);
 /* Input / Output */
 int			save_stdin(t_command *cmd);
 void		restore_stdin(t_command *cmd);
-int			handle_infile(t_command *cmd);
-int			handle_outfile(t_command *cmd);
+int			handle_infile(t_command *cmd, t_redirection *redir);
+int			handle_outfile(t_redirection *redir);
 int			check_input_output(t_command *cmd, int *tmp_fd);
 
 /* Built-in functions */

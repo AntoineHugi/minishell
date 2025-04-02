@@ -2,17 +2,15 @@
 
 static int	has_output(t_command *cmd)
 {
-	t_redirection	*start;
+	t_redirection	*redir;
 	
-	if (cmd->redir)
-		start = cmd->redir;
-	while (cmd->redir)
+	redir = cmd->redir;
+	while (redir)
 	{
-		if (cmd->redir->in_or_out == 1)
+		if (redir->in_or_out == 1)
 			return (1);
-		cmd->redir = cmd->redir->next;
+		redir = redir->next;
 	}
-	cmd->redir = start;
 	return (0);
 }
 

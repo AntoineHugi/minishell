@@ -16,17 +16,18 @@ void	free_array(char **array)
 	free(array);
 }
 
-void	free_redirect(t_redirection *redirect)
+void	free_redirect(t_redirection **redirect)
 {
 	t_redirection *temp;
-	
-	while (redirect)
+
+	while (*redirect)
 	{
-		temp = redirect->next;
-		free(redirect->name);
-		free(redirect);
-		redirect = temp;
+		temp = (*redirect)->next;
+		free((*redirect)->name);
+		free(*redirect);
+		*redirect = temp;
 	}
+	*redirect = NULL;
 }
 
 void	free_cmd(t_command *cmd)
@@ -36,7 +37,7 @@ void	free_cmd(t_command *cmd)
 	if (cmd->cmd_path)
 		free(cmd->cmd_path);
 	if (cmd->redir)
-		free_redirect(cmd->redir);
+		free_redirect(&(cmd->redir));
 	close(cmd->og_stdin);
 	close(cmd->og_stdout);
 	free(cmd);

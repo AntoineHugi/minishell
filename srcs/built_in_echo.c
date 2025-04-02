@@ -8,6 +8,8 @@ void	echo(t_command *cmd)
 
 	nl = 0;
 	i = 1;
+	if (!cmd->full_cmd_args[i])
+		return ;
 	str = cmd->full_cmd_args[i];
 	if (!ft_strncmp(str, "-n", ft_strlen(str)))
 	{

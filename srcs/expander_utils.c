@@ -85,7 +85,7 @@ void	clean_empty_argument(t_command *cmd)
 {
 	char	*temp;
 	int		i;
-	
+
 	while (cmd)
 	{
 		while (cmd->full_cmd_args[0] && cmd->full_cmd_args[0][0] == '\0')
