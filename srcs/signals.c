@@ -22,24 +22,20 @@ void	setup_signals(void)
 	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGINT, &sa, NULL);
-
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
-// void	ignore_signals(int pid)
-// {
-//     int status;
-//     signal(SIGINT, SIG_IGN);
-//     waitpid(pid, &status, 0);
-//     setup_signals();
-// }
+void	ignore_signals(int pid)
+{
+	int status;
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, &status, 0);
+	setup_signals();
+}
 
-// void	restore_default_signals(char **args)
-// {
-// 	signal(SIGINT, SIG_DFL);
-//     signal(SIGQUIT, SIG_DFL);
-//     execvp(args[0], args);
-//     perror("error");
-//     exit(1);
-// }
+void	restore_default_signals(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}

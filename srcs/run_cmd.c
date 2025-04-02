@@ -44,6 +44,7 @@ void	run_cmd(t_command *cmd, char **envp, int tmp_fd)
 {
 	char	*path;
 
+	restore_default_signals();
 	if (!cmd->full_cmd_args)
 		cmd_error(cmd, "syntax error", EXIT_FAILURE);
 	if (cmd->full_cmd_args[0][0] == '\0')

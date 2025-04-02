@@ -22,7 +22,6 @@ void	run_file(t_command *cmd, char **envp, int *exit_status, int *tmp_fd)
 		execve(cmd->full_cmd_args[0], cmd->full_cmd_args, envp);
 		file_error(cmd, " Permission denied", 126);
 	}
-	restore_stdin(cmd);
 	*exit_status = cmd->exit_status;
 	free_cmd(cmd);
 	rl_clear_history();
