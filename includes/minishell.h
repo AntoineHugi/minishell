@@ -56,7 +56,7 @@ void		process_input(char *input, char **envp, int *exit_status);
 void		sigint_handler(int sig);
 void		setup_signals(void);
 void		restore_default_signals(void);
-void		ignore_signals(int pid);
+void		ignore_signals(int pid, t_command *cmd);
 
 /* Lexer */
 t_token		*create_new_token(char *content);

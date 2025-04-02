@@ -1,54 +1,54 @@
 #include "../includes/minishell.h"
 #include "../libft/libft.h"
 
-void	read_tokens(t_token **token_list)
-{
-	t_token	*token;
+// void	read_tokens(t_token **token_list)
+// {
+// 	t_token	*token;
 
-	token = *token_list;
-	printf("Token list: \n");
-	while (token != NULL)
-	{
-		printf("'%s'\n", token->content);
-		token = token->next;
-	}
-}
+// 	token = *token_list;
+// 	printf("Token list: \n");
+// 	while (token != NULL)
+// 	{
+// 		printf("'%s'\n", token->content);
+// 		token = token->next;
+// 	}
+// }
 
-void	read_cmds(t_command **cmd_list)
-{
-	t_command		*cmd;
-	int				i;
-	int				count;
-	t_redirection	*redir;
+// void	read_cmds(t_command **cmd_list)
+// {
+// 	t_command		*cmd;
+// 	int				i;
+// 	int				count;
+// 	t_redirection	*redir;
 
-	if (!*cmd_list)
-	{
-		printf("Command list empty.\n");
-		return ;
-	}
-	cmd = *cmd_list;
-	count = 1;
-	printf("Command list: \n");
-	while (cmd != NULL)
-	{
-		printf("-=cmd n°%i=- (%p)\n", count, (void *)cmd);
-		i = 0;
-		while (cmd->full_cmd_args && cmd->full_cmd_args[i])
-		{
-			printf("'%s'\n", cmd->full_cmd_args[i]);
-			i++;
-		}
-		redir = cmd->redir;
-		printf("redir is currently %p\n", cmd->redir);
-		while (redir)
-		{
-			printf("	redir: '%s', I/O '%i'\n", redir->name, redir->in_or_out);
-			redir = redir->next;
-		}
-		cmd = cmd->next;
-		count++;
-	}
-}
+// 	if (!*cmd_list)
+// 	{
+// 		printf("Command list empty.\n");
+// 		return ;
+// 	}
+// 	cmd = *cmd_list;
+// 	count = 1;
+// 	printf("Command list: \n");
+// 	while (cmd != NULL)
+// 	{
+// 		printf("-=cmd n°%i=- (%p)\n", count, (void *)cmd);
+// 		i = 0;
+// 		while (cmd->full_cmd_args && cmd->full_cmd_args[i])
+// 		{
+// 			printf("'%s'\n", cmd->full_cmd_args[i]);
+// 			i++;
+// 		}
+// 		redir = cmd->redir;
+// 		printf("redir is currently %p\n", cmd->redir);
+// 		while (redir)
+// 		{
+// 			printf("	redir: '%s', I/O '%i'\n", redir->name, redir->in_or_out);
+// 			redir = redir->next;
+// 		}
+// 		cmd = cmd->next;
+// 		count++;
+// 	}
+// }
 
 char	**copy_envp(char **envp)
 {
@@ -83,12 +83,12 @@ void	process_input(char *input, char **envp, int *exit_status)
 	t_command	*cmd_list;
 	
 	token_list = lexer(input);
-	read_tokens(&token_list);
+	//read_tokens(&token_list);
  	free(input);
  	cmd_list = parser(token_list);
 	if (cmd_list)
 	{
-		read_cmds(&cmd_list);
+		//read_cmds(&cmd_list);
 		//printf("redir is currently %p\n", cmd_list->redir);
 		expander(cmd_list, envp);
 		//printf("redir is currently %p\n", cmd_list->redir);

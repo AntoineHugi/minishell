@@ -26,11 +26,10 @@ void	setup_signals(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
-void	ignore_signals(int pid)
+void	ignore_signals(int pid, t_command *cmd)
 {
-	int status;
 	signal(SIGINT, SIG_IGN);
-	waitpid(pid, &status, 0);
+	waitpid(pid, &(cmd->exit_status), 0);
 	setup_signals();
 }
 
