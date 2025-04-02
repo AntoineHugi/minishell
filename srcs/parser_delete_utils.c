@@ -2,25 +2,15 @@
 
 static void	delete_cmd_redir(t_command *cmd)
 {
-	if (cmd->input)
+	if (cmd->redir)
 	{
-		if (cmd->input->name)
+		if (cmd->redir->name)
 		{
-			free(cmd->input->name);
-			cmd->input->name = NULL;
+			free(cmd->redir->name);
+			cmd->redir->name = NULL;
 		}
-		free(cmd->input);
-		cmd->input = NULL;
-	}
-	if (cmd->output)
-	{
-		if (cmd->output->name)
-		{
-			free(cmd->output->name);
-			cmd->output->name = NULL;
-		}
-		free(cmd->output);
-		cmd->output = NULL;
+		free(cmd->redir);
+		cmd->redir = NULL;
 	}
 }
 
@@ -54,7 +44,7 @@ void	delete_cmd_list(t_command **cmd_list)
 	while (current_cmd)
 	{
 		next_cmd = current_cmd->next;
-		if (current_cmd->input || current_cmd->output)
+		if (current_cmd->redir)
 			delete_cmd_redir(current_cmd);
 		if (current_cmd->full_cmd_args)
 			delete_cmd_args(current_cmd);
