@@ -65,7 +65,6 @@ static void	cmd_no_pipe(int *tmp_fd, t_command *cmd, char **envp)
 
 	if (!check_input_output(cmd, tmp_fd))
 	{
-		printf("check input/ouput\n");
 		cmd->exit_status = 1;
 		return ;
 	}

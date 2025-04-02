@@ -24,8 +24,8 @@ int	save_stdin(t_command *cmd)
 int	check_input_output(t_command *cmd, int *tmp_fd)
 {
 	t_redirection	*start_redir;
-	
-	start_redir = NULL;
+
+	start_redir = cmd->redir;
 	if (*tmp_fd != -1)
 	{
 		dup2(*tmp_fd, STDIN_FILENO);
@@ -36,11 +36,10 @@ int	check_input_output(t_command *cmd, int *tmp_fd)
 		if (cmd->redir->in_or_out == 0)
 		{
 			if (!handle_infile(cmd))
-			return (0);
+				return (0);
 		}
 		else
 		{
-			printf("has output\n");
 			if (!handle_outfile(cmd))
 				return (0);
 		}
