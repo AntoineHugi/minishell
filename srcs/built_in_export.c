@@ -1,16 +1,16 @@
 #include "../includes/minishell.h"
 
-static void	set_env(t_command *cmd, char *key, char *env, char **envp)
+static void	set_env(t_command *cmd, char *key, char *env, char ***envp)
 {
 	int	i;
 
 	i = 0;
-	while (envp[i])
+	while ((*envp)[i])
 	{
-		if (!ft_strncmp(envp[i], key, ft_strlen(key)))
+		if (!ft_strncmp((*envp)[i], key, ft_strlen(key)))
 		{
-			free(envp[i]);
-			envp[i] = env;
+			free((*envp)[i]);
+			(*envp)[i] = env;
 			free(key);
 			return ;
 		}
@@ -18,10 +18,10 @@ static void	set_env(t_command *cmd, char *key, char *env, char **envp)
 			i++;
 	}
 	free(key);
-	envp = realloc_envp(envp);
-	if (!envp)
+	*envp = realloc_envp(envp);
+	if (!(*envp))
 		cmd_error(cmd, strerror(errno), errno);
-	envp[i] = env;
+	(*envp)[i] = env;
 }
 
 static char	*generate_value(t_command *cmd, char *key, char *str)
@@ -65,7 +65,7 @@ static char	*generate_key(t_command *cmd, char *str)
 	return (key);
 }
 
-static void	generate_env(t_command *cmd, char *arg, char **envp)
+static void	generate_env(t_command *cmd, char *arg, char ***envp)
 {
 	char	*env;
 	char	*value;
@@ -109,7 +109,7 @@ void	export_var(t_command *cmd, char **envp)
 			print_error(" : not a valid identifier");
 		}
 		else
-			generate_env(cmd, cmd->full_cmd_args[i], envp);
+			generate_env(cmd, cmd->full_cmd_args[i], &envp);
 		i++;
 	}
 	if (failed == 1)

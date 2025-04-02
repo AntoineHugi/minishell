@@ -19,7 +19,6 @@ static void	child_process(int *pipe_fd, int *tmp_fd, t_command *cmd, char **envp
 	if (!check_input_output(cmd, tmp_fd))
 	{
 		restore_stdin(cmd);
-		print_error(strerror(errno));
 		free_all_cmds(cmd);
 		rl_clear_history();
 		exit(1);

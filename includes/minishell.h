@@ -110,7 +110,7 @@ void		print_env(char **envp);
 void		own_exit(t_command *cmd);
 void		export_var(t_command *cmd, char **envp);
 int			check_valid_key(char *str);
-char		**realloc_envp(char **envp);
+char		**realloc_envp(char ***envp);
 void		print_wd(t_command *cmd);
 void		unset_var(t_command *cmd, char **envp);
 
