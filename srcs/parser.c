@@ -47,8 +47,7 @@ static void	initialize_cmd_data(t_command **new_cmd)
 	(*new_cmd)->exit_status = 0;
 	(*new_cmd)->executable = 0;
 	(*new_cmd)->cmd_path = NULL;
-	(*new_cmd)->input = NULL;
-	(*new_cmd)->output = NULL;
+	(*new_cmd)->redir = NULL;
 	(*new_cmd)->errorfile = NULL;
 	(*new_cmd)->next = NULL;
 }
