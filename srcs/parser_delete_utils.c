@@ -30,7 +30,6 @@ static void	delete_cmd_args(t_command *cmd)
 		free(cmd->full_cmd_args);
 		cmd->full_cmd_args = NULL;
 	}
-
 }
 
 void	delete_cmd_list(t_command **cmd_list)

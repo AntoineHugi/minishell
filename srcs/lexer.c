@@ -42,8 +42,8 @@ static int	quote_token(char *str, int *i, char quote_type, t_token **token_list)
 
 static void	word_token_helper(char *str, int *i)
 {
-	while (str[*i] && !(str[*i] == ' ' || str[*i] == '\t' || str[*i] == ';' 
-		|| str[*i] == '|' || str[*i] == '<' || str[*i] == '>'))
+	while (str[*i] && !(str[*i] == ' ' || str[*i] == '\t' || str[*i] == ';'
+			|| str[*i] == '|' || str[*i] == '<' || str[*i] == '>'))
 	{
 		if (str[*i] == 34 || str[*i] == 39)
 		{

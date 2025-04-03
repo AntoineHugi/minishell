@@ -18,7 +18,8 @@ static int	fill_in_redir_in_cmd(t_token **current_token, t_command *cmd)
 		last_redir->next = new_redir;
 	}
 	new_redir->in_or_out = 0;
-	if ((*current_token)->content[0] == '<' && (*current_token)->content[1] == '<')
+	if ((*current_token)->content[0] == '<'
+		&& (*current_token)->content[1] == '<')
 		new_redir->redirection_type = 2;
 	else
 		new_redir->redirection_type = 1;
@@ -46,7 +47,8 @@ static int	fill_out_redir_in_cmd(t_token **current_token, t_command *cmd)
 		last_redir->next = new_redir;
 	}
 	new_redir->in_or_out = 1;
-	if ((*current_token)->content[0] == '>' && (*current_token)->content[1] == '>')
+	if ((*current_token)->content[0] == '>'
+		&& (*current_token)->content[1] == '>')
 		new_redir->redirection_type = 2;
 	else
 		new_redir->redirection_type = 1;
@@ -58,7 +60,9 @@ static int	fill_out_redir_in_cmd(t_token **current_token, t_command *cmd)
 
 int	handle_redirections(t_token **token, t_command *new_cmd)
 {
-	while ((*token) && (*token)->content && !((*token)->content[0] == ';' || (*token)->content[0] == '|'))
+	while ((*token) && (*token)->content
+		&& !((*token)->content[0] == ';'
+			|| (*token)->content[0] == '|'))
 	{
 		if ((*token)->content[0] == '<')
 		{

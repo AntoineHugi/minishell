@@ -19,10 +19,10 @@ int	read_from_stdin(char *str)
 	return (1);
 }
 
-void	drain_pipe(int	fd)
+void	drain_pipe(int fd)
 {
-	char buffer[1024];
-	ssize_t read_bytes;
+	char	buffer[1024];
+	ssize_t	read_bytes;
 
 	read_bytes = read(fd, buffer, sizeof(buffer));
 	while (read_bytes > 0)

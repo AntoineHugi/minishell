@@ -24,14 +24,16 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_redirection {
+typedef struct s_redirection
+{
 	char					*name;
 	int						in_or_out;
 	int						redirection_type;
 	struct s_redirection	*next;
 }				t_redirection;
 
-typedef struct s_command {
+typedef struct s_command
+{
 	int					pipe_next;
 	int					pipe_prev;
 	int					og_stdin;

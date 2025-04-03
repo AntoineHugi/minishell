@@ -81,19 +81,16 @@ void	process_input(char *input, char **envp, int *exit_status)
 {
 	t_token		*token_list;
 	t_command	*cmd_list;
-	
+
 	token_list = lexer(input);
 	//read_tokens(&token_list);
- 	free(input);
- 	cmd_list = parser(token_list);
+	free(input);
+	cmd_list = parser(token_list);
 	if (cmd_list)
 	{
 		//read_cmds(&cmd_list);
-		//printf("redir is currently %p\n", cmd_list->redir);
 		expander(cmd_list, envp);
-		//printf("redir is currently %p\n", cmd_list->redir);
 		expand_exit_status(cmd_list, *exit_status);
-		//printf("redir is currently %p\n", cmd_list->redir);
 		if (!remove_full_quotes(&cmd_list))
 			cmd_error(cmd_list, strerror(errno), errno);
 		clean_empty_argument(cmd_list);
@@ -107,6 +104,8 @@ int	main(int ac, char **av, char **envp)
 	char		**new_envp;
 	int			exit_status;
 
+	(void)ac;
+	(void)av;
 	setup_signals();
 	new_envp = copy_envp(envp);
 	if (!new_envp)
@@ -117,81 +116,12 @@ int	main(int ac, char **av, char **envp)
 	exit_status = 0;
 	input = readline("Minishell$ ");
 	while (input)
- 	{
+	{
 		add_history(input);
 		process_input(input, new_envp, &exit_status);
 		input = readline("Minishell$ ");
- 	}
-	if (ac > 1)
-		printf("\n%s%i\n",av[0],ac); //just to use ac av
+	}
 	free_array(new_envp);
 	rl_clear_history();
 	return (0);
 }
-
-	/* this part exits, when pressing ctrl-D*/
-	/*if (feof(stdin)) {
-		free(input);
-		exit(0);
-		return 0;
-	}*/
-	/* add ctrl-C function and disable default*/
-	/* disable ctrl -\ */
-
-// int	main(int ac, char **av, char **envp)
-// {
-// 	// char		*input;
-// 	// char		input[] = "pwd; cd /usr/bin; pwd";
-// 	// char		input[] = "env | grep USER";
-// 	// char		input[] = "grep something < file.txt | sort | uniq";
-// 	// char		input[] = "ls -R /usr/bin | head -n 10";
-// 	char		input[] = "echo 'first' | tee output.txt | cat -n";
-// 	// char		input[] = "unset PATH; echo $PATH";
-// 	// char		input[] = "diff file1.txt file2.txt | less";
-// 	// char		input[] = "echo 'Hello, world!' > file.txt";
-// 	// char		input[] = "echo 'Appending text' >> file1.txt > file2.txt";
-// 	// char		input[] = "cat < input.txt | wc -l";
-// 	// char		input[] = "cat < input.txt > output.txt";
-// 	// char		input[] = "cat << EOF > example.txt";
-// 	// char		input[] = "cat << EOF > example.txt 'Multi-line text here' EOF";
-// 	t_token		*token_list;
-// 	t_command	*cmd_list;
-// 	int i = 0;
-
-// 	// input = readline("Minishell$ ");
-// 	printf("Turning singular string into tokens... ");
-// 	token_list = lexer(input);
-// 	// free(input);
-// 	printf("Reading tokens: \n");
-// 	read_tokens(&token_list);
-// 	cmd_list = parser(token_list);
-// 	printf("Reading commands : \n");
-// 	read_cmds(&cmd_list);
-// 	printf("\nFinished!\n");
-// 	return (0);
-// }
-
-// int	main(int arc, char **arv)
-// {
-// 	t_token *token_list;
-// 	char	*string;
-	
-// 	(void)arc;
-// 	printf("Entering program... \n");
-// 	printf("Building singular string... \n");
-// 	if (arc > 2)
-// 		string = ft_strjoin_all(arv, ' ');
-// 	else
-// 		string = arv[1];
-// 	printf("Full joined cmd: %s \n", string);
-// 	printf("Turning singular string into tokens... \n");
-// 	token_list = lexer(string);
-// 	printf("Reading tokens... \n");
-// 	read_tokens(&token_list);
-// 	return (0);
-// }
-
-
-
-
-// }

@@ -23,7 +23,7 @@ t_token	*token_last(t_token *token)
 	return (token);
 }
 
-void delete_unused_contents(t_token **token_list)
+void	delete_unused_contents(t_token **token_list)
 {
 	t_token	*current_token;
 
@@ -33,9 +33,9 @@ void delete_unused_contents(t_token **token_list)
 	while (current_token->next)
 	{
 		if (current_token->content[0] == ';' || current_token->content[0] == '|'
-			|| current_token->content[0] == '<' || current_token->content[0] == '>')
+			|| current_token->content[0] == '<'
+			|| current_token->content[0] == '>')
 		{
-			// printf("	Token content to be removed: %s \n", current_token->content);
 			free(current_token->content);
 			current_token->content = NULL;
 		}
@@ -43,8 +43,7 @@ void delete_unused_contents(t_token **token_list)
 	}
 }
 
-
-void delete_token_list(t_token **token_list)
+void	delete_token_list(t_token **token_list)
 {
 	t_token	*current_token;
 	t_token	*last_token;

@@ -18,7 +18,7 @@ void	free_array(char **array)
 
 void	free_redirect(t_redirection **redirect)
 {
-	t_redirection *temp;
+	t_redirection	*temp;
 
 	while (*redirect)
 	{

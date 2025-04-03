@@ -1,10 +1,8 @@
 #include "../includes/minishell.h"
-#include "../libft/libft.h"
 
 void	sigint_handler(int sig)
 {
 	(void)sig;
-
 	write(1, "\n", 1);
 	if (isatty(STDIN_FILENO))
 	{

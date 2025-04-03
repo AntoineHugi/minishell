@@ -36,7 +36,7 @@ t_command	*create_new_cmd(int number_arguments)
 	new_cmd->number_arguments = number_arguments;
 	new_cmd->full_cmd_args = malloc(sizeof(char *) * (number_arguments + 1));
 	if (!new_cmd->full_cmd_args)
-		return(free(new_cmd), NULL);
+		return (free(new_cmd), NULL);
 	new_cmd->full_cmd_args[number_arguments] = NULL;
 	new_cmd->next = NULL;
 	return (new_cmd);

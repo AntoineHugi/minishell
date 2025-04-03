@@ -3,7 +3,7 @@
 static int	has_output(t_command *cmd)
 {
 	t_redirection	*redir;
-	
+
 	redir = cmd->redir;
 	while (redir)
 	{
@@ -14,7 +14,7 @@ static int	has_output(t_command *cmd)
 	return (0);
 }
 
-static void	child_process(int *pipe_fd, int *tmp_fd, t_command *cmd, char **envp)
+void	child_process(int *pipe_fd, int *tmp_fd, t_command *cmd, char **envp)
 {
 	if (!check_input_output(cmd, tmp_fd))
 	{
