@@ -53,7 +53,7 @@ static void	ex_file(t_cmd *cmd, char **envp, int *exit_status, int *tmp_fd)
 
 void	executer(t_cmd *cmd, char **envp, int *exit_status)
 {
-	int			tmp_fd;
+	int		tmp_fd;
 	t_cmd	*temp;
 
 	tmp_fd = -1;

@@ -54,7 +54,7 @@ static void	initialize_cmd_data(t_cmd **new_cmd)
 
 int	build_cmd(t_token **token, t_cmd **new_cmd)
 {
-	int		count;
+	int	count;
 
 	//printf("	Inside build_cmd. \n");
 	//printf("	Current token: %s \n", (*current_token)->content);
@@ -133,8 +133,8 @@ int	build_cmd(t_token **token, t_cmd **new_cmd)
 
 t_cmd	*parser(t_token *token_list)
 {
-	t_token		*current_token;
-	t_token		*start_token;
+	t_token	*current_token;
+	t_token	*start_token;
 	t_cmd	*new_cmd;
 	t_cmd	*cmd_list;
 

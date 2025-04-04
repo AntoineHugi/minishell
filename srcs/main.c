@@ -79,7 +79,7 @@ char	**copy_envp(char **envp)
 
 void	process_input(char *input, char **envp, int *exit_status)
 {
-	t_token		*token_list;
+	t_token	*token_list;
 	t_cmd	*cmd_list;
 
 	token_list = lexer(input);
