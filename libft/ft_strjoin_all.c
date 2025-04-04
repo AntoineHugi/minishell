@@ -3,28 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin_all.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amargolo <amargolo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahugi <ahugi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 12:56:46 by amargolo          #+#    #+#             */
-/*   Updated: 2025/03/10 13:38:48 by amargolo         ###   ########.fr       */
+/*   Updated: 2025/04/04 12:37:58 by ahugi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin_all(char **s, char c)
+char	*ft_strjoin_rest(char **s, char *result, char c)
 {
 	size_t	res_size;
 	size_t	si_size;
-	char	*result;
 	char	*temp;
 	int		i;
-	
-	if (!*s || !s || !s[0])
-		return (NULL);
-	result = ft_strdup(s[0]);
-	if (!result)
-		return (NULL);
+
 	i = 1;
 	while (s[i])
 	{
@@ -43,5 +37,20 @@ char	*ft_strjoin_all(char **s, char c)
 		free(temp);
 		i++;
 	}
+	return (result);
+}
+
+char	*ft_strjoin_all(char **s, char c)
+{
+	char	*result;
+
+	if (!*s || !s || !s[0])
+		return (NULL);
+	result = ft_strdup(s[0]);
+	if (!result)
+		return (NULL);
+	result = ft_strjoin_rest(s, result, c);
+	if (!result)
+		return (NULL);
 	return (result);
 }
