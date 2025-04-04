@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static int	fill_in_redir_in_cmd(t_token **current_token, t_command *cmd)
+static int	fill_in_redir_in_cmd(t_token **current_token, t_cmd *cmd)
 {
 	t_redirection	*last_redir;
 	t_redirection	*new_redir;
@@ -29,7 +29,7 @@ static int	fill_in_redir_in_cmd(t_token **current_token, t_command *cmd)
 	return (1);
 }
 
-static int	fill_out_redir_in_cmd(t_token **current_token, t_command *cmd)
+static int	fill_out_redir_in_cmd(t_token **current_token, t_cmd *cmd)
 {
 	t_redirection	*last_redir;
 	t_redirection	*new_redir;
@@ -58,7 +58,7 @@ static int	fill_out_redir_in_cmd(t_token **current_token, t_command *cmd)
 	return (1);
 }
 
-int	handle_redirections(t_token **token, t_command *new_cmd)
+int	handle_redirections(t_token **token, t_cmd *new_cmd)
 {
 	while ((*token) && (*token)->content
 		&& !((*token)->content[0] == ';'

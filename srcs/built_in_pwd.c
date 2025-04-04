@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	print_wd(t_command *cmd)
+void	print_wd(t_cmd *cmd)
 {
 	char	cwd[1024];
 

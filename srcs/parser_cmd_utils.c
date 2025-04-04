@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	verify_built_in(t_command *new_cmd)
+void	verify_built_in(t_cmd *new_cmd)
 {
 	char		*string;
 	const char	*built_in[] = {"echo", "cd", "pwd", "export",
@@ -21,7 +21,7 @@ void	verify_built_in(t_command *new_cmd)
 	}
 }
 
-void	verify_executable(t_command *new_cmd)
+void	verify_executable(t_cmd *new_cmd)
 {
 	if (access(new_cmd->full_cmd_args[0], X_OK) == 0)
 		new_cmd->executable = 1;
@@ -29,9 +29,9 @@ void	verify_executable(t_command *new_cmd)
 		new_cmd->executable = 0;
 }
 
-void	verify_pipe_prev(t_command **cmd_list, t_command *new_cmd)
+void	verify_pipe_prev(t_cmd **cmd_list, t_cmd *new_cmd)
 {
-	t_command	*current_cmd;
+	t_cmd	*current_cmd;
 
 	//printf("	verify_pipe_prev entered. \n");
 	current_cmd = *cmd_list;

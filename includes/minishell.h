@@ -49,7 +49,7 @@ typedef struct s_command
 	t_redirection		*redir;
 	char				*errorfile;
 	struct s_command	*next;
-}						t_command;
+}						t_cmd;
 
 /* Main */
 void		process_input(char *input, char **envp, int *exit_status);
@@ -58,7 +58,7 @@ void		process_input(char *input, char **envp, int *exit_status);
 void		sigint_handler(int sig);
 void		setup_signals(void);
 void		restore_default_signals(void);
-void		ignore_signals(int pid, t_command *cmd);
+void		ignore_signals(int pid, t_cmd *cmd);
 
 /* Lexer */
 t_token		*create_new_token(char *content);
@@ -68,62 +68,62 @@ void		delete_unused_contents(t_token **token_list);
 void		delete_token_list(t_token **token_list);
 
 /* Parser */
-int			handle_redirections(t_token **current_token, t_command *new_cmd);
-void		delete_cmd_list(t_command **cmd_list);
-t_command	*create_new_cmd(int number_arguments);
-int			build_cmd(t_token **current_token, t_command **new_cmd);
-t_command	*parser(t_token *token_list);
-void		verify_built_in(t_command *new_cmd);
-void		verify_executable(t_command *new_cmd);
-void		verify_pipe_prev(t_command **cmd_list, t_command *new_cmd);
-void		add_cmd_to_list(t_command **list, t_command *new);
+int			handle_redirections(t_token **current_token, t_cmd *new_cmd);
+void		delete_cmd_list(t_cmd **cmd_list);
+t_cmd	*create_new_cmd(int number_arguments);
+int			build_cmd(t_token **current_token, t_cmd **new_cmd);
+t_cmd	*parser(t_token *token_list);
+void		verify_built_in(t_cmd *new_cmd);
+void		verify_executable(t_cmd *new_cmd);
+void		verify_pipe_prev(t_cmd **cmd_list, t_cmd *new_cmd);
+void		add_cmd_to_list(t_cmd **list, t_cmd *new);
 
 /* Quotes removal */
-int			remove_full_quotes(t_command **cmd_list);
+int			remove_full_quotes(t_cmd **cmd_list);
 char		*quotes_inspection(char *str, int *y);
 
 /* Expander */
-int			expander(t_command *cmd, char **envp);
+int			expander(t_cmd *cmd, char **envp);
 char		*check_envp(char *cmd, char **envp);
-void		expand_exit_status(t_command *cmd, int exit_status);
-void		clean_empty_argument(t_command *cmd);
+void		expand_exit_status(t_cmd *cmd, int exit_status);
+void		clean_empty_argument(t_cmd *cmd);
 
 /* Executer */
-void		executer(t_command *cmd, char **envp, int *exit_status);
-void		execute_cmd(t_command *cmd, char **envp, int *tmp_fd);
-void		run_built_in(t_command *cmd, char **envp, int tmp_fd);
-void		run_cmd(t_command *cmd, char **envp, int tmp_fd);
-void		run_file(t_command *cmd, char **envp, int *exit_status, int *tmp_fd);
+void		executer(t_cmd *cmd, char **envp, int *exit_status);
+void		execute_cmd(t_cmd *cmd, char **envp, int *tmp_fd);
+void		run_built_in(t_cmd *cmd, char **envp, int tmp_fd);
+void		run_cmd(t_cmd *cmd, char **envp, int tmp_fd);
+void		run_file(t_cmd *cmd, char **envp, int *exit_status, int *tmp_fd);
 int			convert_exit_status(int exit_status);
 int			read_from_stdin(char *str);
-void		drain_pipe(int	fd);
+void		drain_pipe(int fd);
 
 /* Input / Output */
-int			save_stdin(t_command *cmd);
-void		restore_stdin(t_command *cmd);
-int			handle_infile(t_command *cmd, t_redirection *redir);
+int			save_stdin(t_cmd *cmd);
+void		restore_stdin(t_cmd *cmd);
+int			handle_infile(t_cmd *cmd, t_redirection *redir);
 int			handle_outfile(t_redirection *redir);
-int			check_input_output(t_command *cmd, int *tmp_fd);
+int			check_input_output(t_cmd *cmd, int *tmp_fd);
 
 /* Built-in functions */
-void		change_directory(t_command *cmd, char **envp);
-void		echo(t_command *cmd);
+void		change_directory(t_cmd *cmd, char **envp);
+void		echo(t_cmd *cmd);
 void		print_env(char **envp);
-void		own_exit(t_command *cmd);
-void		export_var(t_command *cmd, char **envp);
+void		own_exit(t_cmd *cmd);
+void		export_var(t_cmd *cmd, char **envp);
 int			check_valid_key(char *str);
 char		**realloc_envp(char ***envp);
-void		print_wd(t_command *cmd);
-void		unset_var(t_command *cmd, char **envp);
+void		print_wd(t_cmd *cmd);
+void		unset_var(t_cmd *cmd, char **envp);
 
 /* Free Memory */
 void		free_array(char **array);
-void		free_cmd(t_command *cmd);
-void		free_all_cmds(t_command *cmd);
+void		free_cmd(t_cmd *cmd);
+void		free_all_cmds(t_cmd *cmd);
 
 /* Error Handling */
 void		print_error(char *msg);
-void		cmd_error(t_command *cmd, char *msg, int err_num);
-void		file_error(t_command *cmd, char *msg, int err_num);
+void		cmd_error(t_cmd *cmd, char *msg, int err_num);
+void		file_error(t_cmd *cmd, char *msg, int err_num);
 
 #endif

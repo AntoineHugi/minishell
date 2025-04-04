@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	exit_cmd(t_command *cmd, int exit_num)
+void	exit_cmd(t_cmd *cmd, int exit_num)
 {
 	restore_stdin(cmd);
 	free_array(cmd->envp);
@@ -26,7 +26,7 @@ static int	is_digit(char *str)
 	return (1);
 }
 
-void	own_exit(t_command *cmd)
+void	own_exit(t_cmd *cmd)
 {
 	int	n;
 

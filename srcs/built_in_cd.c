@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	update_pwd(t_command *cmd, char **envp)
+void	update_pwd(t_cmd *cmd, char **envp)
 {
 	int		i;
 	char	pwd[1024];
@@ -28,7 +28,7 @@ void	update_pwd(t_command *cmd, char **envp)
 		cmd_error(cmd, strerror(errno), errno);
 }
 
-void	change_directory(t_command *cmd, char **envp)
+void	change_directory(t_cmd *cmd, char **envp)
 {
 	char	*home;
 

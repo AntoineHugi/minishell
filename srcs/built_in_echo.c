@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static int	check_nl(t_command *cmd)
+static int	check_nl(t_cmd *cmd)
 {
 	char	*str;
 
@@ -10,7 +10,7 @@ static int	check_nl(t_command *cmd)
 	return (0);
 }
 
-void	echo(t_command *cmd)
+void	echo(t_cmd *cmd)
 {
 	int		nl;
 	int		i;

@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	run_built_in(t_command *cmd, char **envp, int tmp_fd)
+void	run_built_in(t_cmd *cmd, char **envp, int tmp_fd)
 {
 	char	*str;
 

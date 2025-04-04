@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	expand_files(t_command *cmd, char **envp)
+void	expand_files(t_cmd *cmd, char **envp)
 {
 	char			*change;
 	char			*old_name;
@@ -21,7 +21,7 @@ void	expand_files(t_command *cmd, char **envp)
 	}
 }
 
-void	expand_cmd(t_command *cmd, char **envp)
+void	expand_cmd(t_cmd *cmd, char **envp)
 {
 	int		i;
 	char	*change;
@@ -40,7 +40,7 @@ void	expand_cmd(t_command *cmd, char **envp)
 	}
 }
 
-int	expander(t_command *cmd, char **envp)
+int	expander(t_cmd *cmd, char **envp)
 {
 	while (cmd)
 	{

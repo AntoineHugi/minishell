@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static int	has_output(t_command *cmd)
+static int	has_output(t_cmd *cmd)
 {
 	t_redirection	*redir;
 
@@ -14,7 +14,7 @@ static int	has_output(t_command *cmd)
 	return (0);
 }
 
-void	child_process(int *pipe_fd, int *tmp_fd, t_command *cmd, char **envp)
+static void	child_process(int *pipe_fd, int *tmp_fd, t_cmd *cmd, char **envp)
 {
 	if (!check_input_output(cmd, tmp_fd))
 	{
@@ -37,7 +37,7 @@ void	child_process(int *pipe_fd, int *tmp_fd, t_command *cmd, char **envp)
 	exit(0);
 }
 
-static void	cmd_with_pipe(int *tmp_fd, t_command *cmd, char **envp)
+static void	cmd_with_pipe(int *tmp_fd, t_cmd *cmd, char **envp)
 {
 	int		pipe_fd[2];
 	pid_t	pid;
@@ -56,7 +56,7 @@ static void	cmd_with_pipe(int *tmp_fd, t_command *cmd, char **envp)
 	*tmp_fd = pipe_fd[0];
 }
 
-static void	cmd_no_pipe(int *tmp_fd, t_command *cmd, char **envp)
+static void	cmd_no_pipe(int *tmp_fd, t_cmd *cmd, char **envp)
 {
 	pid_t	pid;
 
@@ -79,7 +79,7 @@ static void	cmd_no_pipe(int *tmp_fd, t_command *cmd, char **envp)
 	*tmp_fd = -1;
 }
 
-void	execute_cmd(t_command *cmd, char **envp, int *tmp_fd)
+void	execute_cmd(t_cmd *cmd, char **envp, int *tmp_fd)
 {
 	if (cmd->pipe_next)
 		cmd_with_pipe(tmp_fd, cmd, envp);

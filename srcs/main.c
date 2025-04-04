@@ -14,9 +14,9 @@
 // 	}
 // }
 
-// void	read_cmds(t_command **cmd_list)
+// void	read_cmds(t_cmd **cmd_list)
 // {
-// 	t_command		*cmd;
+// 	t_cmd		*cmd;
 // 	int				i;
 // 	int				count;
 // 	t_redirection	*redir;
@@ -80,7 +80,7 @@ char	**copy_envp(char **envp)
 void	process_input(char *input, char **envp, int *exit_status)
 {
 	t_token		*token_list;
-	t_command	*cmd_list;
+	t_cmd	*cmd_list;
 
 	token_list = lexer(input);
 	//read_tokens(&token_list);

@@ -11,7 +11,7 @@ static int	buff_check(char *limiter, char *buffer)
 	return (1);
 }
 
-static void	generate_input(t_command *cmd, char *limiter, int fd)
+static void	generate_input(t_cmd *cmd, char *limiter, int fd)
 {
 	char	*buffer;
 
@@ -31,7 +31,7 @@ static void	generate_input(t_command *cmd, char *limiter, int fd)
 	}
 }
 
-static int	here_doc_fd(t_command *cmd, char *limiter)
+static int	here_doc_fd(t_cmd *cmd, char *limiter)
 {
 	int	fd_here_doc[2];
 
@@ -42,7 +42,7 @@ static int	here_doc_fd(t_command *cmd, char *limiter)
 	return (fd_here_doc[0]);
 }
 
-int	handle_infile(t_command *cmd, t_redirection *redir)
+int	handle_infile(t_cmd *cmd, t_redirection *redir)
 {
 	int	fd_infile;
 

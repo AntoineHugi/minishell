@@ -45,13 +45,13 @@ static int	check_for_exit(char *cmd)
 	return (0);
 }
 
-void	replace_exit_status(t_command *cmd, int i, char *change)
+void	replace_exit_status(t_cmd *cmd, int i, char *change)
 {
 	free(cmd->full_cmd_args[i]);
 	cmd->full_cmd_args[i] = change;
 }
 
-void	expand_exit_status(t_command *cmd, int exit_status)
+void	expand_exit_status(t_cmd *cmd, int exit_status)
 {
 	int		i;
 	int		j;

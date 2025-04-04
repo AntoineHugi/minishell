@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static void	delete_cmd_redir(t_command *cmd)
+static void	delete_cmd_redir(t_cmd *cmd)
 {
 	if (cmd->redir)
 	{
@@ -14,7 +14,7 @@ static void	delete_cmd_redir(t_command *cmd)
 	}
 }
 
-static void	delete_cmd_args(t_command *cmd)
+static void	delete_cmd_args(t_cmd *cmd)
 {
 	int	i;
 
@@ -32,10 +32,10 @@ static void	delete_cmd_args(t_command *cmd)
 	}
 }
 
-void	delete_cmd_list(t_command **cmd_list)
+void	delete_cmd_list(t_cmd **cmd_list)
 {
-	t_command	*current_cmd;
-	t_command	*next_cmd;
+	t_cmd	*current_cmd;
+	t_cmd	*next_cmd;
 
 	if (!cmd_list || !(*cmd_list))
 		return ;

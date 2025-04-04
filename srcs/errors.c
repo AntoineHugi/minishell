@@ -6,7 +6,7 @@ void	print_error(char *msg)
 	write(STDERR_FILENO, "\n", 1);
 }
 
-void	cmd_error(t_command *cmd, char *msg, int err_num)
+void	cmd_error(t_cmd *cmd, char *msg, int err_num)
 {
 	restore_stdin(cmd);
 	err_num = convert_exit_status(err_num);
@@ -20,7 +20,7 @@ void	cmd_error(t_command *cmd, char *msg, int err_num)
 	exit (err_num);
 }
 
-void	file_error(t_command *cmd, char *msg, int err_num)
+void	file_error(t_cmd *cmd, char *msg, int err_num)
 {
 	restore_stdin(cmd);
 	err_num = convert_exit_status(err_num);

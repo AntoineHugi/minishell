@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static int	remove_full_quotes_redir(t_command *cmd)
+static int	remove_full_quotes_redir(t_cmd *cmd)
 {
 	t_redirection	*redir;
 	int				y;
@@ -53,9 +53,9 @@ static int	remove_full_quotes_args(char **cmd_arg)
 	return (1);
 }
 
-int	remove_full_quotes(t_command **cmd_list)
+int	remove_full_quotes(t_cmd **cmd_list)
 {
-	t_command	*cmd;
+	t_cmd	*cmd;
 
 	cmd = *cmd_list;
 	while (cmd != NULL)

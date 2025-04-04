@@ -40,7 +40,7 @@ static char	*fetch_path(char **envp)
 	return (NULL);
 }
 
-void	run_cmd(t_command *cmd, char **envp, int tmp_fd)
+void	run_cmd(t_cmd *cmd, char **envp, int tmp_fd)
 {
 	char	*path;
 

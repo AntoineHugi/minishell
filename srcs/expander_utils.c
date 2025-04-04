@@ -81,7 +81,7 @@ char	*check_envp(char *cmd, char **envp)
 	return (NULL);
 }
 
-void	clean_empty_argument(t_command *cmd)
+void	clean_empty_argument(t_cmd *cmd)
 {
 	char	*temp;
 	int		i;

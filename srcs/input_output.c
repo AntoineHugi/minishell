@@ -1,12 +1,12 @@
 #include "../includes/minishell.h"
 
-void	restore_stdin(t_command *cmd)
+void	restore_stdin(t_cmd *cmd)
 {
 	dup2(cmd->og_stdin, STDIN_FILENO);
 	dup2(cmd->og_stdout, STDOUT_FILENO);
 }
 
-int	save_stdin(t_command *cmd)
+int	save_stdin(t_cmd *cmd)
 {
 	while (cmd)
 	{
@@ -21,7 +21,7 @@ int	save_stdin(t_command *cmd)
 	return (1);
 }
 
-int	check_input_output(t_command *cmd, int *tmp_fd)
+int	check_input_output(t_cmd *cmd, int *tmp_fd)
 {
 	t_redirection	*redir;
 

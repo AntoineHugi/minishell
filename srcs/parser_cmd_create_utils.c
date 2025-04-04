@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static t_command	*cmd_last(t_command *cmd)
+static t_cmd	*cmd_last(t_cmd *cmd)
 {
 	if (!cmd)
 		return (NULL);
@@ -11,9 +11,9 @@ static t_command	*cmd_last(t_command *cmd)
 	return (cmd);
 }
 
-void	add_cmd_to_list(t_command **list, t_command *new)
+void	add_cmd_to_list(t_cmd **list, t_cmd *new)
 {
-	t_command	*last;
+	t_cmd	*last;
 
 	if (!new)
 		return ;
@@ -26,11 +26,11 @@ void	add_cmd_to_list(t_command **list, t_command *new)
 	}
 }
 
-t_command	*create_new_cmd(int number_arguments)
+t_cmd	*create_new_cmd(int number_arguments)
 {
-	t_command	*new_cmd;
+	t_cmd	*new_cmd;
 
-	new_cmd = (t_command *)malloc(sizeof(t_command));
+	new_cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!new_cmd)
 		return (0);
 	new_cmd->number_arguments = number_arguments;

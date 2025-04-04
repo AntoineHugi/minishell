@@ -30,7 +30,7 @@ void	free_redirect(t_redirection **redirect)
 	*redirect = NULL;
 }
 
-void	free_cmd(t_command *cmd)
+void	free_cmd(t_cmd *cmd)
 {
 	if (cmd->full_cmd_args)
 		free_array((cmd->full_cmd_args));
@@ -43,9 +43,9 @@ void	free_cmd(t_command *cmd)
 	free(cmd);
 }
 
-void	free_all_cmds(t_command *cmd)
+void	free_all_cmds(t_cmd *cmd)
 {
-	t_command	*next;
+	t_cmd	*next;
 
 	while (cmd)
 	{

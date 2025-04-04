@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static void	fill_args_in_cmd(t_token *token, t_command *cmd)
+static void	fill_args_in_cmd(t_token *token, t_cmd *cmd)
 {
 	int	i;
 
@@ -24,7 +24,7 @@ static void	fill_args_in_cmd(t_token *token, t_command *cmd)
 	}
 }
 
-static void	handle_pipe_next(t_token **current_token, t_command *new_cmd)
+static void	handle_pipe_next(t_token **current_token, t_cmd *new_cmd)
 {
 	//printf("	Current token: %s \n", (*current_token)->content);
 	if (*current_token && (*current_token)->content && (*current_token)->content[0] == '|')
@@ -36,7 +36,7 @@ static void	handle_pipe_next(t_token **current_token, t_command *new_cmd)
 	(*current_token) = (*current_token)->next;
 }
 
-static void	initialize_cmd_data(t_command **new_cmd)
+static void	initialize_cmd_data(t_cmd **new_cmd)
 {
 	(*new_cmd)->pipe_next = 0;
 	(*new_cmd)->pipe_prev = 0;
@@ -52,7 +52,7 @@ static void	initialize_cmd_data(t_command **new_cmd)
 	(*new_cmd)->next = NULL;
 }
 
-int	build_cmd(t_token **token, t_command **new_cmd)
+int	build_cmd(t_token **token, t_cmd **new_cmd)
 {
 	int		count;
 
@@ -84,12 +84,12 @@ int	build_cmd(t_token **token, t_command **new_cmd)
 	return (1);
 }
 
-// t_command	*parser(t_token *token_list)
+// t_cmd	*parser(t_token *token_list)
 // {
 // 	t_token		*current_token;
 // 	t_token		*start_token;
-// 	t_command	*new_cmd;
-// 	t_command	*cmd_list;
+// 	t_cmd	*new_cmd;
+// 	t_cmd	*cmd_list;
 
 // 	//printf("Parser entered.\n");
 // 	cmd_list = NULL;
@@ -131,12 +131,12 @@ int	build_cmd(t_token **token, t_command **new_cmd)
 // 	return (cmd_list);
 // }
 
-t_command	*parser(t_token *token_list)
+t_cmd	*parser(t_token *token_list)
 {
 	t_token		*current_token;
 	t_token		*start_token;
-	t_command	*new_cmd;
-	t_command	*cmd_list;
+	t_cmd	*new_cmd;
+	t_cmd	*cmd_list;
 
 	cmd_list = NULL;
 	current_token = token_list;

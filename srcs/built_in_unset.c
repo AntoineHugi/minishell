@@ -31,7 +31,7 @@ static void	check_env(char *str, char **envp)
 	}
 }
 
-void	unset_var(t_command *cmd, char **envp)
+void	unset_var(t_cmd *cmd, char **envp)
 {
 	int		i;
 

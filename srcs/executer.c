@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	assign_envp(t_command *cmd, char **envp)
+void	assign_envp(t_cmd *cmd, char **envp)
 {
 	while (cmd)
 	{
@@ -29,7 +29,7 @@ static int	is_path(char *str)
 	return (0);
 }
 
-static void	ex_file(t_command *cmd, char **envp, int *exit_status, int *tmp_fd)
+static void	ex_file(t_cmd *cmd, char **envp, int *exit_status, int *tmp_fd)
 {
 	pid_t		pid;
 	struct stat	path_stat;
@@ -51,10 +51,10 @@ static void	ex_file(t_command *cmd, char **envp, int *exit_status, int *tmp_fd)
 	waitpid(pid, &(cmd->exit_status), 0);
 }
 
-void	executer(t_command *cmd, char **envp, int *exit_status)
+void	executer(t_cmd *cmd, char **envp, int *exit_status)
 {
 	int			tmp_fd;
-	t_command	*temp;
+	t_cmd	*temp;
 
 	tmp_fd = -1;
 	if (!save_stdin(cmd))
