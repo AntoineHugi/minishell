@@ -77,7 +77,7 @@ char	**copy_envp(char **envp)
 	return (new_envp);
 }
 
-void	process_input(char *input, char **envp, int *exit_status)
+void	process_input(char *input, char ***envp, int *exit_status)
 {
 	t_token	*token_list;
 	t_cmd	*cmd_list;
@@ -89,7 +89,7 @@ void	process_input(char *input, char **envp, int *exit_status)
 	if (cmd_list)
 	{
 		//read_cmds(&cmd_list);
-		expander(cmd_list, envp);
+		expander(cmd_list, *envp);
 		expand_exit_status(cmd_list, *exit_status);
 		if (!remove_full_quotes(&cmd_list))
 			cmd_error(cmd_list, strerror(errno), errno);
@@ -118,7 +118,7 @@ int	main(int ac, char **av, char **envp)
 	while (input)
 	{
 		add_history(input);
-		process_input(input, new_envp, &exit_status);
+		process_input(input, &new_envp, &exit_status);
 		input = readline("Minishell$ ");
 	}
 	free_array(new_envp);

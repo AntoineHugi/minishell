@@ -89,7 +89,7 @@ static void	generate_env(t_cmd *cmd, char *arg, char ***envp)
 		free(key);
 }
 
-void	export_var(t_cmd *cmd, char **envp)
+void	export_var(t_cmd *cmd, char ***envp)
 {
 	int		i;
 	int		failed;
@@ -109,7 +109,7 @@ void	export_var(t_cmd *cmd, char **envp)
 			print_error(" : not a valid identifier");
 		}
 		else
-			generate_env(cmd, cmd->full_cmd_args[i], &envp);
+			generate_env(cmd, cmd->full_cmd_args[i], envp);
 		i++;
 	}
 	if (failed == 1)
