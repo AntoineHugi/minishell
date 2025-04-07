@@ -30,7 +30,6 @@ void	file_error(t_cmd *cmd, char *msg, int err_num)
 		err_num = 126;
 	}
 	write(STDERR_FILENO, "\n", 1);
-	free_array(cmd->envp);
 	free_all_cmds(cmd);
 	rl_clear_history();
 	exit (err_num);

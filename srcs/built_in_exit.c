@@ -46,7 +46,7 @@ void	own_exit(t_cmd *cmd)
 		else
 		{
 			print_error(" too many arguments");
-			exit_cmd(cmd, 2);
+			exit_cmd(cmd, 1);
 		}
 	}
 }
