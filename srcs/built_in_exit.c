@@ -3,7 +3,6 @@
 void	exit_cmd(t_cmd *cmd, int exit_num)
 {
 	restore_stdin(cmd);
-	free_array(cmd->envp);
 	free_all_cmds(cmd);
 	rl_clear_history();
 	exit((unsigned char)exit_num);
@@ -28,8 +27,6 @@ static int	is_digit(char *str)
 
 void	own_exit(t_cmd *cmd)
 {
-	int	n;
-
 	if (cmd->pipe_next || cmd->pipe_prev)
 		return ;
 	else
@@ -39,13 +36,17 @@ void	own_exit(t_cmd *cmd)
 		if (cmd->full_cmd_args[1] && !cmd->full_cmd_args[2])
 		{
 			if (is_digit(cmd->full_cmd_args[1]))
-			{
-				n = ft_atoi(cmd->full_cmd_args[1]);
-				exit_cmd(cmd, n);
-			}
+				exit_cmd(cmd, ft_atoi(cmd->full_cmd_args[1]));
 			else
-				cmd_error(cmd, " numeric argument required", 2);
+			{
+				print_error(" numeric argument required");
+				exit_cmd(cmd, 2);
+			}
 		}
-		cmd_error(cmd, " too many arguments", EXIT_FAILURE);
+		else
+		{
+			print_error(" too many arguments");
+			exit_cmd(cmd, 2);
+		}
 	}
 }
