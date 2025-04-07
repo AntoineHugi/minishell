@@ -20,5 +20,5 @@ void	run_built_in(t_cmd *cmd, char ***envp, int tmp_fd)
 	if (!ft_strncmp(str, "pwd", ft_strlen(str)))
 		print_wd(cmd);
 	if (!ft_strncmp(str, "unset", ft_strlen(str)) && !cmd->pipe_prev)
-		unset_var(cmd, *envp);
+		unset_var(cmd, envp);
 }

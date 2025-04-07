@@ -92,7 +92,7 @@ void	clean_empty_argument(t_cmd *cmd);
 void	executer(t_cmd *cmd, char ***envp, int *exit_status);
 void	execute_cmd(t_cmd *cmd, char ***envp, int *tmp_fd);
 void	run_built_in(t_cmd *cmd, char ***envp, int tmp_fd);
-void	run_cmd(t_cmd *cmd, char **envp, int tmp_fd);
+void	run_cmd(t_cmd *cmd, char ***envp, int tmp_fd);
 void	run_file(t_cmd *cmd, char ***envp, int *exit_status, int *tmp_fd);
 int		convert_exit_status(int exit_status);
 int		read_from_stdin(char *str);
@@ -114,7 +114,7 @@ void	export_var(t_cmd *cmd, char ***envp);
 int		check_valid_key(char *str);
 char	**realloc_envp(char ***envp);
 void	print_wd(t_cmd *cmd);
-void	unset_var(t_cmd *cmd, char **envp);
+void	unset_var(t_cmd *cmd, char ***envp);
 
 /* Free Memory */
 void	free_array(char **array);

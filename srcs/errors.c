@@ -14,7 +14,6 @@ void	cmd_error(t_cmd *cmd, char *msg, int err_num)
 	if (err_num == 127)
 		write(STDERR_FILENO, ": command not found", 20);
 	write(STDERR_FILENO, "\n", 1);
-	free_array(cmd->envp);
 	free_all_cmds(cmd);
 	rl_clear_history();
 	exit (err_num);

@@ -40,7 +40,7 @@ static char	*fetch_path(char **envp)
 	return (NULL);
 }
 
-void	run_cmd(t_cmd *cmd, char **envp, int tmp_fd)
+void	run_cmd(t_cmd *cmd, char ***envp, int tmp_fd)
 {
 	char	*path;
 
@@ -53,13 +53,13 @@ void	run_cmd(t_cmd *cmd, char **envp, int tmp_fd)
 	{
 		if (!read_from_stdin(cmd->full_cmd_args[0]) && tmp_fd != -1)
 			drain_pipe(tmp_fd);
-		path = fetch_path(envp);
+		path = fetch_path(*envp);
 		if (!path)
-			cmd_error(cmd, "path not found in envp", EXIT_FAILURE);
+			cmd_error(cmd, cmd->full_cmd_args[0], 127);
 		cmd->cmd_path = find_command(path, cmd->full_cmd_args[0]);
 		if (!cmd->cmd_path)
 			cmd_error(cmd, cmd->full_cmd_args[0], 127);
-		execve(cmd->cmd_path, cmd->full_cmd_args, envp);
+		execve(cmd->cmd_path, cmd->full_cmd_args, *envp);
 		cmd_error(cmd, strerror(errno), errno);
 	}
 }
