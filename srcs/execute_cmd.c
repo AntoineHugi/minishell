@@ -27,6 +27,7 @@ static void	child_process(int *pipe_fd, int *tmp_fd, t_cmd *cmd, char ***envp)
 		dup2(pipe_fd[1], STDOUT_FILENO);
 	if (*tmp_fd != -1)
 		close(*tmp_fd);
+	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	if (cmd->built_in)
 		run_built_in(cmd, envp, *tmp_fd);
@@ -53,7 +54,10 @@ static void	cmd_with_pipe(int *tmp_fd, t_cmd *cmd, char ***envp)
 	if (*tmp_fd != -1)
 		close(*tmp_fd);
 	close(pipe_fd[1]);
-	*tmp_fd = pipe_fd[0];
+	if (cmd->next)
+		*tmp_fd = pipe_fd[0];
+	else
+		close(pipe_fd[0]);
 }
 
 static void	cmd_no_pipe(int *tmp_fd, t_cmd *cmd, char ***envp)
