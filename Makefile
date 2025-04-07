@@ -10,7 +10,7 @@ RM = rm -f
 
 CFLAGS += -Wall -Wextra -Werror -fPIE
 
-VALGRIND_FLAGS = --leak-check=full --trace-children=yes
+VALGRIND_FLAGS = --leak-check=full --trace-children=yes --show-leak-kinds=all --suppressions=supp.supp
 
 LIBFT_DIR = $(CUR_DIR)/libft
 
