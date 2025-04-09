@@ -106,7 +106,7 @@ void	export_var(t_cmd *cmd, char ***envp)
 		if (!check_valid_key(cmd->full_cmd_args[i]))
 		{
 			failed = 1;
-			print_error(" : not a valid identifier");
+			print_error("Minishell: export: not a valid identifier");
 		}
 		else
 			generate_env(cmd, cmd->full_cmd_args[i], envp);

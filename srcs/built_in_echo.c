@@ -14,24 +14,26 @@ void	echo(t_cmd *cmd)
 {
 	int		nl;
 	int		i;
+	size_t	len;
 
 	nl = 0;
 	i = 1;
 	if (!cmd->full_cmd_args[i])
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 	else
 	{
 		nl = check_nl(cmd);
 		i = i + nl;
 		while (cmd->full_cmd_args[i])
 		{
-			printf("%s", cmd->full_cmd_args[i]);
+			len = ft_strlen(cmd->full_cmd_args[i]);
+			write(STDOUT_FILENO, cmd->full_cmd_args[i], len);
 			i++;
 			if (cmd->full_cmd_args[i])
-				printf(" ");
+				write(STDOUT_FILENO, " ", 1);
 		}
 		if (!nl)
-			printf("\n");
+			write(STDOUT_FILENO, "\n", 1);
 	}
 	cmd->exit_status = 0;
 }

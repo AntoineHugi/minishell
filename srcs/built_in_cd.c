@@ -45,11 +45,11 @@ void	change_directory(t_cmd *cmd, char **envp)
 	else if (cmd->full_cmd_args[1] && !cmd->full_cmd_args[2])
 	{
 		if (chdir(cmd->full_cmd_args[1]) == -1)
-			cmd_error(cmd, " No such file or directory", 1);
+			cmd_error(cmd, "Minishell: cd: No such file or directory", 1);
 		else
 			update_pwd(cmd, envp);
 	}
 	else
-		cmd_error(cmd, " too many arguments", EXIT_FAILURE);
+		cmd_error(cmd, "Minishell: cd: too many arguments", EXIT_FAILURE);
 	cmd->exit_status = 0;
 }
