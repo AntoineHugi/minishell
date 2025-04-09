@@ -36,7 +36,7 @@ void	change_directory(t_cmd *cmd, char **envp)
 	{
 		home = getenv("HOME");
 		if (!home)
-			cmd_error(cmd, "HOME path not set in env. variables", 1);
+			cmd_error(cmd, "Minishell: cd: HOME not set", 1);
 		if (chdir(home) == -1)
 			cmd_error(cmd, strerror(errno), errno);
 		else
