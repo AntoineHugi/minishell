@@ -65,8 +65,10 @@ void	restore_default_signals(void);
 t_token	*create_new_token(char *content);
 t_token	*token_last(t_token *token);
 t_token	*lexer(char *str);
+int		word_token(char *str, int *i, t_token **token_list);
 void	delete_unused_contents(t_token **token_list);
 void	delete_token_list(t_token **token_list);
+void	add_token_to_list(t_token **token, t_token *new);
 
 /* Pre Parser */
 int		pre_parser(t_token *token_list);
@@ -81,6 +83,7 @@ void	verify_built_in(t_cmd *new_cmd);
 void	verify_executable(t_cmd *new_cmd);
 void	verify_pipe_prev(t_cmd **cmd_list, t_cmd *new_cmd);
 void	add_cmd_to_list(t_cmd **list, t_cmd *new);
+void	verify_cmd_specs(t_cmd **cmd_list, t_cmd *new_cmd);
 
 /* Quotes removal */
 int		remove_full_quotes(t_cmd **cmd_list);
