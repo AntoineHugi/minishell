@@ -46,5 +46,5 @@ void	verify_cmd_specs(t_cmd **cmd_list, t_cmd *new_cmd)
 {
 	verify_built_in(new_cmd);
 	verify_executable(new_cmd);
-	verify_pipe_prev(&cmd_list, new_cmd);
+	verify_pipe_prev(cmd_list, new_cmd);
 }
