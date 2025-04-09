@@ -47,6 +47,8 @@ void	free_all_cmds(t_cmd *cmd)
 {
 	t_cmd	*next;
 
+	if (cmd)
+		free_array(cmd->envp);
 	while (cmd)
 	{
 		next = cmd->next;

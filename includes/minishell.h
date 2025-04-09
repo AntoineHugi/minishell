@@ -54,7 +54,7 @@ typedef struct s_command
 extern int	g_status;
 
 /* Main */
-void	process_input(char *input, char **envp, int *exit_status);
+void	process_input(char *input, char ***envp, int *exit_status);
 
 /* Signals */
 void	setup_base_signals(void);
@@ -93,11 +93,11 @@ void	expand_exit_status(t_cmd *cmd, int exit_status);
 void	clean_empty_argument(t_cmd *cmd);
 
 /* Executer */
-void	executer(t_cmd *cmd, char **envp, int *exit_status);
-void	execute_cmd(t_cmd *cmd, char **envp, int *tmp_fd);
-void	run_built_in(t_cmd *cmd, char **envp, int tmp_fd);
-void	run_cmd(t_cmd *cmd, char **envp, int tmp_fd);
-void	run_file(t_cmd *cmd, char **envp, int *exit_status, int *tmp_fd);
+void	executer(t_cmd *cmd, char ***envp, int *exit_status);
+void	execute_cmd(t_cmd *cmd, char ***envp, int *tmp_fd);
+void	run_built_in(t_cmd *cmd, char ***envp, int tmp_fd);
+void	run_cmd(t_cmd *cmd, char ***envp, int tmp_fd);
+void	run_file(t_cmd *cmd, char ***envp, int *exit_status, int *tmp_fd);
 int		convert_exit_status(int exit_status);
 int		read_from_stdin(char *str);
 void	drain_pipe(int fd);
@@ -114,11 +114,11 @@ void	change_directory(t_cmd *cmd, char **envp);
 void	echo(t_cmd *cmd);
 void	print_env(char **envp);
 void	own_exit(t_cmd *cmd);
-void	export_var(t_cmd *cmd, char **envp);
+void	export_var(t_cmd *cmd, char ***envp);
 int		check_valid_key(char *str);
 char	**realloc_envp(char ***envp);
 void	print_wd(t_cmd *cmd);
-void	unset_var(t_cmd *cmd, char **envp);
+void	unset_var(t_cmd *cmd, char ***envp);
 
 /* Free Memory */
 void	free_array(char **array);

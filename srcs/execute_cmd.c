@@ -14,7 +14,7 @@ static int	has_output(t_cmd *cmd)
 	return (0);
 }
 
-static void	child_process(int *pipe_fd, int *tmp_fd, t_cmd *cmd, char **envp)
+static void	child_process(int *pipe_fd, int *tmp_fd, t_cmd *cmd, char ***envp)
 {
 	if (!check_input_output(cmd, tmp_fd))
 	{
@@ -27,6 +27,7 @@ static void	child_process(int *pipe_fd, int *tmp_fd, t_cmd *cmd, char **envp)
 		dup2(pipe_fd[1], STDOUT_FILENO);
 	if (*tmp_fd != -1)
 		close(*tmp_fd);
+	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	if (cmd->built_in)
 		run_built_in(cmd, envp, *tmp_fd);
@@ -37,7 +38,7 @@ static void	child_process(int *pipe_fd, int *tmp_fd, t_cmd *cmd, char **envp)
 	exit(0);
 }
 
-static void	cmd_with_pipe(int *tmp_fd, t_cmd *cmd, char **envp)
+static void	cmd_with_pipe(int *tmp_fd, t_cmd *cmd, char ***envp)
 {
 	int		pipe_fd[2];
 	pid_t	pid;
@@ -53,10 +54,13 @@ static void	cmd_with_pipe(int *tmp_fd, t_cmd *cmd, char **envp)
 	if (*tmp_fd != -1)
 		close(*tmp_fd);
 	close(pipe_fd[1]);
-	*tmp_fd = pipe_fd[0];
+	if (cmd->next)
+		*tmp_fd = pipe_fd[0];
+	else
+		close(pipe_fd[0]);
 }
 
-static void	cmd_no_pipe(int *tmp_fd, t_cmd *cmd, char **envp)
+static void	cmd_no_pipe(int *tmp_fd, t_cmd *cmd, char ***envp)
 {
 	pid_t	pid;
 
@@ -79,7 +83,7 @@ static void	cmd_no_pipe(int *tmp_fd, t_cmd *cmd, char **envp)
 	*tmp_fd = -1;
 }
 
-void	execute_cmd(t_cmd *cmd, char **envp, int *tmp_fd)
+void	execute_cmd(t_cmd *cmd, char ***envp, int *tmp_fd)
 {
 	if (cmd->pipe_next)
 		cmd_with_pipe(tmp_fd, cmd, envp);
