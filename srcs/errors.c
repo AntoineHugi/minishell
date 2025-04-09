@@ -38,8 +38,13 @@ void	file_error(t_cmd *cmd, char *msg, int err_num)
 void	sig_msg(int *exit_status)
 {
 	if (g_status == 130)
+	{
 		write(1, "\n", 1);
+		*exit_status = g_status;
+	}
 	if (g_status == 131)
+	{
 		write(1, "Quit (core dumped)\n", 19);
-	*exit_status = g_status;
+		*exit_status = g_status;
+	}
 }
