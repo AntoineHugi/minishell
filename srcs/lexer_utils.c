@@ -1,5 +1,20 @@
 #include "../includes/minishell.h"
 
+void	add_token_to_list(t_token **token, t_token *new)
+{
+	t_token	*last;
+
+	if (!new)
+		return ;
+	if (!*token)
+		*token = new;
+	else
+	{
+		last = token_last(*token);
+		last->next = new;
+	}
+}
+
 t_token	*create_new_token(char *content)
 {
 	t_token	*new_token;

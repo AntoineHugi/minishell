@@ -56,10 +56,7 @@ int	build_cmd(t_token **token, t_cmd **new_cmd)
 	{
 		if ((*token)->next->content[0] == '<'
 			|| (*token)->next->content[0] == '>')
-		{
-			(*token) = (*token)->next;
-			(*token) = (*token)->next;
-		}
+			(*token) = (*token)->next->next;
 		else
 		{
 			(*token) = (*token)->next;
@@ -95,9 +92,7 @@ t_cmd	*parser(t_token *token_list)
 		if (!handle_redirections(&start_token, new_cmd))
 			return (delete_cmd_list(&cmd_list), NULL);
 		handle_pipe_next(&current_token, new_cmd);
-		verify_built_in(new_cmd);
-		verify_executable(new_cmd);
-		verify_pipe_prev(&cmd_list, new_cmd);
+		verify_cmd_specs(&cmd_list, new_cmd);
 	}
 	delete_unused_contents(&token_list);
 	delete_token_list(&token_list);

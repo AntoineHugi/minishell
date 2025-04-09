@@ -72,6 +72,7 @@ int	main(int ac, char **av, char **envp)
 	input = readline("Minishell$ ");
 	while (input)
 	{
+		printf("exit status is : %i\n", exit_status);
 		if (input[0] != '\0')
 			add_history(input);
 		process_input(input, &new_envp, &exit_status);
