@@ -34,3 +34,11 @@ void	file_error(t_cmd *cmd, char *msg, int err_num)
 	rl_clear_history();
 	exit (err_num);
 }
+
+void	sig_msg(void)
+{
+	if (g_status == 130)
+		write(1, "\n", 1);
+	if (g_status == 131)
+		write(1, "Quit (core dumped)\n", 19);
+}

@@ -129,5 +129,6 @@ void	free_all_cmds(t_cmd *cmd);
 void	print_error(char *msg);
 void	cmd_error(t_cmd *cmd, char *msg, int err_num);
 void	file_error(t_cmd *cmd, char *msg, int err_num);
+void	sig_msg(void);
 
 #endif

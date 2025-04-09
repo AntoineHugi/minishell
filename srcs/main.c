@@ -82,6 +82,8 @@ void	process_input(char *input, char ***envp, int *exit_status)
 	t_token	*token_list;
 	t_cmd	*cmd_list;
 
+	setup_run_signals();
+	g_status = 0;
 	token_list = lexer(input);
 	//read_tokens(&token_list);
 	free(input);
@@ -98,6 +100,8 @@ void	process_input(char *input, char ***envp, int *exit_status)
 		clean_empty_argument(cmd_list);
 		executer(cmd_list, envp, exit_status);
 	}
+	setup_base_signals();
+	sig_msg();
 }
 
 int	main(int ac, char **av, char **envp)
@@ -119,18 +123,12 @@ int	main(int ac, char **av, char **envp)
 	input = readline("Minishell$ ");
 	while (input)
 	{
-		add_history(input);
-		setup_run_signals();
-		g_status = 0;
+		if (input[0] != '\0')
+			add_history(input);
 		process_input(input, &new_envp, &exit_status);
-		setup_base_signals();
-		if (g_status == 130)
-			write(1, "\n", 1);
-		if (g_status == 131)
-			write(1, "Quit (core dumped)\n", 19);
+		exit_status = g_status;
 		input = readline("Minishell$ ");
 	}
 	free_array(new_envp);
-	rl_clear_history();
 	return (0);
 }
