@@ -74,7 +74,7 @@ static void	cmd_no_pipe(int *tmp_fd, t_cmd *cmd, char **envp)
 			cmd_error(cmd, strerror(errno), errno);
 		else if (pid == 0)
 			run_cmd(cmd, envp, *tmp_fd);
-		ignore_signals(pid, cmd);
+		waitpid(pid, &(cmd->exit_status), 0);
 	}
 	*tmp_fd = -1;
 }

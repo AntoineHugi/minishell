@@ -1,38 +1,36 @@
 #include "../includes/minishell.h"
 
-void	sigint_handler(int sig)
+int g_status = 0;
+
+static void	extended_sig_handling(int sig)
 {
-	(void)sig;
+	g_status = 128 + sig;
 	write(1, "\n", 1);
-	if (isatty(STDIN_FILENO))
-	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
-void	setup_signals(void)
+static void	limited_sig_handling(int sig)
 {
-	struct sigaction	sa;
-
-	sa.sa_handler = sigint_handler;
-	sa.sa_flags = SA_RESTART;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
-	sa.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &sa, NULL);
-}
-
-void	ignore_signals(int pid, t_cmd *cmd)
-{
-	signal(SIGINT, SIG_IGN);
-	waitpid(pid, &(cmd->exit_status), 0);
-	setup_signals();
+	g_status = 128 + sig;
+	rl_on_new_line();
 }
 
 void	restore_default_signals(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+}
+
+void	setup_base_signals(void)
+{
+	signal(SIGINT, extended_sig_handling);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	setup_run_signals(void)
+{
+	signal(SIGINT, limited_sig_handling);
+	signal(SIGQUIT, limited_sig_handling);
 }

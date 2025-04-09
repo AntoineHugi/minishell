@@ -51,14 +51,15 @@ typedef struct s_command
 	struct s_command	*next;
 }						t_cmd;
 
+extern int	g_status;
+
 /* Main */
 void	process_input(char *input, char **envp, int *exit_status);
 
 /* Signals */
-void	sigint_handler(int sig);
-void	setup_signals(void);
+void	setup_base_signals(void);
+void	setup_run_signals(void);
 void	restore_default_signals(void);
-void	ignore_signals(int pid, t_cmd *cmd);
 
 /* Lexer */
 t_token	*create_new_token(char *content);
@@ -66,6 +67,9 @@ t_token	*token_last(t_token *token);
 t_token	*lexer(char *str);
 void	delete_unused_contents(t_token **token_list);
 void	delete_token_list(t_token **token_list);
+
+/* Pre Parser */
+int		pre_parser(t_token *token_list);
 
 /* Parser */
 int		handle_redirections(t_token **current_token, t_cmd *new_cmd);
