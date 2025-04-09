@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-int g_status = 0;
+int	g_status = 0;
 
 static void	extended_sig_handling(int sig)
 {
