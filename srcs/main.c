@@ -38,7 +38,10 @@ void	process_input(char *input, char ***envp, int *exit_status)
 	token_list = lexer(input);
 	free(input);
 	if (!pre_parser(token_list))
+	{
+		*exit_status = 2;
 		return (delete_token_list(&token_list));
+	}
 	cmd_list = parser(token_list);
 	if (cmd_list)
 	{
@@ -63,18 +66,17 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	new_envp = copy_envp(envp);
 	if (!new_envp)
-	{
-		print_error(strerror(errno));
-		return (1);
-	}
+		return(print_error(strerror(errno)), 1);
 	exit_status = 0;
 	setup_base_signals();
 	input = readline("Minishell$ ");
 	while (input)
 	{
 		if (input[0] != '\0')
+		{
 			add_history(input);
-		process_input(input, &new_envp, &exit_status);
+			process_input(input, &new_envp, &exit_status);
+		}
 		input = readline("Minishell$ ");
 	}
 	free_array(new_envp);

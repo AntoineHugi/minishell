@@ -55,7 +55,7 @@ void	run_cmd(t_cmd *cmd, char ***envp, int tmp_fd)
 			drain_pipe(tmp_fd);
 		path = fetch_path(*envp);
 		if (!path)
-			cmd_error(cmd, cmd->full_cmd_args[0], 127);
+			cmd_error(cmd, cmd->full_cmd_args[0], 240);
 		cmd->cmd_path = find_command(path, cmd->full_cmd_args[0]);
 		if (!cmd->cmd_path)
 			cmd_error(cmd, cmd->full_cmd_args[0], 127);

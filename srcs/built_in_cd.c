@@ -28,28 +28,45 @@ void	update_pwd(t_cmd *cmd, char **envp)
 		cmd_error(cmd, strerror(errno), errno);
 }
 
-void	change_directory(t_cmd *cmd, char **envp)
+static void	change_to_home(t_cmd *cmd, char **envp)
 {
 	char	*home;
 
-	if (!cmd->full_cmd_args[1])
+	home = getenv("HOME");
+	if (!home)
 	{
-		home = getenv("HOME");
-		if (!home)
-			cmd_error(cmd, "Minishell: cd: HOME not set", 1);
-		if (chdir(home) == -1)
-			cmd_error(cmd, strerror(errno), errno);
-		else
-			update_pwd(cmd, envp);
+		print_error("Minishell: cd: HOME not set");
+		cmd->exit_status = 1;
 	}
+	if (chdir(home) == -1)
+		cmd_error(cmd, strerror(errno), errno);
+	else
+	{
+		update_pwd(cmd, envp);
+		cmd->exit_status = 0;
+	}
+}
+
+void	change_directory(t_cmd *cmd, char **envp)
+{
+	if (!cmd->full_cmd_args[1])
+		change_to_home(cmd, envp);
 	else if (cmd->full_cmd_args[1] && !cmd->full_cmd_args[2])
 	{
 		if (chdir(cmd->full_cmd_args[1]) == -1)
-			cmd_error(cmd, "Minishell: cd: No such file or directory", 1);
+		{
+			print_error("Minishell: cd: No such file or directory");
+			cmd->exit_status = 1;
+		}
 		else
+		{
 			update_pwd(cmd, envp);
+			cmd->exit_status = 0;
+		}
 	}
 	else
-		cmd_error(cmd, "Minishell: cd: too many arguments", EXIT_FAILURE);
-	cmd->exit_status = 0;
+	{
+		print_error("Minishell: cd: too many arguments");
+		cmd->exit_status = 0;
+	}
 }

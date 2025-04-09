@@ -1,19 +1,45 @@
 #include "../includes/minishell.h"
 
+static void	double_quote(char *str, int *i)
+{
+	while (str[*i])
+	{
+		if (str[*i] == '\"')
+		{	
+			(*i)++;
+			return ;
+		}
+		(*i)++;
+	}
+}
+
+static void	single_quote(char *str, int *i)
+{
+	while (str[*i])
+	{
+		if (str[*i] == '\'')
+		{	
+			(*i)++;
+			return ;
+		}
+		(*i)++;
+	}
+}
+
 static void	word_token_helper(char *str, int *i)
 {
 	while (str[*i] && !(str[*i] == ' ' || str[*i] == '\t' || str[*i] == ';'
 			|| str[*i] == '|' || str[*i] == '<' || str[*i] == '>'))
 	{
-		if (str[*i] == 34 || str[*i] == 39)
+		if (str[*i] == '\'')
 		{
 			(*i)++;
-			while (str[*i])
-			{
-				if (str[*i] && (str[*i] == 34 || str[*i] == 39))
-					break ;
-				(*i)++;
-			}
+			single_quote(str, i);
+		}
+		else if (str[*i] == '\"')
+		{
+			(*i)++;
+			double_quote(str, i);
 		}
 		else
 			(*i)++;

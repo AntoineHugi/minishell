@@ -1,7 +1,5 @@
 CUR_DIR = $(shell pwd)
 
-$(info CUR_DIR is $(CUR_DIR))
-
 NAME = minishell
 
 CC = cc

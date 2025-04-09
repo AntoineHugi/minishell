@@ -13,6 +13,11 @@ void	cmd_error(t_cmd *cmd, char *msg, int err_num)
 	write(STDERR_FILENO, msg, ft_strlen(msg));
 	if (err_num == 127)
 		write(STDERR_FILENO, ": command not found", 20);
+	if (err_num == 240)
+	{
+		write(STDERR_FILENO, ": No such file or directory", 28);
+		err_num = 127;
+	}
 	write(STDERR_FILENO, "\n", 1);
 	free_all_cmds(cmd);
 	rl_clear_history();
