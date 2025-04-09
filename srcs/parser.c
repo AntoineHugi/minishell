@@ -8,10 +8,7 @@ static void	fill_args_in_cmd(t_token *token, t_cmd *cmd)
 	while (i < cmd->number_arguments)
 	{
 		if (token->content[0] == '<' || token->content[0] == '>')
-		{
-			token = token->next;
-			token = token->next;
-		}
+			token = token->next->next;
 		else
 		{
 			cmd->full_cmd_args[i] = token->content;
@@ -26,7 +23,8 @@ static void	handle_pipe_next(t_token **current_token, t_cmd *new_cmd)
 	if (*current_token && (*current_token)->content
 		&& (*current_token)->content[0] == '|')
 		new_cmd->pipe_next = 1;
-	(*current_token) = (*current_token)->next;
+	if ((*current_token) && (*current_token)->next)
+		(*current_token) = (*current_token)->next;
 }
 
 static void	initialize_cmd_data(t_cmd **new_cmd)
@@ -47,15 +45,13 @@ static void	initialize_cmd_data(t_cmd **new_cmd)
 
 int	build_cmd(t_token **token, t_cmd **new_cmd)
 {
-	int	count;
+	int		count;
 
-	count = 1;
-	while (*token && (*token)->content && (*token)->next
-		&& (*token)->next->content && !((*token)->next->content[0] == '|'
-			|| (*token)->next->content[0] == ';'))
+	count = 0;
+	while (*token && (*token)->content && !((*token)->content[0] == '|'
+			|| (*token)->content[0] == ';'))
 	{
-		if ((*token)->next->content[0] == '<'
-			|| (*token)->next->content[0] == '>')
+		if ((*token)->content[0] == '<' || (*token)->content[0] == '>')
 			(*token) = (*token)->next->next;
 		else
 		{
@@ -63,10 +59,7 @@ int	build_cmd(t_token **token, t_cmd **new_cmd)
 			count++;
 		}
 	}
-	if ((*token)->next)
-		(*token) = (*token)->next;
-	*new_cmd = create_new_cmd(count);
-	if (!(*new_cmd))
+	if (!((*new_cmd) = create_new_cmd(count)))
 		return (0);
 	initialize_cmd_data(new_cmd);
 	return (1);
