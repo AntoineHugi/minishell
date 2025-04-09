@@ -22,6 +22,7 @@ static int	remove_full_quotes_redir(t_cmd *cmd)
 				redir->name = new;
 			}
 		}
+		y = 0;
 		redir = redir->next;
 	}
 	return (1);

@@ -8,7 +8,7 @@ CC = cc
 
 RM = rm -f
 
-CFLAGS += -Wall -Wextra -Werror -fPIE
+CFLAGS += -Wall -Wextra -Werror
 
 VALGRIND_FLAGS = --leak-check=full --trace-children=yes --show-leak-kinds=all --suppressions=supp.supp
 
@@ -29,7 +29,7 @@ OBJS = $(SRCS:.c=.o)
 all: $(LIBFT_DIR)/libft.a $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -ltinfo -o $(NAME) -pie
+	$(CC) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -ltinfo -o $(NAME)
 
 $(LIBFT_DIR)/libft.a:
 	$(MAKE) -C $(LIBFT_DIR)

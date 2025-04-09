@@ -39,13 +39,13 @@ void	own_exit(t_cmd *cmd)
 				exit_cmd(cmd, ft_atoi(cmd->full_cmd_args[1]));
 			else
 			{
-				print_error(" numeric argument required");
+				print_error("Minishell: exit: numeric argument required");
 				exit_cmd(cmd, 2);
 			}
 		}
 		else
 		{
-			print_error(" too many arguments");
+			print_error("Minishell: exit: too many arguments");
 			exit_cmd(cmd, 1);
 		}
 	}
