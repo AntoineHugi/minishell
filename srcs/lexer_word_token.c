@@ -5,7 +5,7 @@ static void	double_quote(char *str, int *i)
 	while (str[*i])
 	{
 		if (str[*i] == '\"')
-		{	
+		{
 			(*i)++;
 			return ;
 		}
@@ -18,7 +18,7 @@ static void	single_quote(char *str, int *i)
 	while (str[*i])
 	{
 		if (str[*i] == '\'')
-		{	
+		{
 			(*i)++;
 			return ;
 		}

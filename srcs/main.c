@@ -66,7 +66,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	new_envp = copy_envp(envp);
 	if (!new_envp)
-		return(print_error(strerror(errno)), 1);
+		return (print_error(strerror(errno)), 1);
 	exit_status = 0;
 	setup_base_signals();
 	input = readline("Minishell$ ");

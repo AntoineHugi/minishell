@@ -59,7 +59,8 @@ int	build_cmd(t_token **token, t_cmd **new_cmd)
 			count++;
 		}
 	}
-	if (!((*new_cmd) = create_new_cmd(count)))
+	*new_cmd = create_new_cmd(count);
+	if (!(*new_cmd))
 		return (0);
 	initialize_cmd_data(new_cmd);
 	return (1);
