@@ -6,7 +6,7 @@ CC = cc
 
 RM = rm -f
 
-CFLAGS += -Wall -Wextra -Werror -fPIE
+CFLAGS += -Wall -Wextra -Werror
 
 MY_SOURCES = $(addprefix $(CUR_DIR)/, ft_atoi.c ft_bzero.c ft_calloc.c \
 					ft_isalnum.c ft_isalpha.c ft_isascii.c \
