@@ -45,10 +45,12 @@ static char	*get_name(char *cmd)
 	char	*alias;
 
 	i = 0;
-	while (ft_isalnum(cmd[i]))
+	if (ft_isalpha(cmd[i]))
 		i++;
-	if (i == 0)
+	else
 		return (NULL);
+	while (ft_isalnum(cmd[i]) || cmd[i] == '_')
+		i++;
 	alias = (char *)ft_calloc(i + 1, sizeof(char));
 	if (!alias)
 		return (NULL);

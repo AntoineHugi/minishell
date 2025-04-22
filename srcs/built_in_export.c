@@ -53,7 +53,7 @@ static char	*generate_key(t_cmd *cmd, char *str)
 	char	*key;
 
 	i = 0;
-	while (str[i] && ft_isalnum(str[i]))
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
 	if (str[i] == '=')
 		i++;
@@ -97,10 +97,7 @@ void	export_var(t_cmd *cmd, char ***envp)
 	failed = 0;
 	i = 1;
 	if (!cmd->full_cmd_args[i])
-	{
-		cmd->exit_status = 0;
-		return ;
-	}
+		print_export(*envp);
 	while (cmd->full_cmd_args[i])
 	{
 		if (!check_valid_key(cmd->full_cmd_args[i]))

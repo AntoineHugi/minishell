@@ -28,15 +28,30 @@ void	update_pwd(t_cmd *cmd, char **envp)
 		cmd_error(cmd, strerror(errno), errno);
 }
 
+static char	*own_getenv(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (!ft_strncmp(envp[i], "HOME=", 5))
+			return(envp[i]);
+		i++;
+	}
+	return (NULL);
+}
+
 static void	change_to_home(t_cmd *cmd, char **envp)
 {
 	char	*home;
 
-	home = getenv("HOME");
+	home = own_getenv(envp);
 	if (!home)
 	{
 		print_error("Minishell: cd: HOME not set");
 		cmd->exit_status = 1;
+		return ;
 	}
 	if (chdir(home) == -1)
 		cmd_error(cmd, strerror(errno), errno);

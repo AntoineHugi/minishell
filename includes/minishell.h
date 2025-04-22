@@ -122,6 +122,7 @@ int		check_valid_key(char *str);
 char	**realloc_envp(char ***envp);
 void	print_wd(t_cmd *cmd);
 void	unset_var(t_cmd *cmd, char ***envp);
+void	print_export(char **envp);
 
 /* Free Memory */
 void	free_array(char **array);

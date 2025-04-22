@@ -56,9 +56,7 @@ void	process_input(char *input, char ***envp, int *exit_status)
 	sig_msg(exit_status);
 }
 
-/* - fix : cd when home unset (not using getenv)
-	env variables with underscores. this affects env, export, expander and maybe unset
-	export with no argument prints the env in sorted order with "export" in front
+/* - fix : 
 	exit status for signals
 	seg fault when no cmd but a redirection
 */ 
