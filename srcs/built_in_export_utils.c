@@ -4,7 +4,7 @@ void	print_export(char **envp)
 {
 	int	i;
 	int	j;
-	char	temp,
+	char*	temp;
 
 	i = 0;
 	while (envp[i])
